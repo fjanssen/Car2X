@@ -1,0 +1,6 @@
+\beamer@endinputifotherversion {3.26pt}
+\beamer@sectionintoc {1}{HW Setup}{3}{0}{1}
+\beamer@subsectionintoc {1}{1}{Car-Design}{3}{0}{1}
+\beamer@subsectionintoc {1}{2}{Sensors}{13}{0}{1}
+\beamer@sectionintoc {2}{SW Architecture}{13}{0}{2}
+\beamer@subsectionintoc {2}{1}{Our Aims}{13}{0}{2}

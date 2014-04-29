@@ -1,0 +1,76 @@
+\relax 
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Outline}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Prelude}{3}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Hardware Setup}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}List of components}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Overview}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The car is divided into four levels. Each level has a different motto.}}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Level -1}{4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces The lowest level -1 (see left figure) contains the four motors and the batteries. Level 0 (right figure) contains the four CMW-Units and the Voltage-Distribution.}}{5}}
+\newlabel{Level-1and0}{{2}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Level 0}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}CMWUnit - Control-Motor-Wheel-Unit}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Level 1}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7}Level 2}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Interconnections in the Control-Motor-Wheel-Unit}}{6}}
+\newlabel{CMWUnit}{{3}{6}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Level 1 (see left figure) contains the Ethernet-Switch. Level 2 (see right figure) contains the (big) Sabre-light i.mx6 (Linux-PC).}}{6}}
+\newlabel{Level1and2}{{4}{6}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Construction of the car}{7}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Software Architecture}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Our Aims}{8}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Hierarchical and distributed system}{8}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}Self-maintaining car}{8}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.3}Simple programming}{8}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}CMW-Unit SW design}{8}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Start sequence}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Left: Start sequence. Right: Major (or big) cycle.}}{9}}
+\newlabel{StartMajor}{{5}{9}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Major cycle}{9}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Small (or minor) cycle.}}{10}}
+\newlabel{small}{{6}{10}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.3}Small cycle}{10}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Networking}{10}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Star architecture with four CMW-units and one central processor board connected via LAN switch. The central board is itself also connected via Wi-Fi to a possible user.}}{11}}
+\newlabel{star}{{7}{11}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}CarProtocol - Packet of messages}{11}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Left: CarProtocol header. Right: CarMessage header.}}{11}}
+\newlabel{CarProtocol}{{8}{11}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}CarMessage - Requests and answers}{12}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}WelcomeMessage}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Left: WelcomeMessage. Right: CarVelocityMessage.}}{12}}
+\newlabel{WelcomeMessage}{{9}{12}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Two messages in one packet.}}{13}}
+\newlabel{example}{{10}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.4}Another example: CarVelocityMessage}{13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Central ECU: Networking interface}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}Overview}{13}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.2}Network Thread}{13}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces The software structure on the Linux-PC.}}{14}}
+\newlabel{linuxPC}{{11}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces The sensor structure and message chain in the whole project.}}{14}}
+\newlabel{sensors}{{12}{14}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.3}Main Thread}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Central ECU: User-/Agent-View}{15}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.1}Software Architecture}{15}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.2}Current setup}{15}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.3}Current behavior}{15}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.5.4}Possible behavior}{16}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Speed Controller - PID}{17}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Left: PT1 behavior in time domain. Right: Example for a measurement of motor + hall-sensor.}}{17}}
+\newlabel{pt1}{{13}{17}}
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Control-circle with PI controller.}}{17}}
+\newlabel{circle}{{14}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Workflow and guidance}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Nios2 workflow}{18}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.1}Programming the device}{18}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.2}Tour through program files}{18}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.3}Guide to the ComBuilder}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Central ECU workflow}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Maintaining the Ethernet-to-UART chips}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Additional help}{19}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Summary}{20}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Conclusion}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Prospects}{21}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Closing remarks}{21}}
