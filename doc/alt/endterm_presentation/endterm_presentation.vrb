@@ -1,0 +1,14 @@
+\frametitle{The (great) assembling}
+\begin{lstlisting}[language=java, numbers=left, xleftmargin=.03\textwidth]
+while(true){
+    WaitForComponents();
+    GetNewComponents();
+                 // Yay!
+    RealiseThatNewComponentsSuitNotForWorkflow();
+                 // :-(
+    ChangeEverythingToImplementNewComponents();
+    SolderANewPowerDistribution();
+                 // Burn fingers ;)
+}
+
+\end{lstlisting}

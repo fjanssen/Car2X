@@ -1,0 +1,48 @@
+\contentsline {section}{\numberline {1}Introduction}{3}
+\contentsline {subsection}{\numberline {1.1}Outline}{3}
+\contentsline {subsection}{\numberline {1.2}Prelude}{3}
+\contentsline {section}{\numberline {2}Hardware Setup}{4}
+\contentsline {subsection}{\numberline {2.1}List of components}{4}
+\contentsline {subsection}{\numberline {2.2}Overview}{4}
+\contentsline {subsection}{\numberline {2.3}Level -1}{4}
+\contentsline {subsection}{\numberline {2.4}Level 0}{5}
+\contentsline {subsection}{\numberline {2.5}CMWUnit - Control-Motor-Wheel-Unit}{5}
+\contentsline {subsection}{\numberline {2.6}Level 1}{5}
+\contentsline {subsection}{\numberline {2.7}Level 2}{5}
+\contentsline {section}{\numberline {3}Construction of the car}{7}
+\contentsline {section}{\numberline {4}Software Architecture}{8}
+\contentsline {subsection}{\numberline {4.1}Our Aims}{8}
+\contentsline {subsubsection}{\numberline {4.1.1}Hierarchical and distributed system}{8}
+\contentsline {subsubsection}{\numberline {4.1.2}Self-maintaining car}{8}
+\contentsline {subsubsection}{\numberline {4.1.3}Simple programming}{8}
+\contentsline {subsection}{\numberline {4.2}CMW-Unit SW design}{8}
+\contentsline {subsubsection}{\numberline {4.2.1}Start sequence}{9}
+\contentsline {subsubsection}{\numberline {4.2.2}Major cycle}{9}
+\contentsline {subsubsection}{\numberline {4.2.3}Small cycle}{10}
+\contentsline {subsection}{\numberline {4.3}Networking}{10}
+\contentsline {subsubsection}{\numberline {4.3.1}CarProtocol - Packet of messages}{11}
+\contentsline {subsubsection}{\numberline {4.3.2}CarMessage - Requests and answers}{12}
+\contentsline {subsubsection}{\numberline {4.3.3}WelcomeMessage}{12}
+\contentsline {subsubsection}{\numberline {4.3.4}Another example: CarVelocityMessage}{13}
+\contentsline {subsection}{\numberline {4.4}Central ECU: Networking interface}{13}
+\contentsline {subsubsection}{\numberline {4.4.1}Overview}{13}
+\contentsline {subsubsection}{\numberline {4.4.2}Network Thread}{13}
+\contentsline {subsubsection}{\numberline {4.4.3}Main Thread}{15}
+\contentsline {subsection}{\numberline {4.5}Central ECU: User-/Agent-View}{15}
+\contentsline {subsubsection}{\numberline {4.5.1}Software Architecture}{15}
+\contentsline {subsubsection}{\numberline {4.5.2}Current setup}{15}
+\contentsline {subsubsection}{\numberline {4.5.3}Current behavior}{15}
+\contentsline {subsubsection}{\numberline {4.5.4}Possible behavior}{16}
+\contentsline {section}{\numberline {5}Speed Controller - PID}{17}
+\contentsline {section}{\numberline {6}Workflow and guidance}{18}
+\contentsline {subsection}{\numberline {6.1}Nios2 workflow}{18}
+\contentsline {subsubsection}{\numberline {6.1.1}Programming the device}{18}
+\contentsline {subsubsection}{\numberline {6.1.2}Tour through program files}{18}
+\contentsline {subsubsection}{\numberline {6.1.3}Guide to the ComBuilder}{19}
+\contentsline {subsection}{\numberline {6.2}Central ECU workflow}{19}
+\contentsline {subsection}{\numberline {6.3}Maintaining the Ethernet-to-UART chips}{19}
+\contentsline {subsection}{\numberline {6.4}Additional help}{19}
+\contentsline {section}{\numberline {7}Summary}{20}
+\contentsline {section}{\numberline {8}Conclusion}{21}
+\contentsline {subsection}{\numberline {8.1}Prospects}{21}
+\contentsline {subsection}{\numberline {8.2}Closing remarks}{21}
