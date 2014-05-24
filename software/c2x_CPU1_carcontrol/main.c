@@ -5,41 +5,59 @@
  *      Author: Florian
  */
 
+
+/******************************************************************************
+ * INCLUDES
+ *****************************************************************************/
 #include "main.h"
 #include "alt_types.h"
-
 #include "MEM_Api.h"
 #include "COMM_Api.h"
 #include "ERR_Api.h"
 
+/******************************************************************************
+ * DEFINES
+ *****************************************************************************/
+#define CAR_NUMMOTORS (4u)
+
+/******************************************************************************
+ * FUNCTION IMPLEMENTATION
+ *****************************************************************************/
 int main(int argc, char* argv[])
 {
-	struct CarState state;
+	/* --- local variables --- */
+	// Car message buffers
+	static struct MotorSpeedMsg motorSpeedMsg_ast[CAR_NUMMOTORS];
 
+	static struct CarCommandMsg carCommandMsg_ast[MEM_BUFFERLEN_CARCOMMAND];
+	static struct C2xMsg c2xRxMsg_ast[MEM_BUFFERLEN_C2XRX];
+	static struct C2xMsg c2xTxMsg_ast[MEM_BUFFERLEN_C2XTX];
+	static struct UsSensorMsg usSensorMsg_ast[MEM_BUFFERLEN_USSENSOR];
+
+	// Buffer indices
+	static alt_u32 motorSpeedMsgIndex_u32, carCommandMsgIndex_u32, c2xRxMsgIndex_u32, usSensorMsgIndex_u32;
+
+	// variables for motor speed calculations
 	alt_32 speed, iMaxAllowedSpeedFront, iMaxAllowedSpeedBack = 0;
 	alt_32 iTotalSpeed, iLeftPercent, iRightPercent;
 	alt_32 iCurrentMaxSpeed;
 
-	struct MotorSpeedMsg motorSpeeds_ast[MEM_BUFFERLEN_MOTORSPEED];
-	struct CarCommandMsg carCommands_ast[MEM_BUFFERLEN_CARCOMMAND];
-	struct C2XMsg c2xRx_ast[MEM_BUFFERLEN_C2XRX];
-	struct USSensorMsg usSensors_ast[MEM_BUFFERLEN_USSENSOR];
+	/* --- function body --- */
+	// Module initialisation
+	MEM_ModuleInit();
 
-	alt_u32 numMotorSpeedMsgs_u32, numCarCommandMsgs_u32, numC2xRxMsgs_u32, numUsSensorMsgs_u32;
-	alt_u8 motorSpeedsFlags_u8, carCommandsFlags_u8, c2xRxFlags_u8, usSensorFlags_u8;
-
+	// Local variable initialisation
 	iCurrentMaxSpeed = iTotalSpeed = 0;
 	iLeftPercent = iRightPercent = 100;
 
+	// Main function loop
 	while(1)
 	{	
 		// Get all received messages from the shared memory
-		MEM_GetMemCopy(MEM_AREA_MOTORSPEED, motorSpeeds_ast, &numMotorSpeedMsgs_u32, &motorSpeedsFlags_u8);
-		MEM_GetMemCopy(MEM_AREA_CARCOMMAND, carCommands_ast, &numCarCommandMsgs_u32, &carCommandsFlags_u8);
-		MEM_GetMemCopy(MEM_AREA_C2XRX,      c2xRx_ast,       &numC2xRxMsgs_u32,      &c2xRxFlags_u8);
-		MEM_GetMemCopy(MEM_AREA_USSENSOR,   usSensors_ast,   &numUsSensorMsgs_u32,   &usSensorFlags_u8);
-
-		setCarState(&state);
+		MEM_GetLastMotorSpeeds(motorSpeedMsg_ast, CAR_NUMMOTORS);
+		MEM_GetMemCopy(MEM_AREA_CARCOMMAND, &carCommandMsgIndex_u32, (void *)carCommandMsg_ast,  sizeof(carCommandMsg_ast));
+		MEM_GetMemCopy(MEM_AREA_C2XRX,      &c2xRxMsgIndex_u32,      (void *)c2xRxMsg_ast,       sizeof(c2xRxMsg_ast));
+		MEM_GetMemCopy(MEM_AREA_USSENSOR,   &usSensorMsgIndex_u32,   (void *)usSensorMsg_ast,    sizeof(usSensorMsg_ast));
 
 		// Calculate current speed:
 		speed = state.motorStates[0].iCurrentSpeed + state.motorStates[1].iCurrentSpeed + state.motorStates[2].iCurrentSpeed + state.motorStates[3].iCurrentSpeed;

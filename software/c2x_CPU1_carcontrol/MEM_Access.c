@@ -98,8 +98,10 @@ enum CORE_ErrCode MEM_ModuleInit()
 /** MEM_GetMemCopy
  *
  * \details */
-enum CORE_ErrCode MEM_GetMemCopy(enum sharedMemAreaIds source_en,
-		                         struct SharedMemoryArea * dest_pst)
+enum CORE_ErrCode MEM_GetMemCopy(enum sharedMemAreaIds sourceMemArea_en,
+								 alt_u32 * elementsCopied_pu32,
+								 void * dest_pst,
+								 alt_u32 destSize_u32)
 {
 	/* --- local variables ---*/
 	struct SharedMemoryArea * sharedMem_pst;
@@ -110,10 +112,17 @@ enum CORE_ErrCode MEM_GetMemCopy(enum sharedMemAreaIds source_en,
 	{
 		LOG_ERROR_RETURN(ERR_MEM_NOINIT, "Module not initialised.");
 	}
-	if(retVal_en != ERR_NONE, retVal_en = getSharedMemArea(source_en, sharedMem_pst))
+	if(retVal_en != ERR_NONE, retVal_en = getSharedMemArea(sourceMemArea_en, sharedMem_pst))
 	{
 		LOG_DEBUG("Throwing error up.");
 		return retVal_en;
+	}
+	if(destSize_u32 < sharedMem_pst->memBytesUsed_u32)
+	{
+		releaseSharedMemBuffer(sourceMemArea_en);
+		LOG_ERROR_RETURN(ERR_MEM_DESTTOOSMALL, "The destination buffer is too small!" \
+					     "Trying to copy %d Bytes into %d of memory.",
+					     sharedMem_pst->memBytesUsed_u32, destSize_u32);
 	}
 
 	/* --- function body ---*/
@@ -121,16 +130,18 @@ enum CORE_ErrCode MEM_GetMemCopy(enum sharedMemAreaIds source_en,
 	*dest_pst = *sharedMem_pst;
 
 	// copy the actual data
-	memcpy(sharedMem_pst->elements,
-		   sharedMem_pst->numElements * sharedMem_pst->elementSize,
-		   dest_pst->elements);
+	memcpy(sharedMem_pst->content_pv,
+		   sharedMem_pst->memBytesUsed_u32,
+		   dest_pst);
+
+	*elementsCopied_pu32 = sharedMem_pst->memBytesUsed_u32 / sharedMem_pst->memElementSize_u32;
 
 	// reset element count, flags
-	sharedMem_pst->numElements = 0;
-	sharedMem_pst->flags = MEM_BUFFERFLAGS_NONE;
+	sharedMem_pst->memBytesUsed_u32 = 0;
+	sharedMem_pst->flags_u8 = MEM_BUFFERFLAGS_NONE;
 
 	// Release the mutex for the source memory area, this is important!!!
-	releaseSharedMemArea(source_en);
+	releaseSharedMemArea(sourceMemArea_en);
 
 	return retVal_en;
 }
@@ -138,11 +149,12 @@ enum CORE_ErrCode MEM_GetMemCopy(enum sharedMemAreaIds source_en,
 /** MEM_SetMem
  *
  * \details */
-enum CORE_ErrCode MEM_SetMem(enum sharedMemAreaIds dest_en,
-						     struct SharedMemoryArea * source_pst)
+enum CORE_ErrCode MEM_SetMem(enum sharedMemAreaIds destMemArea_en,
+							 void * source_pst,
+							 alt_u32 sourceElements_u32)
 {
 	/* --- local variables ---*/
-	struct SharedMemoryArea dest_pst;
+	struct SharedMemoryArea * dest_pst;
 	enum CORE_ErrCode retVal_en;
 
 	/* --- validation ---*/
@@ -150,23 +162,33 @@ enum CORE_ErrCode MEM_SetMem(enum sharedMemAreaIds dest_en,
 	{
 		LOG_ERROR_RETURN(ERR_MEM_NOINIT, "Module not initialised.");
 	}
-	if(retVal_en != ERR_NONE, retVal_en = getSharedMemBuffer(dest_en, dest_pst))
+	if(retVal_en != ERR_NONE, retVal_en = getSharedMemBuffer(destMemArea_en, dest_pst))
 	{
 		LOG_DEBUG("Throwing error up.");
 		return retVal_en;
 	}
+	if(dest_pst->memSize_u32 < sourceElements_u32 * dest_pst->memElementSize_u32)
+	{
+		releaseSharedMemBuffer(destMemArea_en);
+		LOG_ERROR_RETURN(ERR_MEM_DESTTOOSMALL, "The destination buffer is too small!" \
+					     "Trying to copy %d Bytes into %d of memory.",
+					     sourceElements_u32, dest_pst->memSize_u32);
+	}
+
 
 	/* --- function body --- */
 	// copy the area definitions
 	*dest_pst = *source_pst;
 
 	// copy the actual data
-	memcpy(source_pst->elements,
-			source_pst->numElements * source_pst->elementSize,
-			dest_pst->elements);
+	memcpy(source_pst,
+			sourceElements_u32*dest_pst->memElementSize_u32,
+			dest_pst->content_pv);
+
+	dest_pst->memBytesUsed_u32 = sourceElements_u32 * dest_pst->memElementSize_u32;
 
 	// Release the mutex for the source memory area, this is important!!!
-	releaseSharedMemArea(dest_en);
+	releaseSharedMemArea(destMemArea_en);
 
 	return retVal_en;
 }
@@ -212,7 +234,7 @@ enum CORE_ErrCode getSharedMemArea(enum sharedMemAreaIds memArea_en,
 		mutex_p = m_mutexC2xRx_p;
 		break;
 	case MEM_AREA_C2XTX:
-		memArea_pv = &m_memAreaC2xRx_st;
+		memArea_pv = &m_memAreaC2xTx_st;
 		mutex_p = m_mutexC2xTx_p;
 		break;
 	case MEM_AREA_USSENSOR:

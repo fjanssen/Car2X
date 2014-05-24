@@ -19,7 +19,6 @@
 #define MEM_BUFFERLEN_C2XTX      (100u)
 #define MEM_BUFFERLEN_USSENSOR   (100u)
 
-
 /******************************************************************************
  * ENUMS/TYPES
  *****************************************************************************/
@@ -35,15 +34,8 @@ enum sharedMemAreaIds {
 // Buffer flag definitions
 enum bufferFlags {
 	MEM_BUFFERFLAGS_NONE = 0,
-};
-
-// Shared memory area definitions
-struct SharedMemoryArea{
-	alt_u32 numElements;
-	alt_u8  flags;
-	const alt_u32 elementSize;
-	const alt_u32 maxNumElements;
-	const void * elements;
+	MEM_BUFFERFLAGS_OVERFLOW,
+	MEM_BUFFERFLAGS_CORRUPT,
 };
 
 /******************************************************************************
@@ -65,23 +57,29 @@ extern enum CORE_ErrCode MEM_ModuleInit(void);
  *  NOTE: you must make sure that the memory space pointed at by dest_pv is
  *        large enough to accommodate the entire shared memory area!!
  *
- * \param source_en the identifier of the requested memory area in shared memory.
- * \param dest_pst a pointer to a struct where the data from shared memory will be
- * 	               copied to.
+ * \param sourceMemArea_en the identifier of the requested memory area in shared memory.
+ * \param[out] elementsCopied_pu32 number of elements copied into the destination.
+ * \param dest_pst a pointer to a struct where the contents from the shared memory
+ * 				   will be copied to.
+ * \param destSize_u32 size of the memory pointed to by dest_pst.
  *
  * \return ERR_MEM_
  */
-extern enum CORE_ErrCode MEM_GetMemCopy(enum sharedMemAreaIds source_en,
-		                                struct SharedMemoryArea * dest_pst);
+extern enum CORE_ErrCode MEM_GetMemCopy(enum sharedMemAreaIds sourceMemArea_en,
+										alt_u32 * elementsCopied_pu32,
+		                                void * dest_pst,
+		                                alt_u32 destSize_u32);
 
 /** MEM_SetMemBuffer
  *
  * \brief copies data into the shared memory.
  *
- * \param dest_en the identifier of the destination memory area in shared memory.
- * \param dest_pst pointer to a struct where the data will be copied from.
+ * \param destMemArea_en the identifier of the destination memory area in shared memory.
+ * \param source_pst pointer to a struct where the data will be copied from.
+ * \param sourceElements_u32 number of elements in the source data structure.
  */
-extern enum CORE_ErrCode MEM_SetMem(enum sharedMemAreaIds dest_en,
-									struct SharedMemoryArea * source_pst);
+extern enum CORE_ErrCode MEM_SetMem(enum sharedMemAreaIds destMemArea_en,
+									void * source_pst,
+									alt_u32 sourceElements_u32);
 
 #endif /* MEM_API_H_ */

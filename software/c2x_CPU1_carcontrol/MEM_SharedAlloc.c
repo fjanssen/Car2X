@@ -11,12 +11,41 @@
 
 // Physical location of shared memory buffers/areas.
 // TODO: how to place them? #PRAGMA
-static struct SharedMemoryArea motorSpeedShared_st = {0, 0, sizeof(MotorSpeedMsg), (void *)motorSpeedMsg_ast};
-static struct SharedMemoryArea carCommandShared_st = {0, 0, sizeof(CarCommandMsg), (void *)carCommandMsg_ast};
-static struct SharedMemoryArea c2xRxShared_st = {0, 0, sizeof(C2xMsg), (void *)c2xRxMsg_ast};
-static struct SharedMemoryArea c2xTxShared_st = {0, 0, sizeof(C2xMsg), (void *)c2xTxMsg_ast};
-static struct SharedMemoryArea usSensorShared_st = {0, 0, sizeof(UsSensorMsg), (void *)usSensorMsg_ast};
-
+static struct SharedMemoryArea m_memAreaMotorSpeed_st = {
+		sizeof(motorSpeedMsg_ast),
+		sizeof(struct MotorSpeedMsg),
+		(void *)motorSpeedMsg_ast,
+		0,
+		MEM_BUFFERFLAGS_NONE
+};
+static struct SharedMemoryArea m_memAreaCarCommand_st = {
+		sizeof(carCommandMsg_ast),
+		sizeof(struct CarCommandMsg),
+		(void *)carCommandMsg_ast,
+		0,
+		MEM_BUFFERFLAGS_NONE
+};
+static struct SharedMemoryArea m_memAreaC2xRx_st = {
+		sizeof(c2xRxMsg_ast),
+		sizeof(struct C2xMsg),
+		(void *)c2xRxMsg_ast,
+		0,
+		MEM_BUFFERFLAGS_NONE
+};
+static struct SharedMemoryArea m_memAreaC2xTx_st = {
+		sizeof(c2xTxMsg_ast),
+		sizeof(struct C2xMsg),
+		(void *)c2xTxMsg_ast,
+		0,
+		MEM_BUFFERFLAGS_NONE
+};
+static struct SharedMemoryArea m_memAreaUsSensor_st = {
+		sizeof(usSensorMsg_ast),
+		sizeof(struct UsSensorMsg),
+		(void *)usSensorMsg_ast,
+		0,
+		MEM_BUFFERFLAGS_NONE
+};
 
 static struct MotorSpeedMsg motorSpeedMsg_ast[MEM_BUFFERLEN_MOTORSPEED];
 static struct CarCommandMsg carCommandMsg_ast[MEM_BUFFERLEN_CARCOMMAND];

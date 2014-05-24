@@ -142,8 +142,14 @@ ACDS_VERSION := 12.1
 ELF := c2x_CPU1_carcontrol.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS := hello_world.c
-CXX_SRCS :=
+C_SRCS += main.c
+C_SRCS += MEM_Access.c
+C_SRCS += MEM_SharedAlloc.c
+CXX_SRCS += CarAPI.cpp
+CXX_SRCS += sensors/ADCSensor.cpp
+CXX_SRCS += sensors/AccelerationSensor.cpp
+CXX_SRCS += sensors/SensorState.cpp
+CXX_SRCS += sensors/UltrasoundSensor.cpp
 ASM_SRCS :=
 
 
