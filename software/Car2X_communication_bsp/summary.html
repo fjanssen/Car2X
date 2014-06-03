@@ -16,16 +16,16 @@
 <td width="20%" bgcolor="#77BBFF">CPU:</td><td>nios2_communication</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Settings File:</td><td>.\settings.bsp</td>
+<td width="20%" bgcolor="#77BBFF">BSP Settings File:</td><td>settings.bsp</td>
 </tr>
 <tr mode="wrap">
 <td width="20%" bgcolor="#77BBFF">BSP Version:</td><td>default</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>03.06.2014 14:09:04</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>03.06.2014 14:56:16</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1401797344561</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1401800176778</td>
 </tr>
 <tr mode="wrap">
 <td width="20%" bgcolor="#77BBFF">BSP Generated Location:</td><td>C:\Users\Florian\Documents\GitHub\Car2X\software\Car2X_communication_bsp</td>
@@ -38,28 +38,31 @@
 <th align="left" width="20%">Slave Descriptor</th><th align="left" width="40%">Address Range</th><th align="left" width="20%">Size</th><th align="left" width="20%">Attributes</th>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>jtag_uart</td><td>0x00103480 - 0x00103487</td><td>8</td><td class="listing">printable</td>
+<td>jtag_uart_communication</td><td>0x00043488 - 0x0004348F</td><td>8</td><td class="listing">printable</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>sgdma_tx</td><td>0x00103440 - 0x0010347F</td><td>64</td><td class="listing">&nbsp;</td>
+<td>mutex_shared_memory</td><td>0x00043480 - 0x00043487</td><td>8</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>sgdma_rx</td><td>0x00103400 - 0x0010343F</td><td>64</td><td class="listing">&nbsp;</td>
+<td>sgdma_tx</td><td>0x00043440 - 0x0004347F</td><td>64</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>tse_mac</td><td>0x00103000 - 0x001033FF</td><td>1024</td><td class="listing">&nbsp;</td>
+<td>sgdma_rx</td><td>0x00043400 - 0x0004343F</td><td>64</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>descriptor_memory</td><td>0x00101000 - 0x00101FFF</td><td>4096</td><td class="listing">memory</td>
+<td>tse_mac</td><td>0x00043000 - 0x000433FF</td><td>1024</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>shared_memory</td><td>0x00100000 - 0x00100FFF</td><td>4096</td><td class="listing">memory</td>
+<td>descriptor_memory</td><td>0x00041000 - 0x00041FFF</td><td>4096</td><td class="listing">memory</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>main_memory_communication</td><td>0x00080000 - 0x00098FFF</td><td>102400</td><td class="listing">memory</td>
+<td>shared_memory</td><td>0x00040000 - 0x00040FFF</td><td>4096</td><td class="listing">memory</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>mutex_shared_memory</td><td>0x00000000 - 0x00000007</td><td>8</td><td class="listing">&nbsp;</td>
+<td>main_memory_communication</td><td>0x00020000 - 0x00038FFF</td><td>102400</td><td class="listing">memory</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>timer_0</td><td>0x00000000 - 0x0000001F</td><td>32</td><td class="listing">timer</td>
 </tr>
 </table>
 <br>

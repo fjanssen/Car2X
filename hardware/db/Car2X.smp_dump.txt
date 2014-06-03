@@ -23,7 +23,7 @@ state_empty 0 0 0
 state_middle 1 0 1 
 state_full 0 1 1 
 
-State Machine - |Car2X|nios_system:system_inst|nios_system_nios2:nios2|nios_system_nios2_nios2_oci:the_nios_system_nios2_nios2_oci|nios_system_nios2_jtag_debug_module_wrapper:the_nios_system_nios2_jtag_debug_module_wrapper|nios_system_nios2_jtag_debug_module_tck:the_nios_system_nios2_jtag_debug_module_tck|DRsize
+State Machine - |Car2X|nios_system:system_inst|nios_system_nios2_communication:nios2_communication|nios_system_nios2_communication_nios2_oci:the_nios_system_nios2_communication_nios2_oci|nios_system_nios2_communication_jtag_debug_module_wrapper:the_nios_system_nios2_communication_jtag_debug_module_wrapper|nios_system_nios2_communication_jtag_debug_module_tck:the_nios_system_nios2_communication_jtag_debug_module_tck|DRsize
 Name DRsize.101 DRsize.100 DRsize.011 DRsize.010 DRsize.001 DRsize.000 
 DRsize.000 0 0 0 0 0 0 
 DRsize.001 0 0 0 0 1 1 

@@ -2,10 +2,10 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>ucosii</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>03.06.2014 14:09:04</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1401797344561</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>03.06.2014 14:56:16</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1401800176778</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\Florian\Documents\GitHub\Car2X\software\Car2X_communication_bsp</BspGeneratedLocation>
-        <BspSettingsFile>.\settings.bsp</BspSettingsFile>
+        <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>C:\Users\Florian\Documents\GitHub\Car2X\hardware\nios_system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>nios2_communication</Cpu>
@@ -1679,18 +1679,6 @@
                 <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
         </Setting>
         <Setting>
-                <SettingName>altera_avalon_jtag_uart_driver.enable_small_driver</SettingName>
-                <Identifier>ALTERA_AVALON_JTAG_UART_SMALL</Identifier>
-                <Type>BooleanDefineOnly</Type>
-                <Value>false</Value>
-                <DefaultValue>false</DefaultValue>
-                <DestinationFile>public_mk_define</DestinationFile>
-                <Description>Small-footprint (polled mode) driver</Description>
-                <Restrictions>none</Restrictions>
-                <Enabled>false</Enabled>
-                <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
-        </Setting>
-        <Setting>
                 <SettingName>altera_iniche.iniche_default_if</SettingName>
                 <Identifier>INICHE_DEFAULT_IF</Identifier>
                 <Type>QuotedString</Type>
@@ -1762,51 +1750,69 @@
                 <Enabled>false</Enabled>
                 <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
         </Setting>
+        <Setting>
+                <SettingName>altera_avalon_jtag_uart_driver.enable_small_driver</SettingName>
+                <Identifier>ALTERA_AVALON_JTAG_UART_SMALL</Identifier>
+                <Type>BooleanDefineOnly</Type>
+                <Value>false</Value>
+                <DefaultValue>false</DefaultValue>
+                <DestinationFile>public_mk_define</DestinationFile>
+                <Description>Small-footprint (polled mode) driver</Description>
+                <Restrictions>none</Restrictions>
+                <Enabled>false</Enabled>
+                <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+        </Setting>
         <MemoryMap>
-                <slaveDescriptor>mutex_shared_memory</slaveDescriptor>
-                <addressRange>0x00000000 - 0x00000007</addressRange>
-                <addressSpan>8</addressSpan>
-                <attributes/>
+                <slaveDescriptor>timer_0</slaveDescriptor>
+                <addressRange>0x00000000 - 0x0000001F</addressRange>
+                <addressSpan>32</addressSpan>
+                <attributes>timer</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>main_memory_communication</slaveDescriptor>
-                <addressRange>0x00080000 - 0x00098FFF</addressRange>
+                <addressRange>0x00020000 - 0x00038FFF</addressRange>
                 <addressSpan>102400</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>shared_memory</slaveDescriptor>
-                <addressRange>0x00100000 - 0x00100FFF</addressRange>
+                <addressRange>0x00040000 - 0x00040FFF</addressRange>
                 <addressSpan>4096</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>descriptor_memory</slaveDescriptor>
-                <addressRange>0x00101000 - 0x00101FFF</addressRange>
+                <addressRange>0x00041000 - 0x00041FFF</addressRange>
                 <addressSpan>4096</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>tse_mac</slaveDescriptor>
-                <addressRange>0x00103000 - 0x001033FF</addressRange>
+                <addressRange>0x00043000 - 0x000433FF</addressRange>
                 <addressSpan>1024</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>sgdma_rx</slaveDescriptor>
-                <addressRange>0x00103400 - 0x0010343F</addressRange>
+                <addressRange>0x00043400 - 0x0004343F</addressRange>
                 <addressSpan>64</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>sgdma_tx</slaveDescriptor>
-                <addressRange>0x00103440 - 0x0010347F</addressRange>
+                <addressRange>0x00043440 - 0x0004347F</addressRange>
                 <addressSpan>64</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>jtag_uart</slaveDescriptor>
-                <addressRange>0x00103480 - 0x00103487</addressRange>
+                <slaveDescriptor>mutex_shared_memory</slaveDescriptor>
+                <addressRange>0x00043480 - 0x00043487</addressRange>
+                <addressSpan>8</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>jtag_uart_communication</slaveDescriptor>
+                <addressRange>0x00043488 - 0x0004348F</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>

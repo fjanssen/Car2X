@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_car_controll' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Tue Jun 03 14:09:50 CEST 2014
+ * Generated: Tue Jun 03 14:34:06 CEST 2014
  */
 
 /*
@@ -65,11 +65,11 @@
  *
  */
 
-#define MAIN_MEMORY_CAR_CONTROLL_REGION_BASE 0x80020
+#define MAIN_MEMORY_CAR_CONTROLL_REGION_BASE 0x20020
 #define MAIN_MEMORY_CAR_CONTROLL_REGION_SPAN 102368
-#define RESET_REGION_BASE 0x80000
+#define RESET_REGION_BASE 0x20000
 #define RESET_REGION_SPAN 32
-#define SHARED_MEMORY_REGION_BASE 0x100000
+#define SHARED_MEMORY_REGION_BASE 0x40000
 #define SHARED_MEMORY_REGION_SPAN 4096
 
 

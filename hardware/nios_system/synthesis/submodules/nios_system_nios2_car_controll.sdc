@@ -39,13 +39,6 @@ set 	nios_system_nios2_car_controll_jtag_tck_path 	 [format "%s|%s|%s" $nios_sys
 set 	nios_system_nios2_car_controll_jtag_sysclk_path 	 [format "%s|%s|%s" $nios_system_nios2_car_controll_oci_path $nios_system_nios2_car_controll_wrapper $nios_system_nios2_car_controll_jtag_sysclk]
 set 	nios_system_nios2_car_controll_jtag_sr 	 [format "%s|*sr" $nios_system_nios2_car_controll_jtag_tck_path]
 
-set 	nios_system_nios2_car_controll_oci_im 	nios_system_nios2_car_controll_nios2_oci_im:the_nios_system_nios2_car_controll_nios2_oci_im
-set 	nios_system_nios2_car_controll_oci_traceram 	nios_system_nios2_car_controll_traceram_lpm_dram_bdp_component_module:nios_system_nios2_car_controll_traceram_lpm_dram_bdp_component
-set 	nios_system_nios2_car_controll_oci_itrace 	nios_system_nios2_car_controll_nios2_oci_itrace:the_nios_system_nios2_car_controll_nios2_oci_itrace
-set 	nios_system_nios2_car_controll_oci_im_path 	 [format "%s|%s" $nios_system_nios2_car_controll_oci_path $nios_system_nios2_car_controll_oci_im]
-set 	nios_system_nios2_car_controll_oci_itrace_path 	 [format "%s|%s" $nios_system_nios2_car_controll_oci_path $nios_system_nios2_car_controll_oci_itrace]
-set 	nios_system_nios2_car_controll_traceram_path 	 [format "%s|%s" $nios_system_nios2_car_controll_oci_im_path $nios_system_nios2_car_controll_oci_traceram]
-
 #**************************************************************
 # Set False Paths
 #**************************************************************
@@ -58,13 +51,3 @@ set_false_path -from [get_keepers *$nios_system_nios2_car_controll_ocimem_path|*
 set_false_path -from *$nios_system_nios2_car_controll_jtag_sr*    -to *$nios_system_nios2_car_controll_jtag_sysclk_path|*jdo*
 set_false_path -from sld_hub:*|irf_reg* -to *$nios_system_nios2_car_controll_jtag_sysclk_path|ir*
 set_false_path -from sld_hub:*|sld_shadow_jsm:shadow_jsm|state[1] -to *$nios_system_nios2_car_controll_oci_debug_path|monitor_go
-set_false_path -from [get_keepers *$nios_system_nios2_car_controll_oci_break_path|dbrk_hit?_latch] -to [get_keepers *$nios_system_nios2_car_controll_jtag_sr*]
-set_false_path -from [get_keepers *$nios_system_nios2_car_controll_oci_break_path|trigbrktype] -to [get_keepers *$nios_system_nios2_car_controll_jtag_sr*]
-set_false_path -from [get_keepers *$nios_system_nios2_car_controll_oci_break_path|trigger_state] -to [get_keepers *$nios_system_nios2_car_controll_jtag_sr*]
-
-set_false_path -from [get_keepers *$nios_system_nios2_car_controll_traceram_path*address*] -to [get_keepers *$nios_system_nios2_car_controll_jtag_sr*]
-set_false_path -from [get_keepers *$nios_system_nios2_car_controll_traceram_path*we_reg*] -to [get_keepers *$nios_system_nios2_car_controll_jtag_sr*]
-set_false_path -from [get_keepers *$nios_system_nios2_car_controll_oci_im_path|*trc_im_addr*] -to [get_keepers *$nios_system_nios2_car_controll_jtag_sr*]
-set_false_path -from [get_keepers *$nios_system_nios2_car_controll_oci_im_path|*trc_wrap] -to [get_keepers *$nios_system_nios2_car_controll_jtag_sr*]
-set_false_path -from [get_keepers *$nios_system_nios2_car_controll_oci_itrace_path|trc_ctrl_reg*] -to [get_keepers *$nios_system_nios2_car_controll_jtag_sr*]
-set_false_path -from [get_keepers *$nios_system_nios2_car_controll_oci_itrace_path|d1_debugack] -to [get_keepers *$nios_system_nios2_car_controll_jtag_sr*]

@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_communication' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Tue Jun 03 14:09:05 CEST 2014
+ * Generated: Tue Jun 03 14:39:37 CEST 2014
  */
 
 /*
@@ -50,16 +50,16 @@
 
 MEMORY
 {
-    reset : ORIGIN = 0x80000, LENGTH = 32
-    main_memory_communication : ORIGIN = 0x80020, LENGTH = 102368
-    shared_memory : ORIGIN = 0x100000, LENGTH = 4096
-    descriptor_memory : ORIGIN = 0x101000, LENGTH = 4096
+    reset : ORIGIN = 0x20000, LENGTH = 32
+    main_memory_communication : ORIGIN = 0x20020, LENGTH = 102368
+    shared_memory : ORIGIN = 0x40000, LENGTH = 4096
+    descriptor_memory : ORIGIN = 0x41000, LENGTH = 4096
 }
 
 /* Define symbols for each memory base-address */
-__alt_mem_main_memory_communication = 0x80000;
-__alt_mem_shared_memory = 0x100000;
-__alt_mem_descriptor_memory = 0x101000;
+__alt_mem_main_memory_communication = 0x20000;
+__alt_mem_shared_memory = 0x40000;
+__alt_mem_descriptor_memory = 0x41000;
 
 OUTPUT_FORMAT( "elf32-littlenios2",
                "elf32-littlenios2",
@@ -404,7 +404,7 @@ SECTIONS
 /*
  * Don't override this, override the __alt_stack_* symbols instead.
  */
-__alt_data_end = 0x99000;
+__alt_data_end = 0x39000;
 
 /*
  * The next two symbols define the location of the default stack.  You can
@@ -420,4 +420,4 @@ PROVIDE( __alt_stack_limit   = __alt_stack_base );
  * Override this symbol to put the heap in a different memory.
  */
 PROVIDE( __alt_heap_start    = end );
-PROVIDE( __alt_heap_limit    = 0x99000 );
+PROVIDE( __alt_heap_limit    = 0x39000 );

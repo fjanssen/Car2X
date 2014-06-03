@@ -142,7 +142,7 @@ ACDS_VERSION := 12.1
 ELF := Car2X_carControl.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS :=
+C_SRCS := main.c
 CXX_SRCS :=
 ASM_SRCS :=
 

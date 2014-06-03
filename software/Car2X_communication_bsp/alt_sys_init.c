@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_communication' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Tue Jun 03 14:09:05 CEST 2014
+ * Generated: Tue Jun 03 14:56:17 CEST 2014
  */
 
 /*
@@ -62,6 +62,7 @@
 #include "altera_avalon_jtag_uart.h"
 #include "altera_avalon_mutex.h"
 #include "altera_avalon_sgdma.h"
+#include "altera_avalon_timer.h"
 #include "triple_speed_ethernet.h"
 
 /*
@@ -69,10 +70,11 @@
  */
 
 ALTERA_NIOS2_QSYS_IRQ_INSTANCE ( NIOS2_COMMUNICATION, nios2_communication);
-ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_UART, jtag_uart);
+ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_UART_COMMUNICATION, jtag_uart_communication);
 ALTERA_AVALON_MUTEX_INSTANCE ( MUTEX_SHARED_MEMORY, mutex_shared_memory);
 ALTERA_AVALON_SGDMA_INSTANCE ( SGDMA_RX, sgdma_rx);
 ALTERA_AVALON_SGDMA_INSTANCE ( SGDMA_TX, sgdma_tx);
+ALTERA_AVALON_TIMER_INSTANCE ( TIMER_0, timer_0);
 TRIPLE_SPEED_ETHERNET_INSTANCE ( TSE_MAC, tse_mac);
 
 /*
@@ -96,7 +98,8 @@ void alt_irq_init ( const void* base )
 
 void alt_sys_init( void )
 {
-    ALTERA_AVALON_JTAG_UART_INIT ( JTAG_UART, jtag_uart);
+    ALTERA_AVALON_TIMER_INIT ( TIMER_0, timer_0);
+    ALTERA_AVALON_JTAG_UART_INIT ( JTAG_UART_COMMUNICATION, jtag_uart_communication);
     ALTERA_AVALON_MUTEX_INIT ( MUTEX_SHARED_MEMORY, mutex_shared_memory);
     ALTERA_AVALON_SGDMA_INIT ( SGDMA_RX, sgdma_rx);
     ALTERA_AVALON_SGDMA_INIT ( SGDMA_TX, sgdma_tx);

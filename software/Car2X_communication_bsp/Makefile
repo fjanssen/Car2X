@@ -242,6 +242,15 @@ altera_avalon_sgdma_driver_SRCS_ROOT := drivers
 altera_avalon_sgdma_driver_C_LIB_SRCS := \
 	$(altera_avalon_sgdma_driver_SRCS_ROOT)/src/altera_avalon_sgdma.c
 
+# altera_avalon_timer_driver sources root 
+altera_avalon_timer_driver_SRCS_ROOT := drivers
+
+# altera_avalon_timer_driver sources 
+altera_avalon_timer_driver_C_LIB_SRCS := \
+	$(altera_avalon_timer_driver_SRCS_ROOT)/src/altera_avalon_timer_sc.c \
+	$(altera_avalon_timer_driver_SRCS_ROOT)/src/altera_avalon_timer_ts.c \
+	$(altera_avalon_timer_driver_SRCS_ROOT)/src/altera_avalon_timer_vars.c
+
 # altera_iniche sources root 
 altera_iniche_SRCS_ROOT := iniche
 
@@ -504,6 +513,7 @@ COMPONENT_C_LIB_SRCS += \
 	$(altera_avalon_jtag_uart_driver_C_LIB_SRCS) \
 	$(altera_avalon_mutex_driver_C_LIB_SRCS) \
 	$(altera_avalon_sgdma_driver_C_LIB_SRCS) \
+	$(altera_avalon_timer_driver_C_LIB_SRCS) \
 	$(altera_iniche_C_LIB_SRCS) \
 	$(altera_nios2_qsys_ucosii_driver_C_LIB_SRCS) \
 	$(hal_C_LIB_SRCS) \
