@@ -1,0 +1,174 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2012 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 0 0 544 392)
+	(text "nios_system" (rect 235 -1 286 11)(font "Arial" (font_size 10)))
+	(text "inst" (rect 8 376 20 388)(font "Arial" ))
+	(port
+		(pt 0 72)
+		(input)
+		(text "clk_clk" (rect 0 0 27 12)(font "Arial" (font_size 8)))
+		(text "clk_clk" (rect 4 61 46 72)(font "Arial" (font_size 8)))
+		(line (pt 0 72)(pt 240 72)(line_width 1))
+	)
+	(port
+		(pt 0 112)
+		(input)
+		(text "reset_reset_n" (rect 0 0 56 12)(font "Arial" (font_size 8)))
+		(text "reset_reset_n" (rect 4 101 82 112)(font "Arial" (font_size 8)))
+		(line (pt 0 112)(pt 240 112)(line_width 1))
+	)
+	(port
+		(pt 0 152)
+		(input)
+		(text "tse_mac_conduit_connection_rgmii_in[3..0]" (rect 0 0 172 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_rgmii_in[3..0]" (rect 4 141 250 152)(font "Arial" (font_size 8)))
+		(line (pt 0 152)(pt 240 152)(line_width 3))
+	)
+	(port
+		(pt 0 184)
+		(input)
+		(text "tse_mac_conduit_connection_rx_control" (rect 0 0 161 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_rx_control" (rect 4 173 226 184)(font "Arial" (font_size 8)))
+		(line (pt 0 184)(pt 240 184)(line_width 1))
+	)
+	(port
+		(pt 0 216)
+		(input)
+		(text "tse_mac_conduit_connection_tx_clk" (rect 0 0 145 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_tx_clk" (rect 4 205 202 216)(font "Arial" (font_size 8)))
+		(line (pt 0 216)(pt 240 216)(line_width 1))
+	)
+	(port
+		(pt 0 232)
+		(input)
+		(text "tse_mac_conduit_connection_rx_clk" (rect 0 0 146 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_rx_clk" (rect 4 221 202 232)(font "Arial" (font_size 8)))
+		(line (pt 0 232)(pt 240 232)(line_width 1))
+	)
+	(port
+		(pt 0 248)
+		(input)
+		(text "tse_mac_conduit_connection_set_10" (rect 0 0 147 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_set_10" (rect 4 237 202 248)(font "Arial" (font_size 8)))
+		(line (pt 0 248)(pt 240 248)(line_width 1))
+	)
+	(port
+		(pt 0 264)
+		(input)
+		(text "tse_mac_conduit_connection_set_1000" (rect 0 0 156 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_set_1000" (rect 4 253 214 264)(font "Arial" (font_size 8)))
+		(line (pt 0 264)(pt 240 264)(line_width 1))
+	)
+	(port
+		(pt 0 344)
+		(input)
+		(text "tse_mac_conduit_connection_mdio_in" (rect 0 0 152 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_mdio_in" (rect 4 333 208 344)(font "Arial" (font_size 8)))
+		(line (pt 0 344)(pt 240 344)(line_width 1))
+	)
+	(port
+		(pt 0 168)
+		(output)
+		(text "tse_mac_conduit_connection_rgmii_out[3..0]" (rect 0 0 178 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_rgmii_out[3..0]" (rect 4 157 256 168)(font "Arial" (font_size 8)))
+		(line (pt 0 168)(pt 240 168)(line_width 3))
+	)
+	(port
+		(pt 0 200)
+		(output)
+		(text "tse_mac_conduit_connection_tx_control" (rect 0 0 160 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_tx_control" (rect 4 189 226 200)(font "Arial" (font_size 8)))
+		(line (pt 0 200)(pt 240 200)(line_width 1))
+	)
+	(port
+		(pt 0 280)
+		(output)
+		(text "tse_mac_conduit_connection_ena_10" (rect 0 0 149 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_ena_10" (rect 4 269 202 280)(font "Arial" (font_size 8)))
+		(line (pt 0 280)(pt 240 280)(line_width 1))
+	)
+	(port
+		(pt 0 296)
+		(output)
+		(text "tse_mac_conduit_connection_eth_mode" (rect 0 0 161 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_eth_mode" (rect 4 285 214 296)(font "Arial" (font_size 8)))
+		(line (pt 0 296)(pt 240 296)(line_width 1))
+	)
+	(port
+		(pt 0 312)
+		(output)
+		(text "tse_mac_conduit_connection_mdio_out" (rect 0 0 158 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_mdio_out" (rect 4 301 214 312)(font "Arial" (font_size 8)))
+		(line (pt 0 312)(pt 240 312)(line_width 1))
+	)
+	(port
+		(pt 0 328)
+		(output)
+		(text "tse_mac_conduit_connection_mdio_oen" (rect 0 0 160 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_mdio_oen" (rect 4 317 214 328)(font "Arial" (font_size 8)))
+		(line (pt 0 328)(pt 240 328)(line_width 1))
+	)
+	(port
+		(pt 0 360)
+		(output)
+		(text "tse_mac_conduit_connection_mdc" (rect 0 0 139 12)(font "Arial" (font_size 8)))
+		(text "tse_mac_conduit_connection_mdc" (rect 4 349 184 360)(font "Arial" (font_size 8)))
+		(line (pt 0 360)(pt 240 360)(line_width 1))
+	)
+	(drawing
+		(text "clk" (rect 225 43 468 99)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "clk" (rect 245 67 508 144)(font "Arial" (color 0 0 0)))
+		(text "reset" (rect 211 83 452 179)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "reset_n" (rect 245 107 532 224)(font "Arial" (color 0 0 0)))
+		(text "tse_mac_conduit_connection" (rect 73 123 302 259)(font "Arial" (color 128 0 0)(font_size 9)))
+		(text "rgmii_in" (rect 245 147 538 304)(font "Arial" (color 0 0 0)))
+		(text "rgmii_out" (rect 245 163 544 336)(font "Arial" (color 0 0 0)))
+		(text "rx_control" (rect 245 179 550 368)(font "Arial" (color 0 0 0)))
+		(text "tx_control" (rect 245 195 550 400)(font "Arial" (color 0 0 0)))
+		(text "tx_clk" (rect 245 211 526 432)(font "Arial" (color 0 0 0)))
+		(text "rx_clk" (rect 245 227 526 464)(font "Arial" (color 0 0 0)))
+		(text "set_10" (rect 245 243 526 496)(font "Arial" (color 0 0 0)))
+		(text "set_1000" (rect 245 259 538 528)(font "Arial" (color 0 0 0)))
+		(text "ena_10" (rect 245 275 526 560)(font "Arial" (color 0 0 0)))
+		(text "eth_mode" (rect 245 291 538 592)(font "Arial" (color 0 0 0)))
+		(text "mdio_out" (rect 245 307 538 624)(font "Arial" (color 0 0 0)))
+		(text "mdio_oen" (rect 245 323 538 656)(font "Arial" (color 0 0 0)))
+		(text "mdio_in" (rect 245 339 532 688)(font "Arial" (color 0 0 0)))
+		(text "mdc" (rect 245 355 508 720)(font "Arial" (color 0 0 0)))
+		(text " nios_system " (rect 486 376 1050 762)(font "Arial" ))
+		(line (pt 241 52)(pt 241 76)(line_width 1))
+		(line (pt 242 52)(pt 242 76)(line_width 1))
+		(line (pt 241 92)(pt 241 116)(line_width 1))
+		(line (pt 242 92)(pt 242 116)(line_width 1))
+		(line (pt 241 132)(pt 241 364)(line_width 1))
+		(line (pt 242 132)(pt 242 364)(line_width 1))
+		(line (pt 240 32)(pt 304 32)(line_width 1))
+		(line (pt 304 32)(pt 304 376)(line_width 1))
+		(line (pt 240 376)(pt 304 376)(line_width 1))
+		(line (pt 240 32)(pt 240 376)(line_width 1))
+		(line (pt 0 0)(pt 544 0)(line_width 1))
+		(line (pt 544 0)(pt 544 392)(line_width 1))
+		(line (pt 0 392)(pt 544 392)(line_width 1))
+		(line (pt 0 0)(pt 0 392)(line_width 1))
+	)
+)
