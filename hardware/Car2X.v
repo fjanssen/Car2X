@@ -19,7 +19,17 @@ module Car2X(
 	input  [3: 0] NET1_RX_DATA,
 	input         NET1_RX_DV,
 	output [3: 0] NET1_TX_DATA,
-	output        NET1_TX_EN
+	output        NET1_TX_EN,
+	output [12:0] DRAM_ADDR,
+	output [1:0]  DRAM_BA,
+	output 		  DRAM_CS_N,
+	output        DRAM_WE_N,
+	output		  DRAM_CKE,
+	output		  DRAM_CAS_N,
+	output		  DRAM_RAS_N,
+	output [3:0]  DRAM_DQM,
+	inout [31:0]  DRAM_DQ
+	
 );
 
 	wire sys_clk, clk_125, clk_25, clk_2p5, tx_clk;
@@ -60,7 +70,16 @@ module Car2X(
 	nios_system system_inst(
 		.clk_clk                                (sys_clk),      //             clk.clk
 		.reset_reset_n                          (core_reset_n), //           reset.reset_n	
-
+		.sdram_communication_wire_addr (DRAM_ADDR),                    //                  sdram_communication_wire.addr
+		.sdram_communication_wire_ba (DRAM_BA),                      //                                          .ba
+		.sdram_communication_wire_cas_n (DRAM_CAS_N),                   //                                          .cas_n
+		.sdram_communication_wire_cke (DRAM_CKE),                     //                                          .cke
+		.sdram_communication_wire_cs_n (DRAM_CS_N),                    //                                          .cs_n
+		.sdram_communication_wire_dq (DRAM_DQ),                      //                                          .dq
+		.sdram_communication_wire_dqm (DRAM_DQM),                     //                                          .dqm
+		.sdram_communication_wire_ras_n (DRAM_RAS_N),                   //                                          .ras_n
+		.sdram_communication_wire_we_n (DRAM_WE_N),
+		
 		.tse_mac_conduit_connection_rx_control  (NET1_RX_DV),   // tse_mac_conduit.rx_control
 		.tse_mac_conduit_connection_rx_clk      (NET1_RX_CLK),  //                .rx_clk
 		.tse_mac_conduit_connection_tx_control  (NET1_TX_EN),   //                .tx_control

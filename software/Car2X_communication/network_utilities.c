@@ -22,12 +22,16 @@
 #include "ipport.h"
 #include "tcpport.h"
 #include "network_utilities.h"
+#include "system.h"
 
 #define IP4_ADDR(ipaddr, a,b,c,d) ipaddr = \
     htonl((((alt_u32)(a & 0xff) << 24) | ((alt_u32)(b & 0xff) << 16) | \
           ((alt_u32)(c & 0xff) << 8) | (alt_u32)(d & 0xff)))
 
 error_t generate_mac_addr(unsigned char mac_addr[6]);
+
+char * EXT_FLASH_NAME = "descriptor_memory";
+alt_u32 EXT_FLASH_BASE = 0;
 
 /*
 * get_mac_addr
@@ -248,7 +252,7 @@ error_t generate_and_store_mac_addr()
         }
     }
 
-    return error;    
+    return error;
 }
 
 /*

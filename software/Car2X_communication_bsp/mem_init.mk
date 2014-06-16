@@ -155,7 +155,7 @@ ACDS_VERSION := 12.1
 SIM_OPTIMIZE ?= 0
 
 # The CPU reset address as needed by elf2flash
-RESET_ADDRESS ?= 0x00020000
+RESET_ADDRESS ?= 0x04000000
 
 #-------------------------------------
 # Pre-Initialized Memory Descriptions
@@ -171,8 +171,8 @@ DAT_FILES += $(HDL_SIM_DIR)/$(MEM_0).dat
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_0).dat
 SYM_FILES += $(HDL_SIM_DIR)/$(MEM_0).sym
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_0).sym
-$(MEM_0)_START := 0x00041000
-$(MEM_0)_END := 0x00041fff
+$(MEM_0)_START := 0x08041000
+$(MEM_0)_END := 0x08041fff
 $(MEM_0)_HIERARCHICAL_PATH := descriptor_memory
 $(MEM_0)_WIDTH := 32
 $(MEM_0)_ENDIANNESS := --little-endian-mem
@@ -191,8 +191,8 @@ DAT_FILES += $(HDL_SIM_DIR)/$(MEM_1).dat
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_1).dat
 SYM_FILES += $(HDL_SIM_DIR)/$(MEM_1).sym
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_1).sym
-$(MEM_1)_START := 0x00020000
-$(MEM_1)_END := 0x00038fff
+$(MEM_1)_START := 0x08020000
+$(MEM_1)_END := 0x08038fff
 $(MEM_1)_HIERARCHICAL_PATH := main_memory_communication
 $(MEM_1)_WIDTH := 32
 $(MEM_1)_ENDIANNESS := --little-endian-mem
@@ -201,25 +201,42 @@ $(MEM_1)_CREATE_LANES := 0
 .PHONY: main_memory_communication
 main_memory_communication: check_elf_exists $(MEM_INIT_DIR)/$(MEM_1).hex $(HDL_SIM_DIR)/$(MEM_1).dat $(HDL_SIM_DIR)/$(MEM_1).sym
 
-# Memory: shared_memory
-MEM_2 := nios_system_shared_memory
-$(MEM_2)_NAME := shared_memory
-$(MEM_2)_MEM_INIT_FILE_PARAM_NAME := INIT_FILE
-HEX_FILES += $(MEM_INIT_DIR)/$(MEM_2).hex
-MEM_INIT_INSTALL_FILES += $(MEM_INIT_INSTALL_DIR)/$(MEM_2).hex
+# Memory: sdram_communication
+MEM_2 := sdram_communication
+$(MEM_2)_NAME := sdram_communication
 DAT_FILES += $(HDL_SIM_DIR)/$(MEM_2).dat
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_2).dat
 SYM_FILES += $(HDL_SIM_DIR)/$(MEM_2).sym
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_2).sym
-$(MEM_2)_START := 0x00040000
-$(MEM_2)_END := 0x00040fff
-$(MEM_2)_HIERARCHICAL_PATH := shared_memory
+$(MEM_2)_START := 0x04000000
+$(MEM_2)_END := 0x07ffffff
+$(MEM_2)_HIERARCHICAL_PATH := sdram_communication
 $(MEM_2)_WIDTH := 32
 $(MEM_2)_ENDIANNESS := --little-endian-mem
 $(MEM_2)_CREATE_LANES := 0
 
+.PHONY: sdram_communication
+sdram_communication: check_elf_exists $(HDL_SIM_DIR)/$(MEM_2).dat $(HDL_SIM_DIR)/$(MEM_2).sym
+
+# Memory: shared_memory
+MEM_3 := nios_system_shared_memory
+$(MEM_3)_NAME := shared_memory
+$(MEM_3)_MEM_INIT_FILE_PARAM_NAME := INIT_FILE
+HEX_FILES += $(MEM_INIT_DIR)/$(MEM_3).hex
+MEM_INIT_INSTALL_FILES += $(MEM_INIT_INSTALL_DIR)/$(MEM_3).hex
+DAT_FILES += $(HDL_SIM_DIR)/$(MEM_3).dat
+HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_3).dat
+SYM_FILES += $(HDL_SIM_DIR)/$(MEM_3).sym
+HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_3).sym
+$(MEM_3)_START := 0x08040000
+$(MEM_3)_END := 0x08040fff
+$(MEM_3)_HIERARCHICAL_PATH := shared_memory
+$(MEM_3)_WIDTH := 32
+$(MEM_3)_ENDIANNESS := --little-endian-mem
+$(MEM_3)_CREATE_LANES := 0
+
 .PHONY: shared_memory
-shared_memory: check_elf_exists $(MEM_INIT_DIR)/$(MEM_2).hex $(HDL_SIM_DIR)/$(MEM_2).dat $(HDL_SIM_DIR)/$(MEM_2).sym
+shared_memory: check_elf_exists $(MEM_INIT_DIR)/$(MEM_3).hex $(HDL_SIM_DIR)/$(MEM_3).dat $(HDL_SIM_DIR)/$(MEM_3).sym
 
 
 #END OF BSP SPECIFIC

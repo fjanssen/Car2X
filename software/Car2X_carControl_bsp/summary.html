@@ -22,10 +22,10 @@
 <td width="20%" bgcolor="#77BBFF">BSP Version:</td><td>default</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>03.06.2014 14:56:23</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>16.06.2014 12:17:36</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1401800183822</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1402913856548</td>
 </tr>
 <tr mode="wrap">
 <td width="20%" bgcolor="#77BBFF">BSP Generated Location:</td><td>C:\Users\Florian\Documents\GitHub\Car2X\software\Car2X_carControl_bsp</td>
@@ -38,7 +38,10 @@
 <th align="left" width="20%">Slave Descriptor</th><th align="left" width="40%">Address Range</th><th align="left" width="20%">Size</th><th align="left" width="20%">Attributes</th>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>mutex_shared_memory</td><td>0x00043480 - 0x00043487</td><td>8</td><td class="listing">&nbsp;</td>
+<td>mutex_shared_memory</td><td>0x000434A0 - 0x000434A7</td><td>8</td><td class="listing">&nbsp;</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>interval_timer</td><td>0x00043480 - 0x0004349F</td><td>32</td><td class="listing">timer</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
 <td>jtag_uart_carControl</td><td>0x00042000 - 0x00042007</td><td>8</td><td class="listing">printable</td>
@@ -48,9 +51,6 @@
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
 <td>main_memory_car_controll</td><td>0x00020000 - 0x00038FFF</td><td>102400</td><td class="listing">memory</td>
-</tr>
-<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>timer_0</td><td>0x00000000 - 0x0000001F</td><td>32</td><td class="listing">timer</td>
 </tr>
 </table>
 <br>
@@ -801,7 +801,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>none</td>
+<td width="20%">Value:</td><td>jtag_uart_carControl</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>

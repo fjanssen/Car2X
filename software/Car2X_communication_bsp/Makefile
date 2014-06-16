@@ -235,6 +235,10 @@ altera_avalon_mutex_driver_SRCS_ROOT := drivers
 altera_avalon_mutex_driver_C_LIB_SRCS := \
 	$(altera_avalon_mutex_driver_SRCS_ROOT)/src/altera_avalon_mutex.c
 
+# altera_avalon_pio_driver sources root 
+altera_avalon_pio_driver_SRCS_ROOT := drivers
+
+# altera_avalon_pio_driver sources 
 # altera_avalon_sgdma_driver sources root 
 altera_avalon_sgdma_driver_SRCS_ROOT := drivers
 

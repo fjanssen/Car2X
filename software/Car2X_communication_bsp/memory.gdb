@@ -3,7 +3,7 @@
 # Machine generated for CPU 'nios2_communication' in SOPC Builder design 'nios_system'
 # SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
 #
-# Generated: Tue Jun 03 14:39:37 CEST 2014
+# Generated: Mon Jun 16 15:31:47 CEST 2014
 
 # DO NOT MODIFY THIS FILE
 #
@@ -46,11 +46,14 @@
 # The cache attribute is specified which improves GDB performance
 # by allowing GDB to cache memory contents on the host.
 
+# sdram_communication
+memory 0x4000000 0x8000000 cache
+
 # main_memory_communication
-memory 0x20000 0x39000 cache
+memory 0x8020000 0x8039000 cache
 
 # shared_memory
-memory 0x40000 0x41000 cache
+memory 0x8040000 0x8041000 cache
 
 # descriptor_memory
-memory 0x41000 0x42000 cache
+memory 0x8041000 0x8042000 cache

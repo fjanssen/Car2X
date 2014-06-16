@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>03.06.2014 14:56:23</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1401800183822</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>16.06.2014 12:17:36</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1402913856548</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\Florian\Documents\GitHub\Car2X\software\Car2X_carControl_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>C:\Users\Florian\Documents\GitHub\Car2X\hardware\nios_system.sopcinfo</SopcDesignFile>
@@ -230,7 +230,7 @@
                 <SettingName>hal.log_port</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>none</Value>
+                <Value>jtag_uart_carControl</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>public_mk_define</DestinationFile>
                 <Description>Slave descriptor of debug logging character-mode device. If defined, it enables extra debug messages in the HAL source. This setting is used by the ALT_LOG_PORT family of defines in system.h.</Description>
@@ -851,12 +851,6 @@
                 <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
         </Setting>
         <MemoryMap>
-                <slaveDescriptor>timer_0</slaveDescriptor>
-                <addressRange>0x00000000 - 0x0000001F</addressRange>
-                <addressSpan>32</addressSpan>
-                <attributes>timer</attributes>
-        </MemoryMap>
-        <MemoryMap>
                 <slaveDescriptor>main_memory_car_controll</slaveDescriptor>
                 <addressRange>0x00020000 - 0x00038FFF</addressRange>
                 <addressSpan>102400</addressSpan>
@@ -875,8 +869,14 @@
                 <attributes>printable</attributes>
         </MemoryMap>
         <MemoryMap>
+                <slaveDescriptor>interval_timer</slaveDescriptor>
+                <addressRange>0x00043480 - 0x0004349F</addressRange>
+                <addressSpan>32</addressSpan>
+                <attributes>timer</attributes>
+        </MemoryMap>
+        <MemoryMap>
                 <slaveDescriptor>mutex_shared_memory</slaveDescriptor>
-                <addressRange>0x00043480 - 0x00043487</addressRange>
+                <addressRange>0x000434A0 - 0x000434A7</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes/>
         </MemoryMap>

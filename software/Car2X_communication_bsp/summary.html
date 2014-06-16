@@ -22,10 +22,10 @@
 <td width="20%" bgcolor="#77BBFF">BSP Version:</td><td>default</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>03.06.2014 14:56:16</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated On:</td><td>16.06.2014 15:31:47</td>
 </tr>
 <tr mode="wrap">
-<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1401800176778</td>
+<td width="20%" bgcolor="#77BBFF">BSP Generated Timestamp:</td><td>1402925507536</td>
 </tr>
 <tr mode="wrap">
 <td width="20%" bgcolor="#77BBFF">BSP Generated Location:</td><td>C:\Users\Florian\Documents\GitHub\Car2X\software\Car2X_communication_bsp</td>
@@ -38,31 +38,37 @@
 <th align="left" width="20%">Slave Descriptor</th><th align="left" width="40%">Address Range</th><th align="left" width="20%">Size</th><th align="left" width="20%">Attributes</th>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>jtag_uart_communication</td><td>0x00043488 - 0x0004348F</td><td>8</td><td class="listing">printable</td>
+<td>jtag_uart_communication</td><td>0x080434B8 - 0x080434BF</td><td>8</td><td class="listing">printable</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>mutex_shared_memory</td><td>0x00043480 - 0x00043487</td><td>8</td><td class="listing">&nbsp;</td>
+<td>mutex_shared_memory</td><td>0x080434B0 - 0x080434B7</td><td>8</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>sgdma_tx</td><td>0x00043440 - 0x0004347F</td><td>64</td><td class="listing">&nbsp;</td>
+<td>pio_communication_led</td><td>0x080434A0 - 0x080434AF</td><td>16</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>sgdma_rx</td><td>0x00043400 - 0x0004343F</td><td>64</td><td class="listing">&nbsp;</td>
+<td>interval_timer</td><td>0x08043480 - 0x0804349F</td><td>32</td><td class="listing">timer</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>tse_mac</td><td>0x00043000 - 0x000433FF</td><td>1024</td><td class="listing">&nbsp;</td>
+<td>sgdma_tx</td><td>0x08043440 - 0x0804347F</td><td>64</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>descriptor_memory</td><td>0x00041000 - 0x00041FFF</td><td>4096</td><td class="listing">memory</td>
+<td>sgdma_rx</td><td>0x08043400 - 0x0804343F</td><td>64</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>shared_memory</td><td>0x00040000 - 0x00040FFF</td><td>4096</td><td class="listing">memory</td>
+<td>tse_mac</td><td>0x08043000 - 0x080433FF</td><td>1024</td><td class="listing">&nbsp;</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>main_memory_communication</td><td>0x00020000 - 0x00038FFF</td><td>102400</td><td class="listing">memory</td>
+<td>descriptor_memory</td><td>0x08041000 - 0x08041FFF</td><td>4096</td><td class="listing">memory</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>timer_0</td><td>0x00000000 - 0x0000001F</td><td>32</td><td class="listing">timer</td>
+<td>shared_memory</td><td>0x08040000 - 0x08040FFF</td><td>4096</td><td class="listing">memory</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>main_memory_communication</td><td>0x08020000 - 0x08038FFF</td><td>102400</td><td class="listing">memory</td>
+</tr>
+<tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
+<td>sdram_communication</td><td>0x04000000 - 0x07FFFFFF</td><td>67108864</td><td class="listing">memory</td>
 </tr>
 </table>
 <br>
@@ -81,22 +87,22 @@
 <th align="left" width="50%">Section</th><th align="left" width="50%">Region</th>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>.text</td><td>main_memory_communication</td>
+<td>.text</td><td>sdram_communication</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>.rodata</td><td>main_memory_communication</td>
+<td>.rodata</td><td>sdram_communication</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>.rwdata</td><td>main_memory_communication</td>
+<td>.rwdata</td><td>sdram_communication</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>.bss</td><td>main_memory_communication</td>
+<td>.bss</td><td>sdram_communication</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>.heap</td><td>main_memory_communication</td>
+<td>.heap</td><td>sdram_communication</td>
 </tr>
 <tr mode="wrap" STYLE="display: 'block'; font-family: 'courier'; color: '#000000'; font-weight: '500'; font-size: '14'; margin-top: '10pt'; text-align: 'left'">
-<td>.stack</td><td>main_memory_communication</td>
+<td>.stack</td><td>sdram_communication</td>
 </tr>
 </table>
 <br>
@@ -853,7 +859,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>main_memory_communication</td>
+<td width="20%">Value:</td><td>sdram_communication</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
@@ -907,7 +913,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>main_memory_communication</td>
+<td width="20%">Value:</td><td>sdram_communication</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
@@ -988,7 +994,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>none</td>
+<td width="20%">Value:</td><td>jtag_uart_communication</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
@@ -2041,7 +2047,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>jtag_uart</td>
+<td width="20%">Value:</td><td>jtag_uart_communication</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
@@ -2068,7 +2074,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>jtag_uart</td>
+<td width="20%">Value:</td><td>jtag_uart_communication</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
@@ -2095,7 +2101,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>jtag_uart</td>
+<td width="20%">Value:</td><td>jtag_uart_communication</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
@@ -2122,7 +2128,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>none</td>
+<td width="20%">Value:</td><td>interval_timer</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>
@@ -2149,7 +2155,7 @@
 <td width="20%">Default Value:</td><td>none</td>
 </tr>
 <tr>
-<td width="20%">Value:</td><td>none</td>
+<td width="20%">Value:</td><td>interval_timer</td>
 </tr>
 <tr>
 <td width="20%">Type:</td><td>UnquotedString</td>

@@ -85,11 +85,11 @@ module nios_system_nios2_communication_test_bench (
   input   [ 31: 0] M_ienable_reg;
   input   [ 31: 0] M_ipending_reg;
   input   [ 31: 0] M_iw;
-  input   [ 18: 0] M_mem_baddr;
+  input   [ 27: 0] M_mem_baddr;
   input   [  3: 0] M_mem_byte_en;
   input            M_op_hbreak;
   input            M_op_intr;
-  input   [ 18: 0] M_pcb;
+  input   [ 27: 0] M_pcb;
   input   [ 31: 0] M_st_data;
   input   [ 31: 0] M_status_reg;
   input            M_valid;
@@ -99,24 +99,24 @@ module nios_system_nios2_communication_test_bench (
   input   [ 31: 0] W_iw;
   input   [  5: 0] W_iw_op;
   input   [  5: 0] W_iw_opx;
-  input   [ 18: 0] W_pcb;
+  input   [ 27: 0] W_pcb;
   input            W_valid;
   input   [ 55: 0] W_vinst;
   input   [ 31: 0] W_wr_data;
   input            W_wr_dst_reg;
   input            clk;
-  input   [ 18: 0] d_address;
+  input   [ 27: 0] d_address;
   input   [  3: 0] d_byteenable;
   input            d_read;
   input            d_write;
-  input   [ 18: 0] i_address;
+  input   [ 27: 0] i_address;
   input            i_read;
   input            i_readdatavalid;
   input            reset_n;
 
   wire             E_src1_eq_src2;
   wire    [ 32: 0] E_src1_src2_fast_cmp;
-  reg     [ 18: 0] M_target_pcb;
+  reg     [ 27: 0] M_target_pcb;
   wire    [ 31: 0] M_wr_data_filtered;
   wire             M_wr_data_unfiltered_0_is_x;
   wire             M_wr_data_unfiltered_10_is_x;
@@ -412,7 +412,7 @@ module nios_system_nios2_communication_test_bench (
       if (reset_n == 0)
           M_target_pcb <= 0;
       else if (M_en)
-          M_target_pcb <= E_src1[18 : 0];
+          M_target_pcb <= E_src1[27 : 0];
     end
 
 

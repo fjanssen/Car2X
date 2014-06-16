@@ -237,6 +237,18 @@ ALT_CPPFLAGS += -DALT_NO_INSTRUCTION_EMULATION
 # SOPC_SYSID_FLAG in public.mk. none 
 # setting hal.enable_sopc_sysid_check is 1
 
+# The value is assigned to ALT_LOG_FLAGS in the generated public.mk. See 
+# hal.log_port setting description. Values can be -1 through 3. hal.log_port 
+# must be set for this to be used. 
+# setting hal.log_flags is 0
+ALT_CPPFLAGS += -DALT_LOG_FLAGS=0
+
+# Slave descriptor of debug logging character-mode device. If defined, it 
+# enables extra debug messages in the HAL source. This setting is used by the 
+# ALT_LOG_PORT family of defines in system.h. none 
+# setting hal.log_port is jtag_uart_communication
+ALT_CPPFLAGS += -DALT_LOG_ENABLE
+
 # Enable BSP generation to query if SOPC system is big endian. If true ignores 
 # export of 'ALT_CFLAGS += -EB' to public.mk if big endian system. If true 
 # ignores export of 'ALT_CFLAGS += -EL' if little endian system. none 
@@ -306,18 +318,18 @@ ALT_CPPFLAGS += -DALT_NO_INSTRUCTION_EMULATION
 
 # Slave descriptor of STDERR character-mode device. This setting is used by the 
 # ALT_STDERR family of defines in system.h. none 
-# setting hal.stderr is jtag_uart
-ELF_PATCH_FLAG  += --stderr_dev jtag_uart
+# setting hal.stderr is jtag_uart_communication
+ELF_PATCH_FLAG  += --stderr_dev jtag_uart_communication
 
 # Slave descriptor of STDIN character-mode device. This setting is used by the 
 # ALT_STDIN family of defines in system.h. none 
-# setting hal.stdin is jtag_uart
-ELF_PATCH_FLAG  += --stdin_dev jtag_uart
+# setting hal.stdin is jtag_uart_communication
+ELF_PATCH_FLAG  += --stdin_dev jtag_uart_communication
 
 # Slave descriptor of STDOUT character-mode device. This setting is used by the 
 # ALT_STDOUT family of defines in system.h. none 
-# setting hal.stdout is jtag_uart
-ELF_PATCH_FLAG  += --stdout_dev jtag_uart
+# setting hal.stdout is jtag_uart_communication
+ELF_PATCH_FLAG  += --stdout_dev jtag_uart_communication
 
 
 #------------------------------------------------------------------------------

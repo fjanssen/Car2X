@@ -85,7 +85,7 @@ module nios_system_nios2_car_controll_test_bench (
   input   [ 31: 0] M_ienable_reg;
   input   [ 31: 0] M_ipending_reg;
   input   [ 31: 0] M_iw;
-  input   [ 18: 0] M_mem_baddr;
+  input   [ 27: 0] M_mem_baddr;
   input   [  3: 0] M_mem_byte_en;
   input            M_op_hbreak;
   input            M_op_intr;
@@ -105,7 +105,7 @@ module nios_system_nios2_car_controll_test_bench (
   input   [ 31: 0] W_wr_data;
   input            W_wr_dst_reg;
   input            clk;
-  input   [ 18: 0] d_address;
+  input   [ 27: 0] d_address;
   input   [  3: 0] d_byteenable;
   input            d_read;
   input            d_write;

@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_car_controll' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Tue Jun 03 14:56:24 CEST 2014
+ * Generated: Mon Jun 16 12:17:25 CEST 2014
  */
 
 /*
@@ -138,10 +138,12 @@
 #define ALT_DEVICE_FAMILY "Cyclone IV E"
 #define ALT_ENHANCED_INTERRUPT_API_PRESENT
 #define ALT_IRQ_BASE NULL
-#define ALT_LOG_PORT "/dev/null"
-#define ALT_LOG_PORT_BASE 0x0
-#define ALT_LOG_PORT_DEV null
-#define ALT_LOG_PORT_TYPE ""
+#define ALT_LOG_PORT "/dev/jtag_uart_carControl"
+#define ALT_LOG_PORT_BASE 0x42000
+#define ALT_LOG_PORT_DEV jtag_uart_carControl
+#define ALT_LOG_PORT_IS_JTAG_UART
+#define ALT_LOG_PORT_PRESENT
+#define ALT_LOG_PORT_TYPE ALTERA_AVALON_JTAG_UART
 #define ALT_NUM_EXTERNAL_INTERRUPT_CONTROLLERS 0
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
@@ -174,6 +176,32 @@
 #define ALT_MAX_FD 32
 #define ALT_SYS_CLK none
 #define ALT_TIMESTAMP_CLK none
+
+
+/*
+ * interval_timer configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_interval_timer altera_avalon_timer
+#define INTERVAL_TIMER_ALWAYS_RUN 1
+#define INTERVAL_TIMER_BASE 0x43480
+#define INTERVAL_TIMER_COUNTER_SIZE 32
+#define INTERVAL_TIMER_FIXED_PERIOD 1
+#define INTERVAL_TIMER_FREQ 100000000u
+#define INTERVAL_TIMER_IRQ -1
+#define INTERVAL_TIMER_IRQ_INTERRUPT_CONTROLLER_ID -1
+#define INTERVAL_TIMER_LOAD_VALUE 999999ull
+#define INTERVAL_TIMER_MULT 0.0010
+#define INTERVAL_TIMER_NAME "/dev/interval_timer"
+#define INTERVAL_TIMER_PERIOD 10
+#define INTERVAL_TIMER_PERIOD_UNITS "ms"
+#define INTERVAL_TIMER_RESET_OUTPUT 0
+#define INTERVAL_TIMER_SNAPSHOT 0
+#define INTERVAL_TIMER_SPAN 32
+#define INTERVAL_TIMER_TICKS_PER_SEC 100u
+#define INTERVAL_TIMER_TIMEOUT_PULSE_OUTPUT 0
+#define INTERVAL_TIMER_TYPE "altera_avalon_timer"
 
 
 /*
@@ -229,7 +257,7 @@
  */
 
 #define ALT_MODULE_CLASS_mutex_shared_memory altera_avalon_mutex
-#define MUTEX_SHARED_MEMORY_BASE 0x43480
+#define MUTEX_SHARED_MEMORY_BASE 0x434a0
 #define MUTEX_SHARED_MEMORY_IRQ -1
 #define MUTEX_SHARED_MEMORY_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define MUTEX_SHARED_MEMORY_NAME "/dev/mutex_shared_memory"
@@ -268,31 +296,5 @@
 #define SHARED_MEMORY_SPAN 4096
 #define SHARED_MEMORY_TYPE "altera_avalon_onchip_memory2"
 #define SHARED_MEMORY_WRITABLE 1
-
-
-/*
- * timer_0 configuration
- *
- */
-
-#define ALT_MODULE_CLASS_timer_0 altera_avalon_timer
-#define TIMER_0_ALWAYS_RUN 1
-#define TIMER_0_BASE 0x0
-#define TIMER_0_COUNTER_SIZE 32
-#define TIMER_0_FIXED_PERIOD 1
-#define TIMER_0_FREQ 100000000u
-#define TIMER_0_IRQ 1
-#define TIMER_0_IRQ_INTERRUPT_CONTROLLER_ID 0
-#define TIMER_0_LOAD_VALUE 999999ull
-#define TIMER_0_MULT 0.0010
-#define TIMER_0_NAME "/dev/timer_0"
-#define TIMER_0_PERIOD 10
-#define TIMER_0_PERIOD_UNITS "ms"
-#define TIMER_0_RESET_OUTPUT 0
-#define TIMER_0_SNAPSHOT 0
-#define TIMER_0_SPAN 32
-#define TIMER_0_TICKS_PER_SEC 100u
-#define TIMER_0_TIMEOUT_PULSE_OUTPUT 0
-#define TIMER_0_TYPE "altera_avalon_timer"
 
 #endif /* __SYSTEM_H_ */

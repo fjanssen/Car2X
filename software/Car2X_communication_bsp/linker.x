@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_communication' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Tue Jun 03 14:39:37 CEST 2014
+ * Generated: Mon Jun 16 15:31:47 CEST 2014
  */
 
 /*
@@ -50,16 +50,18 @@
 
 MEMORY
 {
-    reset : ORIGIN = 0x20000, LENGTH = 32
-    main_memory_communication : ORIGIN = 0x20020, LENGTH = 102368
-    shared_memory : ORIGIN = 0x40000, LENGTH = 4096
-    descriptor_memory : ORIGIN = 0x41000, LENGTH = 4096
+    reset : ORIGIN = 0x4000000, LENGTH = 32
+    sdram_communication : ORIGIN = 0x4000020, LENGTH = 67108832
+    main_memory_communication : ORIGIN = 0x8020000, LENGTH = 102400
+    shared_memory : ORIGIN = 0x8040000, LENGTH = 4096
+    descriptor_memory : ORIGIN = 0x8041000, LENGTH = 4096
 }
 
 /* Define symbols for each memory base-address */
-__alt_mem_main_memory_communication = 0x20000;
-__alt_mem_shared_memory = 0x40000;
-__alt_mem_descriptor_memory = 0x41000;
+__alt_mem_sdram_communication = 0x4000000;
+__alt_mem_main_memory_communication = 0x8020000;
+__alt_mem_shared_memory = 0x8040000;
+__alt_mem_descriptor_memory = 0x8041000;
 
 OUTPUT_FORMAT( "elf32-littlenios2",
                "elf32-littlenios2",
@@ -114,7 +116,7 @@ SECTIONS
         KEEP (*(.exceptions.exit));
         KEEP (*(.exceptions));
         PROVIDE (__ram_exceptions_end = ABSOLUTE(.));
-    } > main_memory_communication
+    } > sdram_communication
 
     PROVIDE (__flash_exceptions_start = LOADADDR(.exceptions));
 
@@ -210,7 +212,7 @@ SECTIONS
         PROVIDE (__DTOR_END__ = ABSOLUTE(.));
         KEEP (*(.jcr))
         . = ALIGN(4);
-    } > main_memory_communication = 0x3a880100 /* Nios II NOP instruction */
+    } > sdram_communication = 0x3a880100 /* Nios II NOP instruction */
 
     .rodata :
     {
@@ -220,7 +222,7 @@ SECTIONS
         *(.rodata1)
         . = ALIGN(4);
         PROVIDE (__ram_rodata_end = ABSOLUTE(.));
-    } > main_memory_communication
+    } > sdram_communication
 
     PROVIDE (__flash_rodata_start = LOADADDR(.rodata));
 
@@ -254,7 +256,7 @@ SECTIONS
         _edata = ABSOLUTE(.);
         PROVIDE (edata = ABSOLUTE(.));
         PROVIDE (__ram_rwdata_end = ABSOLUTE(.));
-    } > main_memory_communication
+    } > sdram_communication
 
     PROVIDE (__flash_rwdata_start = LOADADDR(.rwdata));
 
@@ -285,7 +287,7 @@ SECTIONS
 
         . = ALIGN(4);
         __bss_end = ABSOLUTE(.);
-    } > main_memory_communication
+    } > sdram_communication
 
     /*
      *
@@ -310,15 +312,32 @@ SECTIONS
      *
      */
 
-    .main_memory_communication LOADADDR (.bss) + SIZEOF (.bss) : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
+    .sdram_communication LOADADDR (.bss) + SIZEOF (.bss) : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
+    {
+        PROVIDE (_alt_partition_sdram_communication_start = ABSOLUTE(.));
+        *(.sdram_communication. sdram_communication.*)
+        . = ALIGN(4);
+        PROVIDE (_alt_partition_sdram_communication_end = ABSOLUTE(.));
+        _end = ABSOLUTE(.);
+        end = ABSOLUTE(.);
+        __alt_stack_base = ABSOLUTE(.);
+    } > sdram_communication
+
+    PROVIDE (_alt_partition_sdram_communication_load_addr = LOADADDR(.sdram_communication));
+
+    /*
+     *
+     * This section's LMA is set to the .text region.
+     * crt0 will copy to this section's specified mapped region virtual memory address (VMA)
+     *
+     */
+
+    .main_memory_communication : AT ( LOADADDR (.sdram_communication) + SIZEOF (.sdram_communication) )
     {
         PROVIDE (_alt_partition_main_memory_communication_start = ABSOLUTE(.));
         *(.main_memory_communication. main_memory_communication.*)
         . = ALIGN(4);
         PROVIDE (_alt_partition_main_memory_communication_end = ABSOLUTE(.));
-        _end = ABSOLUTE(.);
-        end = ABSOLUTE(.);
-        __alt_stack_base = ABSOLUTE(.);
     } > main_memory_communication
 
     PROVIDE (_alt_partition_main_memory_communication_load_addr = LOADADDR(.main_memory_communication));
@@ -404,7 +423,7 @@ SECTIONS
 /*
  * Don't override this, override the __alt_stack_* symbols instead.
  */
-__alt_data_end = 0x39000;
+__alt_data_end = 0x8000000;
 
 /*
  * The next two symbols define the location of the default stack.  You can
@@ -420,4 +439,4 @@ PROVIDE( __alt_stack_limit   = __alt_stack_base );
  * Override this symbol to put the heap in a different memory.
  */
 PROVIDE( __alt_heap_start    = end );
-PROVIDE( __alt_heap_limit    = 0x39000 );
+PROVIDE( __alt_heap_limit    = 0x8000000 );
