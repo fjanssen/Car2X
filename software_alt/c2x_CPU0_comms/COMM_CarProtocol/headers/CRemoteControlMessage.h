@@ -12,8 +12,8 @@
 
 class CRemoteControlMessage: public CCarMessage {
 public:
-CControlMessage();
-CControlMessage(alt_u8* pMessage, int iLength);
+CRemoteControlMessage();
+CRemoteControlMessage(alt_u8* pMessage, int iLength);
 virtual ~CRemoteControlMessage();
 void answerMessage(bool executed_b);
 void doAction();
