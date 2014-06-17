@@ -1,289 +1,145 @@
 /*
- * Documentation in header file!
- * CarIP.cpp
- *
- *  Created on: 17.11.2013
- *      Author: Florian
- */
+* CarProtocol.h
+*
+* Created on: 17.11.2013
+* Author: Florian
+*/
 
-// Export interface
-#include "CarProtocol.h"
+#ifndef CARPROTOCOL_H_
+#define CARPROTOCOL_H_
 
-// Import interface
-#include <stdio.h>
-#include <stdlib.h>
+// Export interfaces
+#include <alt_types.h>
+#include "CarMessage.h"
 
-#include "../etc/utility.h"
-#include "WelcomeMessage.h"
-#include "MotorMeasurementMessage.h"
-#include "MotorVelocityMessage.h"
-#include "UltrasoundDistanceMessage.h"
-#include "AccelerationValuesMessage.h"
-#include "ADCInfoMessage.h"
-#include "ADCValuesMessage.h"
-
-CCarProtocol::CCarProtocol(alt_u8 *pPacket, int iLength)
-{
-	m_bValid = false;
-	m_bThereIsMore = false;
-
-	parsePacket(pPacket, iLength);
-}
-
-CCarProtocol::CCarProtocol(alt_u16 uiPacketNumber, CCarMessage **pMessages, alt_u32 uiMessageCount)
-{
-	m_uiPacketNumber = uiPacketNumber;
-
-	for(alt_u32 i = 0; i < uiMessageCount; i++)
-	{
-		m_pMessages[i] = pMessages[i];
-	}
-	
-	m_uiMessageCount = uiMessageCount;
-
-	m_bValid = true;
-	m_bThereIsMore = false;
-}
-
-CCarProtocol::~CCarProtocol()
-{
-	for(alt_u32 i = 0; i < m_uiMessageCount; i++)
-	{
-		if(m_pMessages[i] != 0)
-			delete(m_pMessages[i]);
-		m_pMessages[i] = 0;
-	}
-}
 
 /*
- * Parsing method called by the constructors.
- * Important note:
- *         >>>>>> You have to edit this method if there are new sensors / messages <<<<<
- *
- * Additional note:
- * Even if there are more packets in the byte stream, only the first occurrence is used. All other
- * packets will be ignored!
- *
- * pPacket: byte array containing the byte (network) representation of the packet.
- * iLength: length of the byte stream.
- */
-void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength)
+* Class CCarProtocol.
+* This class manages the complete communication protocol. Each protocol object consists of a protocol-header
+* and a list of messages (see CarMessage).
+*
+* Note: Due to some renaming conflicts there are the following synonyms:
+* CarProtocol = Packet
+* CarMessage = Message
+* The fields in CarProtocol and CarMessage may have the same name. Make sure that you are in the right class!
+*
+* The total structure of a packet looks like:
+*
+* 1st Byte | 2nd Byte | 3rd Byte | 4th Byte
+* ---------|----------|----------|-----------
+* 'C' | 'A' | 'R' | 'P'
+* PacketNumber | PayloadLength
+* ---------|----------|----------|-----------
+* P A Y L O A D
+*
+* 'C''A''R''P': Start sequence of the packet to detect a packet in the incoming byte-stream.
+* PacketNumber: Consecutive increasing 16 bit number which works as an ID. The number is never changed by the
+* Nios2, only by the central ECU (Linux-PC). Thereby the central ECU can detect a protocol fail
+* if the response packet has not the same PacketNumber as the request packet.
+* Please remember the wrap around after the PacketNumber 65535!
+* PayloadLength: Total length of the payload in Bytes. This length information contains not the packet-header length!
+*
+* The payload contains at least one message and max. 8 messages. All messages start at a multiple of 4 assuming
+* that all messages have a multiple of 4 as length. There must be no gap between two messages!!
+*
+*
+* The order of the messages in a packet is important:
+* Contains the packet a WelcomeMessage this message as to be the first. All other messages in this packet will
+* be ignored!
+*
+* Otherwise the first message is the most important followed by the second and so on... See main.cpp for the
+* meaning of important.
+* Note: As the velocity-message is the most important in normal mode it will be assumed to be the first message!
+* See also the main file for possible side-effects on the speed control.
+*
+*
+*/
+class CCarProtocol
 {
-	alt_u16 uiStartIdx;			// Index of the 'C' (start of the packet) in byte array
-								// Will be increment to the current working point!
-	alt_u16 uiPayloadLength;	// Payload length as read out of the byte array
-	alt_u16 uiPayloadOffset;	// Current working point for parsing of the next message
-								// Will be increment along the message lengths!
+public:
+/*
+* Constructor which fills the new object with data from the given byte array.
+* Note: Even if there are more packets in the byte stream, only the first occurrence is used. All other
+* packets will be ignored!
+*
+* pPacket: byte array containing the byte (network) representation of the packet.
+* iLength: length of the byte stream.
+*/
+CCarProtocol(alt_u8 *pPacket, int iLength);
 
-	// Check Minimum Length 8 (which is the packet-header)
-	if(iLength < 8)
-		return;
+/*
+* Constructor which packs the given messages to a new packet. This constructor is primarily called by the
+* central ECU (Linux-PC).
+*
+* uiPacketNumber: packet number of the new packet. Don't forget to increase afterwards!
+* pMessages: array of pointer (references) to the CarMessages.
+* uiMessageCount: length of the array above.
+*/
+CCarProtocol(alt_u16 uiPacketNumber, CCarMessage **pMessages, alt_u32 uiMessageCount);
 
-	// Search for 'C' 'A' 'R' 'P'
-	for(uiStartIdx = 0; uiStartIdx < iLength; uiStartIdx++)
-	{
-		if(pPacket[uiStartIdx] == 'C' && pPacket[uiStartIdx+1] == 'A' && pPacket[uiStartIdx+2] == 'R' && pPacket[uiStartIdx+3] == 'P')
-			break;
-	}
+/*
+* Destructor which calls the destructors of all CarMessage objects if necessary.
+*/
+virtual ~CCarProtocol();
 
-	// Enough space for the header?
-	if(uiStartIdx + 8 > iLength)
-		return;
+/*
+* Returns m_bValid.
+*/
+bool isValid();
 
-	// Here starts the parsing:
-	// Parse the payload-Length
-	uiPayloadLength = *((alt_u16*) (pPacket+uiStartIdx+6));
-	swapEndianess((alt_u8*) &uiPayloadLength, 2);
+/*
+* Returns the total length of complete packet (packet-header + payload).
+* Please note that this call has only O(n) but avoid multiple calls.
+*/
+alt_u32 getLength();
 
-	// Parse the PacketNumber
-	m_uiPacketNumber = *((alt_u16*) (pPacket+uiStartIdx+4));
-	swapEndianess((alt_u8*) &m_uiPacketNumber, 2);
+/*
+* Returns the complete byte (network) representation of this packet including
+* packet-header and payload (messages).
+* Returns also m_bValid.
+*/
+bool getBytes(alt_u8 *pPacket);
 
-	// Set the initial member values
-	m_bValid = true;
-	m_uiMessageCount = 0;
 
-	// Is there a payload?
-	if(uiPayloadLength > 0)
-	{
-		// Enough space for the payload?
-		if(uiStartIdx+8+uiPayloadLength > iLength)
-		{
-			m_bThereIsMore = true;
-			m_bValid = false;
-			return;
-		}
+/*
+* Returns a pointer to the nth message in this packet. First message has n = 0!
+* Is n >= m_uiMessageCount then a 0 is returned, otherwise the pointer to the
+* message object.
+*/
+CCarMessage *getNthMessage(alt_u32 uiIdx);
 
-		// Increment uiStartIdx to the working point (the first message position)
-		uiStartIdx += 8;
+/*
+* Returns m_uiMessageCount.
+*/
+alt_u32 getMessageCount();
 
-		// Initialize uiPayloadOffset to 0
-		uiPayloadOffset = 0;
-
-		// Do as long there are messages (payload bytes) left and the count of messages dont exceeds 8.
-		while(uiPayloadOffset < uiPayloadLength && m_uiMessageCount < 8)
-		{
-			// Parse the message type and switch along it
-			switch(pPacket[uiStartIdx + uiPayloadOffset])
-			{
-				// The following cases parse the message along there type in different classes.
-				// TODO: Add new message classes here!!!!!
-
-				// WelcomeMessage
-				case 0x01:
-					m_pMessages[m_uiMessageCount] = new CWelcomeMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-					uiPayloadOffset += 12;
-					m_uiMessageCount++;
-					break;
-
-				// MotorVelocity
-				case 0x04:
-					m_pMessages[m_uiMessageCount] = new CMotorVelocityMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-					uiPayloadOffset += 8;
-					m_uiMessageCount++;
-					break;
-
-				// MotorMeasurement
-				case 0x05:
-					m_pMessages[m_uiMessageCount] = new CMotorMeasurementMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-					uiPayloadOffset += 16;
-					m_uiMessageCount++;
-					break;
-
-				// Ultrasound-Sensor
-				case 0x08:
-					m_pMessages[m_uiMessageCount] = new CUltrasoundDistanceMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-					uiPayloadOffset += 8;
-					m_uiMessageCount++;
-					break;
-
-				// Acceleration-Sensor
-				case 0x09:
-					m_pMessages[m_uiMessageCount] = new CAccelerationValuesMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-					uiPayloadOffset += 12;
-					m_uiMessageCount++;
-					break;
-
-				// ADC-Sensor
-				case 0x0A:
-					// If subtype is 0 then it's a InfoMessage otherwise a ValuesMessage
-					if(pPacket[uiStartIdx + uiPayloadOffset+2] == 0)
-						m_pMessages[m_uiMessageCount] = new CADCInfoMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-					else
-						m_pMessages[m_uiMessageCount] = new CADCValuesMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-
-					// Make sure you add the right length to the offset!
-					uiPayloadOffset += m_pMessages[m_uiMessageCount]->getLength();
-					m_uiMessageCount++;
-					break;
-					
-				// Velocity msg (incoming)
-				case 0x10: // TODO
-				{
-					m_pMessages[m_uiMessageCount] = new CVelocityMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-					uiPayloadOffset += 12;
-					m_uiMessageCount++;
-					break;
-				}		
-
-				case C2X_MSGID_EMERGENCY_BRAKE:
-				{
-					m_pMessages[m_uiMessageCount] = new CEmergencyBrakeMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-					uiPayloadOffset += 12;
-					m_uiMessageCount++;
-					break;
-				}
-				 
-				case C2X_MSGID_CONTROL: // remote control/autonomous driving mode TODO: implement control function somewhere
-				{
-					m_pMessages[m_uiMessageCount] = new CControlMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-					uiPayloadOffset += 12;
-					m_uiMessageCount++;
-					break;
-				}
-				
-				case C2X_MSGID_INFO_STATE:
-				{
-					m_pMessages[m_uiMessageCount] = new CInfoStateMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-					uiPayloadOffset += 12;
-					m_uiMessageCount++;
-					break;
-				}
-				
-				case C2X_MSGID_INFO_SENSORS:
-				{
-					m_pMessages[m_uiMessageCount] = new CInfoSensorMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-					uiPayloadOffset += 12;
-					m_uiMessageCount++;
-					break;
-				}
-
-				// Message ID is not known, so we also don't know the length of this message.
-				// We can't parse further, as we don't know the starting point of the next message.
-				// Set m_bValid false and return immediate!
-				default:
-					m_bValid = false;
-					return;
-			}
-		}
-	}
-
+// Additional getter methods
+alt_u16 getUiPacketNumber() const {
+return m_uiPacketNumber;
 }
 
-bool CCarProtocol::isValid()
-{
-	return m_bValid;
+bool isBThereIsMore() const {
+return m_bThereIsMore;
 }
 
-bool CCarProtocol::getBytes(alt_u8 *pPacket)
-{
-	alt_u16 uiLength = (alt_u16) getLength();
-	alt_u16 uiOffset = 8;
+private:
 
-	if(!m_bValid)
-		return m_bValid;
+bool m_bValid;	// True if the packet was successfully generated / parsed.
+bool m_bThereIsMore;	// True if the packet was partially parsed but there is something missing in the byte array.
+alt_u16 m_uiPacketNumber;	// The packet number given in the packet-header.
 
-	pPacket[0] = 'C'; pPacket[1] = 'A'; pPacket[2] = 'R'; pPacket[3] = 'P';
+CCarMessage *m_pMessages[8];	// Array of the pointer to the messages which are in this packet.
+alt_u32	m_uiMessageCount;	// Count of messages in this packet.
 
-	*((alt_u16*) (pPacket+4)) = m_uiPacketNumber;
-	swapEndianess(pPacket+4, 2);
+/*
+* Parsing method called by the constructors.
+* Important note:
+* >>>>>> You have to edit this method if there are new sensors / messages <<<<<
+*
+* Detailed comment in the .cpp file!
+*/
+void parsePacket(alt_u8 *pPacket, int iLength);
 
-	*((alt_u16*) (pPacket+6)) = uiLength-8;
-	swapEndianess(pPacket+6, 2);
+};
 
-	for(alt_u32 i = 0; i < m_uiMessageCount; i++)
-	{
-		m_bValid &= m_pMessages[i]->getBytes(pPacket+uiOffset);
-		uiOffset += m_pMessages[i]->getLength();
-	}
-
-	return m_bValid;
-}
-
-
-alt_u32 CCarProtocol::getLength()
-{
-	alt_u32 uiLength = 8;
-
-	for(alt_u32 i = 0; i < m_uiMessageCount; i++)
-	{
-		uiLength += m_pMessages[i]->getLength();
-	}
-
-	return uiLength;
-}
-
-
-CCarMessage *CCarProtocol::getNthMessage(alt_u32 uiIdx)
-{
-	if(uiIdx >= m_uiMessageCount)
-		return 0;
-
-	return m_pMessages[uiIdx];
-}
-
-
-alt_u32 CCarProtocol::getMessageCount()
-{
-	return m_uiMessageCount;
-}
+#endif /* CARPROTOCOL_H_ */
