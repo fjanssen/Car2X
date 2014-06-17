@@ -23,6 +23,7 @@
 #include "ADCInfoMessage.h"
 #include "ADCValuesMessage.h"
 //Car2X Message imports
+#include "CVelocityMessage.h"
 #include "CEmergencyBrakeMessage.h"
 #include "CControlMessage.h"
 #include "CInfoStateMessage.h"
