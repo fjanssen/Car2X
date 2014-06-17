@@ -8,6 +8,14 @@
 #ifndef CARPROTOCOL_H_
 #define CARPROTOCOL_H_
 
+//define Car2X Message IDS
+#define C2X_MSGID_VELOCITY 			 0x10
+#define C2X_MSGID_EMERGENCY_BRAKE	 0x20
+#define C2X_MSGID_CONTROL			 0x30
+#define C2X_MSGID_INFO_STATE 		 0x40
+#define C2X_MSGID_INFO_SENSORS		 0x50
+#define C2X_MSGID_REMOTE_CONTROL 	 0x60
+
 // Export interfaces
 #include <alt_types.h>
 #include "CarMessage.h"

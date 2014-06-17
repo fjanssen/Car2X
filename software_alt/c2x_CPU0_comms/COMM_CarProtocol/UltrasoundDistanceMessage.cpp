@@ -117,7 +117,7 @@ void CUltrasoundDistanceMessage::parseMessage(alt_u8 *pMessage, int iLength)
         return;
 
     m_uiDistance = ((alt_u32) pMessage[0]) << 0;
-    m_uiDistance = ((alt_u32) pMessage[1]) << 8;
+    m_uiDistance |= ((alt_u32) pMessage[1]) << 8;
     m_uiDistanceValid = pMessage[3];
 
     m_bValid = true;
