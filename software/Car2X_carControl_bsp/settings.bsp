@@ -2,13 +2,13 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>16.06.2014 12:17:36</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1402913856548</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>24.06.2014 23:20:17</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1403644817898</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\Florian\Documents\GitHub\Car2X\software\Car2X_carControl_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>C:\Users\Florian\Documents\GitHub\Car2X\hardware\nios_system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
-        <Cpu>nios2_car_controll</Cpu>
+        <Cpu>carControl_nios</Cpu>
         <SchemaVersion>1.9</SchemaVersion>
         <Setting>
                 <SettingName>hal.sys_clk_timer</SettingName>
@@ -146,7 +146,7 @@
                 <SettingName>hal.linker.exception_stack_memory_region_name</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>main_memory_car_controll</Value>
+                <Value>com_memory</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>none</DestinationFile>
                 <Description>Name of the existing memory region that will be divided up to create the 'exception_stack' memory region. The selected region name will be adjusted automatically when the BSP is generated to create the 'exception_stack' memory region.</Description>
@@ -182,7 +182,7 @@
                 <SettingName>hal.linker.interrupt_stack_memory_region_name</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>main_memory_car_controll</Value>
+                <Value>com_memory</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>none</DestinationFile>
                 <Description>Name of the existing memory region that will be divided up to create the 'interrupt_stack' memory region. The selected region name will be adjusted automatically when the BSP is generated to create the 'interrupt_stack' memory region.</Description>
@@ -194,7 +194,7 @@
                 <SettingName>hal.stdin</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>jtag_uart_carControl</Value>
+                <Value>jtaguart_1</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of STDIN character-mode device. This setting is used by the ALT_STDIN family of defines in system.h.</Description>
@@ -206,7 +206,7 @@
                 <SettingName>hal.stdout</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>jtag_uart_carControl</Value>
+                <Value>jtaguart_1</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of STDOUT character-mode device. This setting is used by the ALT_STDOUT family of defines in system.h.</Description>
@@ -218,7 +218,7 @@
                 <SettingName>hal.stderr</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>jtag_uart_carControl</Value>
+                <Value>jtaguart_1</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of STDERR character-mode device. This setting is used by the ALT_STDERR family of defines in system.h.</Description>
@@ -230,7 +230,7 @@
                 <SettingName>hal.log_port</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>jtag_uart_carControl</Value>
+                <Value>none</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>public_mk_define</DestinationFile>
                 <Description>Slave descriptor of debug logging character-mode device. If defined, it enables extra debug messages in the HAL source. This setting is used by the ALT_LOG_PORT family of defines in system.h.</Description>
@@ -851,57 +851,51 @@
                 <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
         </Setting>
         <MemoryMap>
-                <slaveDescriptor>main_memory_car_controll</slaveDescriptor>
-                <addressRange>0x00020000 - 0x00038FFF</addressRange>
-                <addressSpan>102400</addressSpan>
+                <slaveDescriptor>onchip_memory2_0</slaveDescriptor>
+                <addressRange>0x00080000 - 0x000CAFFF</addressRange>
+                <addressSpan>307200</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>shared_memory</slaveDescriptor>
-                <addressRange>0x00040000 - 0x00040FFF</addressRange>
-                <addressSpan>4096</addressSpan>
-                <attributes>memory</attributes>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>jtag_uart_carControl</slaveDescriptor>
-                <addressRange>0x00042000 - 0x00042007</addressRange>
+                <slaveDescriptor>jtaguart_1</slaveDescriptor>
+                <addressRange>0x00101000 - 0x00101007</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>interval_timer</slaveDescriptor>
-                <addressRange>0x00043480 - 0x0004349F</addressRange>
-                <addressSpan>32</addressSpan>
-                <attributes>timer</attributes>
+                <slaveDescriptor>shared_memory</slaveDescriptor>
+                <addressRange>0x08000000 - 0x08000FFF</addressRange>
+                <addressSpan>4096</addressSpan>
+                <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>mutex_shared_memory</slaveDescriptor>
-                <addressRange>0x000434A0 - 0x000434A7</addressRange>
+                <slaveDescriptor>shared_memory_mutex</slaveDescriptor>
+                <addressRange>0x080034B0 - 0x080034B7</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes/>
         </MemoryMap>
         <LinkerSection>
                 <sectionName>.text</sectionName>
-                <regionName>main_memory_car_controll</regionName>
+                <regionName>onchip_memory2_0</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.rodata</sectionName>
-                <regionName>main_memory_car_controll</regionName>
+                <regionName>onchip_memory2_0</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.rwdata</sectionName>
-                <regionName>main_memory_car_controll</regionName>
+                <regionName>onchip_memory2_0</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.bss</sectionName>
-                <regionName>main_memory_car_controll</regionName>
+                <regionName>onchip_memory2_0</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.heap</sectionName>
-                <regionName>main_memory_car_controll</regionName>
+                <regionName>onchip_memory2_0</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.stack</sectionName>
-                <regionName>main_memory_car_controll</regionName>
+                <regionName>onchip_memory2_0</regionName>
         </LinkerSection>
 </sch:Settings>

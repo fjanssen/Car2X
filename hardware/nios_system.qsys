@@ -166,22 +166,6 @@
          type = "String";
       }
    }
-   element com_memory.s1
-   {
-      datum baseAddress
-      {
-         value = "67108864";
-         type = "String";
-      }
-   }
-   element com_timer.s1
-   {
-      datum baseAddress
-      {
-         value = "134244352";
-         type = "String";
-      }
-   }
    element shared_memory_mutex.s1
    {
       datum baseAddress
@@ -203,6 +187,22 @@
       datum baseAddress
       {
          value = "524288";
+         type = "String";
+      }
+   }
+   element com_timer.s1
+   {
+      datum baseAddress
+      {
+         value = "134244352";
+         type = "String";
+      }
+   }
+   element com_memory.s1
+   {
+      datum baseAddress
+      {
+         value = "67108864";
          type = "String";
       }
    }
@@ -261,7 +261,7 @@
  <parameter name="projectName" value="Car2X.qpf" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="1" />
- <parameter name="timeStamp" value="1404135518484" />
+ <parameter name="timeStamp" value="1404152679445" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
  <interface name="clk" internal="sys_clk.clk_in" type="clock" dir="end" />
@@ -362,15 +362,15 @@
   <parameter name="mmu_tlbPtrSz" value="7" />
   <parameter name="mmu_tlbNumWays" value="16" />
   <parameter name="mmu_processIDNumBits" value="8" />
-  <parameter name="impl" value="Tiny" />
+  <parameter name="impl" value="Fast" />
   <parameter name="icache_size" value="4096" />
   <parameter name="icache_ramBlockType" value="Automatic" />
   <parameter name="icache_numTCIM" value="0" />
-  <parameter name="icache_burstType" value="None" />
-  <parameter name="dcache_bursts" value="false" />
+  <parameter name="icache_burstType" value="Sequential" />
+  <parameter name="dcache_bursts" value="true" />
   <parameter name="debug_level" value="Level1" />
   <parameter name="debug_OCIOnchipTrace" value="_128" />
-  <parameter name="dcache_size" value="2048" />
+  <parameter name="dcache_size" value="4096" />
   <parameter name="dcache_ramBlockType" value="Automatic" />
   <parameter name="dcache_numTCDM" value="0" />
   <parameter name="dcache_lineSize" value="32" />
@@ -384,8 +384,8 @@
   <parameter name="tightlyCoupledInstructionMaster1AddrWidth" value="1" />
   <parameter name="tightlyCoupledInstructionMaster2AddrWidth" value="1" />
   <parameter name="tightlyCoupledInstructionMaster3AddrWidth" value="1" />
-  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='com_memory.s1' start='0x4000000' end='0x8000000' /><slave name='com_ocmemory.s1' start='0x8004000' end='0x8004C00' /><slave name='com_nios.jtag_debug_module' start='0x8006000' end='0x8006800' /></address-map>]]></parameter>
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='com_memory.s1' start='0x4000000' end='0x8000000' /><slave name='ethernet_subsystem_descriptor_memory.s2' start='0x8000000' end='0x8002000' /><slave name='shared_memory.s1' start='0x8002000' end='0x8003000' /><slave name='com_ocmemory.s1' start='0x8004000' end='0x8004C00' /><slave name='ethernet_subsystem_tse_mac.control_port' start='0x8005800' end='0x8005C00' /><slave name='ethernet_subsystem_sgdma_rx.csr' start='0x8005C00' end='0x8005C40' /><slave name='ethernet_subsystem_sgdma_tx.csr' start='0x8005C40' end='0x8005C80' /><slave name='com_nios.jtag_debug_module' start='0x8006000' end='0x8006800' /><slave name='com_timer.s1' start='0x8006800' end='0x8006820' /><slave name='com_led.s1' start='0x8006820' end='0x8006830' /><slave name='shared_memory_mutex.s1' start='0x8006830' end='0x8006838' /><slave name='jtaguart_0.avalon_jtag_slave' start='0x8006838' end='0x8006840' /></address-map>]]></parameter>
+  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='com_memory.s1' start='0x4000000' end='0x8000000' /><slave name='com_ocmemory.s1' start='0x8004000' end='0x8004400' /><slave name='com_nios.jtag_debug_module' start='0x8006000' end='0x8006800' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='com_memory.s1' start='0x4000000' end='0x8000000' /><slave name='ethernet_subsystem_descriptor_memory.s2' start='0x8000000' end='0x8002000' /><slave name='shared_memory.s1' start='0x8002000' end='0x8003000' /><slave name='com_ocmemory.s1' start='0x8004000' end='0x8004400' /><slave name='ethernet_subsystem_tse_mac.control_port' start='0x8005800' end='0x8005C00' /><slave name='ethernet_subsystem_sgdma_rx.csr' start='0x8005C00' end='0x8005C40' /><slave name='ethernet_subsystem_sgdma_tx.csr' start='0x8005C40' end='0x8005C80' /><slave name='com_nios.jtag_debug_module' start='0x8006000' end='0x8006800' /><slave name='com_timer.s1' start='0x8006800' end='0x8006820' /><slave name='com_led.s1' start='0x8006820' end='0x8006830' /><slave name='shared_memory_mutex.s1' start='0x8006830' end='0x8006838' /><slave name='jtaguart_0.avalon_jtag_slave' start='0x8006838' end='0x8006840' /></address-map>]]></parameter>
   <parameter name="clockFrequency" value="50000000" />
   <parameter name="deviceFamilyName" value="Cyclone IV E" />
   <parameter name="internalIrqMaskSystemInfo" value="15" />
@@ -692,7 +692,7 @@
   <parameter name="initMemContent" value="true" />
   <parameter name="initializationFileName" value="com_ocmemory" />
   <parameter name="instanceID" value="NONE" />
-  <parameter name="memorySize" value="3072" />
+  <parameter name="memorySize" value="1024" />
   <parameter name="readDuringWriteMode" value="DONT_CARE" />
   <parameter name="simAllowMRAMContentsFile" value="false" />
   <parameter name="simMemInitOnlyFilename" value="0" />
@@ -729,7 +729,7 @@
    version="12.1"
    start="com_nios.d_irq"
    end="jtaguart_0.irq">
-  <parameter name="irqNumber" value="2" />
+  <parameter name="irqNumber" value="0" />
  </connection>
  <connection
    kind="reset"
@@ -905,7 +905,7 @@
    version="12.1"
    start="com_nios.d_irq"
    end="com_timer.irq">
-  <parameter name="irqNumber" value="3" />
+  <parameter name="irqNumber" value="1" />
  </connection>
  <connection
    kind="reset"
@@ -1153,13 +1153,13 @@
    version="12.1"
    start="com_nios.d_irq"
    end="ethernet_subsystem.sgdma_rx_csr_irq">
-  <parameter name="irqNumber" value="1" />
+  <parameter name="irqNumber" value="2" />
  </connection>
  <connection
    kind="interrupt"
    version="12.1"
    start="com_nios.d_irq"
    end="ethernet_subsystem.sgdma_tx_csr_irq">
-  <parameter name="irqNumber" value="0" />
+  <parameter name="irqNumber" value="3" />
  </connection>
 </system>

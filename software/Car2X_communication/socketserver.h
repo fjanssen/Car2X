@@ -41,10 +41,10 @@ void SSSSimpleSocketServerTask();
 #define IPADDR2   100
 #define IPADDR3   102
 
-#define GWADDR0   10
-#define GWADDR1   10
-#define GWADDR2   100
-#define GWADDR3   254
+#define GWADDR0   0
+#define GWADDR1   0
+#define GWADDR2   0
+#define GWADDR3   0
 
 //#define IPADDR0   0
 //#define IPADDR1   0

@@ -1,10 +1,10 @@
 /*
  * linker.h - Linker script mapping information
  *
- * Machine generated for CPU 'nios2_car_controll' in SOPC Builder design 'nios_system'
+ * Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Tue Jun 03 14:34:06 CEST 2014
+ * Generated: Mon Jun 23 15:08:31 CEST 2014
  */
 
 /*
@@ -65,11 +65,11 @@
  *
  */
 
-#define MAIN_MEMORY_CAR_CONTROLL_REGION_BASE 0x20020
-#define MAIN_MEMORY_CAR_CONTROLL_REGION_SPAN 102368
-#define RESET_REGION_BASE 0x20000
+#define ONCHIP_MEMORY2_0_REGION_BASE 0x80020
+#define ONCHIP_MEMORY2_0_REGION_SPAN 307168
+#define RESET_REGION_BASE 0x80000
 #define RESET_REGION_SPAN 32
-#define SHARED_MEMORY_REGION_BASE 0x40000
+#define SHARED_MEMORY_REGION_BASE 0x8000000
 #define SHARED_MEMORY_REGION_SPAN 4096
 
 
@@ -78,11 +78,11 @@
  *
  */
 
-#define ALT_EXCEPTIONS_DEVICE MAIN_MEMORY_CAR_CONTROLL
-#define ALT_RESET_DEVICE MAIN_MEMORY_CAR_CONTROLL
-#define ALT_RODATA_DEVICE MAIN_MEMORY_CAR_CONTROLL
-#define ALT_RWDATA_DEVICE MAIN_MEMORY_CAR_CONTROLL
-#define ALT_TEXT_DEVICE MAIN_MEMORY_CAR_CONTROLL
+#define ALT_EXCEPTIONS_DEVICE ONCHIP_MEMORY2_0
+#define ALT_RESET_DEVICE ONCHIP_MEMORY2_0
+#define ALT_RODATA_DEVICE ONCHIP_MEMORY2_0
+#define ALT_RWDATA_DEVICE ONCHIP_MEMORY2_0
+#define ALT_TEXT_DEVICE ONCHIP_MEMORY2_0
 
 
 /*

@@ -34,12 +34,12 @@ module nios_system_addr_router_001_default_decode
      parameter DEFAULT_CHANNEL = 1,
                DEFAULT_DESTID = 1 
    )
-  (output [96 - 93 : 0] default_destination_id,
+  (output [102 - 99 : 0] default_destination_id,
    output [13-1 : 0] default_src_channel
   );
 
   assign default_destination_id = 
-    DEFAULT_DESTID[96 - 93 : 0];
+    DEFAULT_DESTID[102 - 99 : 0];
   generate begin : default_decode
     if (DEFAULT_CHANNEL == -1)
       assign default_src_channel = '0;
@@ -63,7 +63,7 @@ module nios_system_addr_router_001
     // Command Sink (Input)
     // -------------------
     input                       sink_valid,
-    input  [107-1 : 0]    sink_data,
+    input  [113-1 : 0]    sink_data,
     input                       sink_startofpacket,
     input                       sink_endofpacket,
     output                      sink_ready,
@@ -72,7 +72,7 @@ module nios_system_addr_router_001
     // Command Source (Output)
     // -------------------
     output                          src_valid,
-    output reg [107-1    : 0] src_data,
+    output reg [113-1    : 0] src_data,
     output reg [13-1 : 0] src_channel,
     output                          src_startofpacket,
     output                          src_endofpacket,
@@ -84,9 +84,9 @@ module nios_system_addr_router_001
     // -------------------------------------------------------
     localparam PKT_ADDR_H = 67;
     localparam PKT_ADDR_L = 36;
-    localparam PKT_DEST_ID_H = 96;
-    localparam PKT_DEST_ID_L = 93;
-    localparam ST_DATA_W = 107;
+    localparam PKT_DEST_ID_H = 102;
+    localparam PKT_DEST_ID_L = 99;
+    localparam ST_DATA_W = 113;
     localparam ST_CHANNEL_W = 13;
     localparam DECODER_TYPE = 0;
 
@@ -106,7 +106,7 @@ module nios_system_addr_router_001
     localparam PAD0 = log2ceil(64'h8000000 - 64'h4000000);
     localparam PAD1 = log2ceil(64'h8002000 - 64'h8000000);
     localparam PAD2 = log2ceil(64'h8003000 - 64'h8002000);
-    localparam PAD3 = log2ceil(64'h8005000 - 64'h8004000);
+    localparam PAD3 = log2ceil(64'h8004400 - 64'h8004000);
     localparam PAD4 = log2ceil(64'h8006000 - 64'h8005800);
     localparam PAD5 = log2ceil(64'h8006800 - 64'h8006000);
     localparam PAD6 = log2ceil(64'h8006820 - 64'h8006800);
@@ -175,7 +175,7 @@ module nios_system_addr_router_001
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 4;
         end
 
-        // ( 0x8004000 .. 0x8005000 )
+        // ( 0x8004000 .. 0x8004400 )
         if ( {address[RG:PAD3],{PAD3{1'b0}}} == 28'h8004000 ) begin
             src_channel = 13'b0000000100;
             src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 2;

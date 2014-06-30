@@ -176,11 +176,11 @@ module ethernet_system_tse_mac (
 		altera_tse_mac_inst.ENABLE_MAC_RX_VLAN = 0,
 		altera_tse_mac_inst.ENABLE_MAC_TX_VLAN = 0,
 		altera_tse_mac_inst.SYNCHRONIZER_DEPTH = 3,
-		altera_tse_mac_inst.EG_FIFO = 2048,
-		altera_tse_mac_inst.EG_ADDR = 11,
-		altera_tse_mac_inst.ING_FIFO = 2048,
+		altera_tse_mac_inst.EG_FIFO = 8192,
+		altera_tse_mac_inst.EG_ADDR = 13,
+		altera_tse_mac_inst.ING_FIFO = 8192,
 		altera_tse_mac_inst.ENABLE_ENA = 32,
-		altera_tse_mac_inst.ING_ADDR = 11,
+		altera_tse_mac_inst.ING_ADDR = 13,
 		altera_tse_mac_inst.RAM_TYPE = "AUTO",
 		altera_tse_mac_inst.INSERT_TA = 1,
 		altera_tse_mac_inst.ENABLE_MACLITE = 0,
@@ -218,8 +218,8 @@ endmodule
 // Retrieval info:      <PRIVATE name = "dev_version" value="3073"  type="STRING"  enable="1" />
 // Retrieval info:      <PRIVATE name = "deviceFamily" value="CYCLONEIVE"  type="STRING"  enable="1" />
 // Retrieval info:      <PRIVATE name = "deviceFamilyName" value="Cyclone IV E"  type="STRING"  enable="1" />
-// Retrieval info:      <PRIVATE name = "eg_addr" value="11"  type="INTEGER"  enable="1" />
-// Retrieval info:      <PRIVATE name = "eg_fifo" value="2048"  type="INTEGER"  enable="1" />
+// Retrieval info:      <PRIVATE name = "eg_addr" value="13"  type="INTEGER"  enable="1" />
+// Retrieval info:      <PRIVATE name = "eg_fifo" value="8192"  type="INTEGER"  enable="1" />
 // Retrieval info:      <PRIVATE name = "ena_hash" value="0"  type="BOOLEAN"  enable="1" />
 // Retrieval info:      <PRIVATE name = "enable_alt_reconfig" value="0"  type="BOOLEAN"  enable="1" />
 // Retrieval info:      <PRIVATE name = "enable_clk_sharing" value="0"  type="BOOLEAN"  enable="1" />
@@ -248,8 +248,8 @@ endmodule
 // Retrieval info:      <PRIVATE name = "gigeAdvanceMode" value="1"  type="BOOLEAN"  enable="1" />
 // Retrieval info:      <PRIVATE name = "ifGMII" value="RGMII"  type="STRING"  enable="1" />
 // Retrieval info:      <PRIVATE name = "ifPCSuseEmbeddedSerdes" value="0"  type="BOOLEAN"  enable="1" />
-// Retrieval info:      <PRIVATE name = "ing_addr" value="11"  type="INTEGER"  enable="1" />
-// Retrieval info:      <PRIVATE name = "ing_fifo" value="2048"  type="INTEGER"  enable="1" />
+// Retrieval info:      <PRIVATE name = "ing_addr" value="13"  type="INTEGER"  enable="1" />
+// Retrieval info:      <PRIVATE name = "ing_fifo" value="8192"  type="INTEGER"  enable="1" />
 // Retrieval info:      <PRIVATE name = "insert_ta" value="1"  type="BOOLEAN"  enable="1" />
 // Retrieval info:      <PRIVATE name = "maclite_gige" value="0"  type="BOOLEAN"  enable="1" />
 // Retrieval info:      <PRIVATE name = "max_channels" value="1"  type="INTEGER"  enable="1" />
@@ -263,9 +263,9 @@ endmodule
 // Retrieval info:      <PRIVATE name = "toolContext" value="SOPC_BUILDER"  type="STRING"  enable="1" />
 // Retrieval info:      <PRIVATE name = "transceiver_type" value="GXB"  type="STRING"  enable="1" />
 // Retrieval info:      <PRIVATE name = "tstamp_fp_width" value="4"  type="INTEGER"  enable="1" />
-// Retrieval info:      <PRIVATE name = "uiEgFIFOSize" value="2048 x 32 Bits"  type="STRING"  enable="1" />
+// Retrieval info:      <PRIVATE name = "uiEgFIFOSize" value="8192 x 32 Bits"  type="STRING"  enable="1" />
 // Retrieval info:      <PRIVATE name = "uiHostClockFrequency" value="0"  type="INTEGER"  enable="1" />
-// Retrieval info:      <PRIVATE name = "uiIngFIFOSize" value="2048 x 32 Bits"  type="STRING"  enable="1" />
+// Retrieval info:      <PRIVATE name = "uiIngFIFOSize" value="8192 x 32 Bits"  type="STRING"  enable="1" />
 // Retrieval info:      <PRIVATE name = "uiMACFIFO" value="0"  type="BOOLEAN"  enable="1" />
 // Retrieval info:      <PRIVATE name = "uiMACOptions" value="0"  type="BOOLEAN"  enable="1" />
 // Retrieval info:      <PRIVATE name = "uiMDIOFreq" value="0.0 MHz"  type="STRING"  enable="1" />

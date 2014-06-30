@@ -1,5 +1,5 @@
 Flow report for Car2X
-Mon Jun 30 15:51:11 2014
+Mon Jun 30 20:48:31 2014
 Quartus II 32-bit Version 12.1 Build 177 11/07/2012 SJ Web Edition
 
 
@@ -38,21 +38,21 @@ applicable agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Flow Summary                                                                  ;
 +------------------------------------+------------------------------------------+
-; Flow Status                        ; Successful - Mon Jun 30 15:50:50 2014    ;
+; Flow Status                        ; Successful - Mon Jun 30 20:47:59 2014    ;
 ; Quartus II 32-bit Version          ; 12.1 Build 177 11/07/2012 SJ Web Edition ;
 ; Revision Name                      ; Car2X                                    ;
 ; Top-level Entity Name              ; Car2X                                    ;
 ; Family                             ; Cyclone IV E                             ;
 ; Device                             ; EP4CE115F29C7                            ;
 ; Timing Models                      ; Final                                    ;
-; Total logic elements               ; 12,866 / 114,480 ( 11 % )                ;
-;     Total combinational functions  ; 9,599 / 114,480 ( 8 % )                  ;
-;     Dedicated logic registers      ; 8,676 / 114,480 ( 8 % )                  ;
-; Total registers                    ; 8806                                     ;
+; Total logic elements               ; 16,598 / 114,480 ( 14 % )                ;
+;     Total combinational functions  ; 12,701 / 114,480 ( 11 % )                ;
+;     Dedicated logic registers      ; 10,929 / 114,480 ( 10 % )                ;
+; Total registers                    ; 11059                                    ;
 ; Total pins                         ; 77 / 529 ( 15 % )                        ;
 ; Total virtual pins                 ; 0                                        ;
-; Total memory bits                  ; 2,791,578 / 3,981,312 ( 70 % )           ;
-; Embedded Multiplier 9-bit elements ; 4 / 532 ( < 1 % )                        ;
+; Total memory bits                  ; 3,293,858 / 3,981,312 ( 83 % )           ;
+; Embedded Multiplier 9-bit elements ; 8 / 532 ( 2 % )                          ;
 ; Total PLLs                         ; 2 / 4 ( 50 % )                           ;
 +------------------------------------+------------------------------------------+
 
@@ -62,7 +62,7 @@ applicable agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 06/30/2014 15:43:47 ;
+; Start date & time ; 06/30/2014 20:37:25 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; Car2X               ;
 +-------------------+---------------------+
@@ -73,7 +73,7 @@ applicable agreement for further details.
 +-------------------------------------+---------------------------------------+---------------+-------------+------------+
 ; Assignment Name                     ; Value                                 ; Default Value ; Entity Name ; Section Id ;
 +-------------------------------------+---------------------------------------+---------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 154414185874921.140413582713812       ; --            ; --          ; --         ;
+; COMPILER_SIGNATURE_ID               ; 154414185874921.140415344500588       ; --            ; --          ; --         ;
 ; IP_TOOL_NAME                        ; ALTPLL                                ; --            ; --          ; --         ;
 ; IP_TOOL_NAME                        ; ALTDDIO_OUT                           ; --            ; --          ; --         ;
 ; IP_TOOL_VERSION                     ; 12.1                                  ; --            ; --          ; --         ;
@@ -98,11 +98,11 @@ applicable agreement for further details.
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis      ; 00:02:48     ; 1.0                     ; 640 MB              ; 00:01:53                           ;
-; Fitter                    ; 00:03:50     ; 1.0                     ; 782 MB              ; 00:03:51                           ;
-; Assembler                 ; 00:00:09     ; 1.0                     ; 419 MB              ; 00:00:08                           ;
-; TimeQuest Timing Analyzer ; 00:00:19     ; 1.0                     ; 573 MB              ; 00:00:19                           ;
-; Total                     ; 00:07:06     ; --                      ; --                  ; 00:06:11                           ;
+; Analysis & Synthesis      ; 00:04:37     ; 1.0                     ; 683 MB              ; 00:03:15                           ;
+; Fitter                    ; 00:05:25     ; 1.0                     ; 832 MB              ; 00:05:12                           ;
+; Assembler                 ; 00:00:10     ; 1.0                     ; 426 MB              ; 00:00:10                           ;
+; TimeQuest Timing Analyzer ; 00:00:30     ; 1.0                     ; 609 MB              ; 00:00:28                           ;
+; Total                     ; 00:10:42     ; --                      ; --                  ; 00:09:05                           ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 

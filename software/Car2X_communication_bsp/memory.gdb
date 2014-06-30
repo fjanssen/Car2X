@@ -3,7 +3,7 @@
 # Machine generated for CPU 'com_nios' in SOPC Builder design 'nios_system'
 # SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
 #
-# Generated: Mon Jun 30 10:48:03 CEST 2014
+# Generated: Mon Jun 30 20:49:18 CEST 2014
 
 # DO NOT MODIFY THIS FILE
 #
@@ -56,4 +56,4 @@ memory 0x8000000 0x8002000 cache
 memory 0x8002000 0x8003000 cache
 
 # com_ocmemory
-memory 0x8004000 0x8004c00 cache
+memory 0x8004000 0x8004400 cache

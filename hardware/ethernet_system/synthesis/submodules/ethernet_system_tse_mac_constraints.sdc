@@ -28,7 +28,7 @@
 # command in the Quartus II TCL console:
 # set_global_assignment -name SDC_FILE "ethernet_system_tse_mac"_constraints.sdc
 #
-# Generated on Mon Jun 30 10:44:05 CEST 2014
+# Generated on Mon Jun 30 20:20:04 CEST 2014
 #
 #####################################################################################
 

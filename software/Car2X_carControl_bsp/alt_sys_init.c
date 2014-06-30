@@ -1,10 +1,10 @@
 /*
  * alt_sys_init.c - HAL initialization source
  *
- * Machine generated for CPU 'nios2_car_controll' in SOPC Builder design 'nios_system'
+ * Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Mon Jun 16 12:17:25 CEST 2014
+ * Generated: Sat Jun 21 15:58:57 CEST 2014
  */
 
 /*
@@ -61,16 +61,14 @@
 #include "altera_nios2_qsys_irq.h"
 #include "altera_avalon_jtag_uart.h"
 #include "altera_avalon_mutex.h"
-#include "altera_avalon_timer.h"
 
 /*
  * Allocate the device storage
  */
 
-ALTERA_NIOS2_QSYS_IRQ_INSTANCE ( NIOS2_CAR_CONTROLL, nios2_car_controll);
-ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_UART_CARCONTROL, jtag_uart_carControl);
-ALTERA_AVALON_MUTEX_INSTANCE ( MUTEX_SHARED_MEMORY, mutex_shared_memory);
-ALTERA_AVALON_TIMER_INSTANCE ( INTERVAL_TIMER, interval_timer);
+ALTERA_NIOS2_QSYS_IRQ_INSTANCE ( CARCONTROL_NIOS, carControl_nios);
+ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAGUART_1, jtaguart_1);
+ALTERA_AVALON_MUTEX_INSTANCE ( SHARED_MEMORY_MUTEX, shared_memory_mutex);
 
 /*
  * Initialize the interrupt controller devices
@@ -82,7 +80,7 @@ ALTERA_AVALON_TIMER_INSTANCE ( INTERVAL_TIMER, interval_timer);
 
 void alt_irq_init ( const void* base )
 {
-    ALTERA_NIOS2_QSYS_IRQ_INIT ( NIOS2_CAR_CONTROLL, nios2_car_controll);
+    ALTERA_NIOS2_QSYS_IRQ_INIT ( CARCONTROL_NIOS, carControl_nios);
     alt_irq_cpu_enable_interrupts();
 }
 
@@ -93,7 +91,6 @@ void alt_irq_init ( const void* base )
 
 void alt_sys_init( void )
 {
-    ALTERA_AVALON_TIMER_INIT ( INTERVAL_TIMER, interval_timer);
-    ALTERA_AVALON_JTAG_UART_INIT ( JTAG_UART_CARCONTROL, jtag_uart_carControl);
-    ALTERA_AVALON_MUTEX_INIT ( MUTEX_SHARED_MEMORY, mutex_shared_memory);
+    ALTERA_AVALON_JTAG_UART_INIT ( JTAGUART_1, jtaguart_1);
+    ALTERA_AVALON_MUTEX_INIT ( SHARED_MEMORY_MUTEX, shared_memory_mutex);
 }

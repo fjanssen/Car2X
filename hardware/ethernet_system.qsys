@@ -85,7 +85,7 @@
       }
       datum megawizard_uipreferences
       {
-         value = "{output_language=VERILOG, output_directory=C:\\Users\\Florian\\Documents\\GitHub\\Car2X\\hardware}";
+         value = "{}";
          type = "String";
       }
    }
@@ -104,7 +104,7 @@
  <parameter name="projectName" value="Car2X.qpf" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="1" />
- <parameter name="timeStamp" value="1404135766107" />
+ <parameter name="timeStamp" value="1404152316690" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
  <interface
@@ -199,7 +199,7 @@
   <parameter name="dev_version" value="3073" />
   <parameter name="deviceFamily" value="CYCLONEIVE" />
   <parameter name="deviceFamilyName" value="Cyclone IV E" />
-  <parameter name="eg_addr" value="11" />
+  <parameter name="eg_addr" value="13" />
   <parameter name="ena_hash" value="false" />
   <parameter name="enable_alt_reconfig" value="false" />
   <parameter name="enable_clk_sharing" value="false" />
@@ -228,7 +228,7 @@
   <parameter name="gigeAdvanceMode" value="true" />
   <parameter name="ifGMII" value="RGMII" />
   <parameter name="ifPCSuseEmbeddedSerdes" value="false" />
-  <parameter name="ing_addr" value="11" />
+  <parameter name="ing_addr" value="13" />
   <parameter name="insert_ta" value="true" />
   <parameter name="maclite_gige" value="false" />
   <parameter name="max_channels" value="1" />

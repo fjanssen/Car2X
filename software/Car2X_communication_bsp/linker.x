@@ -4,7 +4,7 @@
  * Machine generated for CPU 'com_nios' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Mon Jun 30 10:48:03 CEST 2014
+ * Generated: Mon Jun 30 20:49:18 CEST 2014
  */
 
 /*
@@ -55,7 +55,7 @@ MEMORY
     com_memory : ORIGIN = 0x4005020, LENGTH = 67088352
     ethernet_subsystem_descriptor_memory : ORIGIN = 0x8000000, LENGTH = 8192
     shared_memory : ORIGIN = 0x8002000, LENGTH = 4096
-    com_ocmemory : ORIGIN = 0x8004000, LENGTH = 3072
+    com_ocmemory : ORIGIN = 0x8004000, LENGTH = 1024
 }
 
 /* Define symbols for each memory base-address */

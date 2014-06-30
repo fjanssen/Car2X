@@ -4,7 +4,7 @@
  * Machine generated for CPU 'com_nios' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Mon Jun 30 10:48:03 CEST 2014
+ * Generated: Mon Jun 30 20:49:18 CEST 2014
  */
 
 /*
@@ -70,7 +70,7 @@
 #define COM_MEMORY_REGION_BASE 0x4005020
 #define COM_MEMORY_REGION_SPAN 67088352
 #define COM_OCMEMORY_REGION_BASE 0x8004000
-#define COM_OCMEMORY_REGION_SPAN 3072
+#define COM_OCMEMORY_REGION_SPAN 1024
 #define ETHERNET_SUBSYSTEM_DESCRIPTOR_MEMORY_REGION_BASE 0x8000000
 #define ETHERNET_SUBSYSTEM_DESCRIPTOR_MEMORY_REGION_SPAN 8192
 #define RESET_REGION_BASE 0x4005000

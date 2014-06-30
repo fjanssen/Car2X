@@ -1,10 +1,10 @@
 /*
  * linker.x - Linker script
  *
- * Machine generated for CPU 'nios2_car_controll' in SOPC Builder design 'nios_system'
+ * Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Tue Jun 03 14:34:06 CEST 2014
+ * Generated: Mon Jun 23 15:08:31 CEST 2014
  */
 
 /*
@@ -50,14 +50,14 @@
 
 MEMORY
 {
-    reset : ORIGIN = 0x20000, LENGTH = 32
-    main_memory_car_controll : ORIGIN = 0x20020, LENGTH = 102368
-    shared_memory : ORIGIN = 0x40000, LENGTH = 4096
+    reset : ORIGIN = 0x80000, LENGTH = 32
+    onchip_memory2_0 : ORIGIN = 0x80020, LENGTH = 307168
+    shared_memory : ORIGIN = 0x8000000, LENGTH = 4096
 }
 
 /* Define symbols for each memory base-address */
-__alt_mem_main_memory_car_controll = 0x20000;
-__alt_mem_shared_memory = 0x40000;
+__alt_mem_onchip_memory2_0 = 0x80000;
+__alt_mem_shared_memory = 0x8000000;
 
 OUTPUT_FORMAT( "elf32-littlenios2",
                "elf32-littlenios2",
@@ -112,7 +112,7 @@ SECTIONS
         KEEP (*(.exceptions.exit));
         KEEP (*(.exceptions));
         PROVIDE (__ram_exceptions_end = ABSOLUTE(.));
-    } > main_memory_car_controll
+    } > onchip_memory2_0
 
     PROVIDE (__flash_exceptions_start = LOADADDR(.exceptions));
 
@@ -208,7 +208,7 @@ SECTIONS
         PROVIDE (__DTOR_END__ = ABSOLUTE(.));
         KEEP (*(.jcr))
         . = ALIGN(4);
-    } > main_memory_car_controll = 0x3a880100 /* Nios II NOP instruction */
+    } > onchip_memory2_0 = 0x3a880100 /* Nios II NOP instruction */
 
     .rodata :
     {
@@ -218,7 +218,7 @@ SECTIONS
         *(.rodata1)
         . = ALIGN(4);
         PROVIDE (__ram_rodata_end = ABSOLUTE(.));
-    } > main_memory_car_controll
+    } > onchip_memory2_0
 
     PROVIDE (__flash_rodata_start = LOADADDR(.rodata));
 
@@ -252,7 +252,7 @@ SECTIONS
         _edata = ABSOLUTE(.);
         PROVIDE (edata = ABSOLUTE(.));
         PROVIDE (__ram_rwdata_end = ABSOLUTE(.));
-    } > main_memory_car_controll
+    } > onchip_memory2_0
 
     PROVIDE (__flash_rwdata_start = LOADADDR(.rwdata));
 
@@ -283,7 +283,7 @@ SECTIONS
 
         . = ALIGN(4);
         __bss_end = ABSOLUTE(.);
-    } > main_memory_car_controll
+    } > onchip_memory2_0
 
     /*
      *
@@ -308,18 +308,18 @@ SECTIONS
      *
      */
 
-    .main_memory_car_controll LOADADDR (.bss) + SIZEOF (.bss) : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
+    .onchip_memory2_0 LOADADDR (.bss) + SIZEOF (.bss) : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
     {
-        PROVIDE (_alt_partition_main_memory_car_controll_start = ABSOLUTE(.));
-        *(.main_memory_car_controll. main_memory_car_controll.*)
+        PROVIDE (_alt_partition_onchip_memory2_0_start = ABSOLUTE(.));
+        *(.onchip_memory2_0. onchip_memory2_0.*)
         . = ALIGN(4);
-        PROVIDE (_alt_partition_main_memory_car_controll_end = ABSOLUTE(.));
+        PROVIDE (_alt_partition_onchip_memory2_0_end = ABSOLUTE(.));
         _end = ABSOLUTE(.);
         end = ABSOLUTE(.);
         __alt_stack_base = ABSOLUTE(.);
-    } > main_memory_car_controll
+    } > onchip_memory2_0
 
-    PROVIDE (_alt_partition_main_memory_car_controll_load_addr = LOADADDR(.main_memory_car_controll));
+    PROVIDE (_alt_partition_onchip_memory2_0_load_addr = LOADADDR(.onchip_memory2_0));
 
     /*
      *
@@ -328,7 +328,7 @@ SECTIONS
      *
      */
 
-    .shared_memory : AT ( LOADADDR (.main_memory_car_controll) + SIZEOF (.main_memory_car_controll) )
+    .shared_memory : AT ( LOADADDR (.onchip_memory2_0) + SIZEOF (.onchip_memory2_0) )
     {
         PROVIDE (_alt_partition_shared_memory_start = ABSOLUTE(.));
         *(.shared_memory. shared_memory.*)
@@ -385,7 +385,7 @@ SECTIONS
 /*
  * Don't override this, override the __alt_stack_* symbols instead.
  */
-__alt_data_end = 0x39000;
+__alt_data_end = 0xcb000;
 
 /*
  * The next two symbols define the location of the default stack.  You can
@@ -401,4 +401,4 @@ PROVIDE( __alt_stack_limit   = __alt_stack_base );
  * Override this symbol to put the heap in a different memory.
  */
 PROVIDE( __alt_heap_start    = end );
-PROVIDE( __alt_heap_limit    = 0x39000 );
+PROVIDE( __alt_heap_limit    = 0xcb000 );
