@@ -3,9 +3,9 @@
 # This script creates the simple_socket_server application in this directory.
 
 
-BSP_DIR=C:/Users/Florian/Documents/GitHub/Car2X/software/Car2X_communication_bsp/
+BSP_DIR=C:/Users/Florian/Documents/GitHub/Car2X/software/Car2X_Communication_bsp/
 QUARTUS_PROJECT_DIR=C:/Users/Florian/Documents/GitHub/Car2X/hardware/
-NIOS2_APP_GEN_ARGS="--elf-name Car2X_communication.elf  --set OBJDUMP_INCLUDE_SOURCE 1 --src-files alt_error_handler.c iniche_init.c led.c network_utilities.c simple_socket_server.c tse_my_system.c"
+NIOS2_APP_GEN_ARGS="--elf-name Car2X_Communication.elf  --set OBJDUMP_INCLUDE_SOURCE 1 --src-files alt_error_handler.c iniche_init.c led.c network_utilities.c simple_socket_server.c tse_my_system.c"
 
 
 # First, check to see if $SOPC_KIT_NIOS2 environmental variable is set.

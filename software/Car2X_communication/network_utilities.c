@@ -15,23 +15,19 @@
 #include <sys/alt_flash.h>
 #include "includes.h"
 #include "io.h"
-#include "simple_socket_server.h"
+#include "socketserver.h"
 
 #include <alt_iniche_dev.h>
 
 #include "ipport.h"
 #include "tcpport.h"
 #include "network_utilities.h"
-#include "system.h"
 
 #define IP4_ADDR(ipaddr, a,b,c,d) ipaddr = \
     htonl((((alt_u32)(a & 0xff) << 24) | ((alt_u32)(b & 0xff) << 16) | \
           ((alt_u32)(c & 0xff) << 8) | (alt_u32)(d & 0xff)))
 
 error_t generate_mac_addr(unsigned char mac_addr[6]);
-
-char * EXT_FLASH_NAME = "descriptor_memory";
-alt_u32 EXT_FLASH_BASE = 0;
 
 /*
 * get_mac_addr
@@ -177,82 +173,83 @@ alt_u32 get_serial_number (void)
 error_t generate_and_store_mac_addr()
 {
     error_t error = -1;
-    alt_u32 ser_num = 0;
-    char flash_content[32];
-    alt_flash_fd* flash_handle;
-    
-    printf("Can't read the MAC address from your board (this probably means\n");
-    printf("that your flash was erased). We will assign you a MAC address and\n");
-    printf("static network settings\n\n");
-    
-    ser_num = get_serial_number();
-  
-    if (ser_num)
-    {
-        /* This says the image is safe */
-        flash_content[0] = 0xfe;
-        flash_content[1] = 0x5a;
-        flash_content[2] = 0x0;
-        flash_content[3] = 0x0;
-        
-        /* This is the Altera Vendor ID */
-        flash_content[4] = 0x0;
-        flash_content[5] = 0x7;
-        flash_content[6] = 0xed;
-        
-        /* Reserverd Board identifier for erase boards */
-        flash_content[7] = 0xFF;
-        flash_content[8] = (ser_num & 0xff00) >> 8;
-        flash_content[9] = ser_num & 0xff;
-        
-        /* Then comes a 16-bit "flags" field */
-        flash_content[10] = 0xFF;
-        flash_content[11] = 0xFF;
-        
-        /* Then comes the static IP address */
-        flash_content[12] = IPADDR0;
-        flash_content[13] = IPADDR1;
-        flash_content[14] = IPADDR2;
-        flash_content[15] = IPADDR3;
-        
-        /* Then comes the static nameserver address */
-        flash_content[16] = 0xFF;
-        flash_content[17] = 0xFF;
-        flash_content[18] = 0xFF;
-        flash_content[19] = 0xFF;
-        
-        /* Then comes the static subnet mask */
-        flash_content[20] = MSKADDR0;
-        flash_content[21] = MSKADDR1;
-        flash_content[22] = MSKADDR2;
-        flash_content[23] = MSKADDR3;
-        
-        /* Then comes the static gateway address */
-        flash_content[24] = GWADDR0;
-        flash_content[25] = GWADDR1;
-        flash_content[26] = GWADDR2;
-        flash_content[27] = GWADDR3;
-        
-        /* And finally whether to use DHCP - set all bits to be safe */
-        flash_content[28] = 0xFF;
-        flash_content[29] = 0xFF;
-        flash_content[30] = 0xFF;
-        flash_content[31] = 0xFF;
-        
-        /* Write the MAC address to flash */
-        flash_handle = alt_flash_open_dev(EXT_FLASH_NAME);
-        if (flash_handle)
-        {
-            alt_write_flash(flash_handle,
-                            last_flash_sector_offset,
-                            flash_content,
-                            32);
-            alt_flash_close_dev(flash_handle);
-            error = 0;
-        }
-    }
+//    alt_u32 ser_num = 0;
+//    char flash_content[32];
+//    alt_flash_fd* flash_handle;
+//
+//    printf("Can't read the MAC address from your board (this probably means\n");
+//    printf("that your flash was erased). We will assign you a MAC address and\n");
+//    printf("static network settings\n\n");
+//
+//    ser_num = get_serial_number();
+//
+//    if (ser_num)
+//    {
+//        /* This says the image is safe */
+//        flash_content[0] = 0xfe;
+//        flash_content[1] = 0x5a;
+//        flash_content[2] = 0x0;
+//        flash_content[3] = 0x0;
+//
+//        /* This is the Altera Vendor ID */
+//        flash_content[4] = 0x0;
+//        flash_content[5] = 0x7;
+//        flash_content[6] = 0xed;
+//
+//        /* Reserverd Board identifier for erase boards */
+//        flash_content[7] = 0xFF;
+//        flash_content[8] = (ser_num & 0xff00) >> 8;
+//        flash_content[9] = ser_num & 0xff;
+//
+//        /* Then comes a 16-bit "flags" field */
+//        flash_content[10] = 0xFF;
+//        flash_content[11] = 0xFF;
+//
+//        /* Then comes the static IP address */
+//        flash_content[12] = IPADDR0;
+//        flash_content[13] = IPADDR1;
+//        flash_content[14] = IPADDR2;
+//        flash_content[15] = IPADDR3;
+//
+//        /* Then comes the static nameserver address */
+//        flash_content[16] = 0xFF;
+//        flash_content[17] = 0xFF;
+//        flash_content[18] = 0xFF;
+//        flash_content[19] = 0xFF;
+//
+//        /* Then comes the static subnet mask */
+//        flash_content[20] = MSKADDR0;
+//        flash_content[21] = MSKADDR1;
+//        flash_content[22] = MSKADDR2;
+//        flash_content[23] = MSKADDR3;
+//
+//        /* Then comes the static gateway address */
+//        flash_content[24] = GWADDR0;
+//        flash_content[25] = GWADDR1;
+//        flash_content[26] = GWADDR2;
+//        flash_content[27] = GWADDR3;
+//
+//        /* And finally whether to use DHCP - set all bits to be safe */
+//        flash_content[28] = 0xFF;
+//        flash_content[29] = 0xFF;
+//        flash_content[30] = 0xFF;
+//        flash_content[31] = 0xFF;
+//
+//        /* Write the MAC address to flash */
+//        flash_handle = alt_flash_open_dev(EXT_FLASH_NAME);
+//        if (flash_handle)
+//        {
+//            alt_write_flash(flash_handle,
+//                            last_flash_sector_offset,
+//                            flash_content,
+//                            32);
+//            alt_flash_close_dev(flash_handle);
+//            error = 0;
+//        }
+//    }
 
-    return error;
+    error = 0;
+    return error;    
 }
 
 /*
@@ -312,47 +309,59 @@ error_t generate_mac_addr(unsigned char mac_addr[6])
 error_t get_board_mac_addr(unsigned char mac_addr[6])
 {
     error_t error = 0;
-    alt_u32 signature;
+//    alt_u32 signature;
+//
+//    /* Get the flash sector with the MAC address. */
+//    error = FindLastFlashSectorOffset(&last_flash_sector_offset);
+//    if (!error)
+//        last_flash_sector = EXT_FLASH_BASE + last_flash_sector_offset;
+//
+//    /* This last_flash_sector region of flash is examined to see if
+//     * valid network settings are present, indicated by a signature of 0x00005afe at
+//     * the first address of the last flash sector.  This hex value is chosen as the
+//     * signature since it looks like the english word "SAFE", meaning that it is
+//     * safe to use these network address values.
+//    */
+//    if (!error)
+//    {
+//        signature = IORD_32DIRECT(last_flash_sector, 0);
+//        if (signature != 0x00005afe)
+//        {
+//          error = generate_and_store_mac_addr();
+//        }
+//    }
+//
+//    if (!error)
+//    {
+//        mac_addr[0] = IORD_8DIRECT(last_flash_sector, 4);
+//        mac_addr[1] = IORD_8DIRECT(last_flash_sector, 5);
+//        mac_addr[2] = IORD_8DIRECT(last_flash_sector, 6);
+//        mac_addr[3] = IORD_8DIRECT(last_flash_sector, 7);
+//        mac_addr[4] = IORD_8DIRECT(last_flash_sector, 8);
+//        mac_addr[5] = IORD_8DIRECT(last_flash_sector, 9);
+//
+//        printf("Your Ethernet MAC address is %02x:%02x:%02x:%02x:%02x:%02x\n",
+//            mac_addr[0],
+//            mac_addr[1],
+//            mac_addr[2],
+//            mac_addr[3],
+//            mac_addr[4],
+//            mac_addr[5]);
+//
+//    }
     
-    /* Get the flash sector with the MAC address. */
-    error = FindLastFlashSectorOffset(&last_flash_sector_offset);
-    if (!error)
-        last_flash_sector = EXT_FLASH_BASE + last_flash_sector_offset;
+    // TODO: start change
+    error = 0;
 
-    /* This last_flash_sector region of flash is examined to see if 
-     * valid network settings are present, indicated by a signature of 0x00005afe at 
-     * the first address of the last flash sector.  This hex value is chosen as the 
-     * signature since it looks like the english word "SAFE", meaning that it is 
-     * safe to use these network address values.  
-    */
-    if (!error)
-    {
-        signature = IORD_32DIRECT(last_flash_sector, 0);
-        if (signature != 0x00005afe)
-        {
-          error = generate_and_store_mac_addr();
-        }
-    }
-  
-    if (!error)
-    {
-        mac_addr[0] = IORD_8DIRECT(last_flash_sector, 4);
-        mac_addr[1] = IORD_8DIRECT(last_flash_sector, 5);
-        mac_addr[2] = IORD_8DIRECT(last_flash_sector, 6);
-        mac_addr[3] = IORD_8DIRECT(last_flash_sector, 7);
-        mac_addr[4] = IORD_8DIRECT(last_flash_sector, 8);
-        mac_addr[5] = IORD_8DIRECT(last_flash_sector, 9);
-    
-        printf("Your Ethernet MAC address is %02x:%02x:%02x:%02x:%02x:%02x\n", 
-            mac_addr[0],
-            mac_addr[1],
-            mac_addr[2],
-            mac_addr[3],
-            mac_addr[4],
-            mac_addr[5]);
-    
-    }
-    
+    mac_addr[0] = 0x00;
+    mac_addr[1]= 0x00;
+    mac_addr[2]= 0x00;
+    mac_addr[3]= 0x00;
+    mac_addr[4]= 0x00;
+    mac_addr[5]= 0x00;
+
+    // end change
+
     return error;
 }
 
@@ -377,40 +386,40 @@ error_t get_board_mac_addr(unsigned char mac_addr[6])
 int FindLastFlashSectorOffset(
     alt_u32                     *pLastFlashSectorOffset)
 {
-    alt_flash_fd                *fd;
-    flash_region                *regions;
-    int                         numRegions;
-    flash_region                *pLastRegion;
-    int                         lastFlashSectorOffset;
-    int                         n;
+//    alt_flash_fd                *fd;
+//    flash_region                *regions;
+//    int                         numRegions;
+//    flash_region                *pLastRegion;
+//    int                         lastFlashSectorOffset;
+//    int                         n;
     int                         error = 0;
-
-    /* Open the flash device. */
-    fd = alt_flash_open_dev(EXT_FLASH_NAME);
-    if (fd <= 0)
-        error = -1;
-
-    /* Get the flash info. */
-    if (!error)
-        error = alt_get_flash_info(fd, &regions, &numRegions);
-
-    /* Find the last flash sector. */
-    if (!error)
-    {
-        pLastRegion = &(regions[0]);
-        for (n = 1; n < numRegions; n++)
-        {
-            if (regions[n].offset > pLastRegion->offset)
-                pLastRegion = &(regions[n]);
-        }
-        lastFlashSectorOffset =   pLastRegion->offset
-                                + pLastRegion->region_size
-                                - pLastRegion->block_size;
-    }
-
-    /* Return results. */
-    if (!error)
-        *pLastFlashSectorOffset = lastFlashSectorOffset;
+//
+//    /* Open the flash device. */
+//    fd = alt_flash_open_dev(EXT_FLASH_NAME);
+//    if (fd <= 0)
+//        error = -1;
+//
+//    /* Get the flash info. */
+//    if (!error)
+//        error = alt_get_flash_info(fd, &regions, &numRegions);
+//
+//    /* Find the last flash sector. */
+//    if (!error)
+//    {
+//        pLastRegion = &(regions[0]);
+//        for (n = 1; n < numRegions; n++)
+//        {
+//            if (regions[n].offset > pLastRegion->offset)
+//                pLastRegion = &(regions[n]);
+//        }
+//        lastFlashSectorOffset =   pLastRegion->offset
+//                                + pLastRegion->region_size
+//                                - pLastRegion->block_size;
+//    }
+//
+//    /* Return results. */
+//    if (!error)
+//        *pLastFlashSectorOffset = lastFlashSectorOffset;
 
     return (error);
 }

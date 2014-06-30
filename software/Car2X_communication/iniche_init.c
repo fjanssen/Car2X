@@ -110,7 +110,8 @@ void SSSInitialTask(void *task_data)
 
 int main (int argc, char* argv[], char* envp[])
 {
-  
+  printf("hallo com core\n");
+
   INT8U error_code;
 
   /* Clear the RTOS timer */

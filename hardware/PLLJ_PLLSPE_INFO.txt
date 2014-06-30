@@ -3,3 +3,8 @@ PLLJITTER	35
 PLLSPEmax	84
 PLLSPEmin	-53
 
+PLL_Name	nios_system:system_inst|nios_system_com_sdram_clk:com_sdram_clk|altpll:DE_Clock_Generator_System|altpll_6rb2:auto_generated|pll1
+PLLJITTER	35
+PLLSPEmax	84
+PLLSPEmin	-53
+

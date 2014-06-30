@@ -1,10 +1,10 @@
 /*
  * alt_sys_init.c - HAL initialization source
  *
- * Machine generated for CPU 'nios2_communication' in SOPC Builder design 'nios_system'
+ * Machine generated for CPU 'com_nios' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Mon Jun 16 11:48:59 CEST 2014
+ * Generated: Mon Jun 30 10:48:03 CEST 2014
  */
 
 /*
@@ -69,13 +69,13 @@
  * Allocate the device storage
  */
 
-ALTERA_NIOS2_QSYS_IRQ_INSTANCE ( NIOS2_COMMUNICATION, nios2_communication);
-ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_UART_COMMUNICATION, jtag_uart_communication);
-ALTERA_AVALON_MUTEX_INSTANCE ( MUTEX_SHARED_MEMORY, mutex_shared_memory);
-ALTERA_AVALON_SGDMA_INSTANCE ( SGDMA_RX, sgdma_rx);
-ALTERA_AVALON_SGDMA_INSTANCE ( SGDMA_TX, sgdma_tx);
-ALTERA_AVALON_TIMER_INSTANCE ( INTERVAL_TIMER, interval_timer);
-TRIPLE_SPEED_ETHERNET_INSTANCE ( TSE_MAC, tse_mac);
+ALTERA_NIOS2_QSYS_IRQ_INSTANCE ( COM_NIOS, com_nios);
+ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAGUART_0, jtaguart_0);
+ALTERA_AVALON_MUTEX_INSTANCE ( SHARED_MEMORY_MUTEX, shared_memory_mutex);
+ALTERA_AVALON_SGDMA_INSTANCE ( ETHERNET_SUBSYSTEM_SGDMA_RX, ethernet_subsystem_sgdma_rx);
+ALTERA_AVALON_SGDMA_INSTANCE ( ETHERNET_SUBSYSTEM_SGDMA_TX, ethernet_subsystem_sgdma_tx);
+ALTERA_AVALON_TIMER_INSTANCE ( COM_TIMER, com_timer);
+TRIPLE_SPEED_ETHERNET_INSTANCE ( ETHERNET_SUBSYSTEM_TSE_MAC, ethernet_subsystem_tse_mac);
 
 /*
  * Initialize the interrupt controller devices
@@ -87,7 +87,7 @@ TRIPLE_SPEED_ETHERNET_INSTANCE ( TSE_MAC, tse_mac);
 
 void alt_irq_init ( const void* base )
 {
-    ALTERA_NIOS2_QSYS_IRQ_INIT ( NIOS2_COMMUNICATION, nios2_communication);
+    ALTERA_NIOS2_QSYS_IRQ_INIT ( COM_NIOS, com_nios);
     alt_irq_cpu_enable_interrupts();
 }
 
@@ -98,10 +98,10 @@ void alt_irq_init ( const void* base )
 
 void alt_sys_init( void )
 {
-    ALTERA_AVALON_TIMER_INIT ( INTERVAL_TIMER, interval_timer);
-    ALTERA_AVALON_JTAG_UART_INIT ( JTAG_UART_COMMUNICATION, jtag_uart_communication);
-    ALTERA_AVALON_MUTEX_INIT ( MUTEX_SHARED_MEMORY, mutex_shared_memory);
-    ALTERA_AVALON_SGDMA_INIT ( SGDMA_RX, sgdma_rx);
-    ALTERA_AVALON_SGDMA_INIT ( SGDMA_TX, sgdma_tx);
-    TRIPLE_SPEED_ETHERNET_INIT ( TSE_MAC, tse_mac);
+    ALTERA_AVALON_TIMER_INIT ( COM_TIMER, com_timer);
+    ALTERA_AVALON_JTAG_UART_INIT ( JTAGUART_0, jtaguart_0);
+    ALTERA_AVALON_MUTEX_INIT ( SHARED_MEMORY_MUTEX, shared_memory_mutex);
+    ALTERA_AVALON_SGDMA_INIT ( ETHERNET_SUBSYSTEM_SGDMA_RX, ethernet_subsystem_sgdma_rx);
+    ALTERA_AVALON_SGDMA_INIT ( ETHERNET_SUBSYSTEM_SGDMA_TX, ethernet_subsystem_sgdma_tx);
+    TRIPLE_SPEED_ETHERNET_INIT ( ETHERNET_SUBSYSTEM_TSE_MAC, ethernet_subsystem_tse_mac);
 }

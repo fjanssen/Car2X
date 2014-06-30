@@ -1,9 +1,9 @@
 # memory.gdb - GDB memory region definitions
 #
-# Machine generated for CPU 'nios2_communication' in SOPC Builder design 'nios_system'
+# Machine generated for CPU 'com_nios' in SOPC Builder design 'nios_system'
 # SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
 #
-# Generated: Mon Jun 16 15:31:47 CEST 2014
+# Generated: Mon Jun 30 10:48:03 CEST 2014
 
 # DO NOT MODIFY THIS FILE
 #
@@ -46,14 +46,14 @@
 # The cache attribute is specified which improves GDB performance
 # by allowing GDB to cache memory contents on the host.
 
-# sdram_communication
+# com_memory
 memory 0x4000000 0x8000000 cache
 
-# main_memory_communication
-memory 0x8020000 0x8039000 cache
+# ethernet_subsystem_descriptor_memory
+memory 0x8000000 0x8002000 cache
 
 # shared_memory
-memory 0x8040000 0x8041000 cache
+memory 0x8002000 0x8003000 cache
 
-# descriptor_memory
-memory 0x8041000 0x8042000 cache
+# com_ocmemory
+memory 0x8004000 0x8004c00 cache

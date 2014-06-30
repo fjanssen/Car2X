@@ -142,13 +142,34 @@ ACDS_VERSION := 12.1
 ELF := Car2X_communication.elf
 
 # Paths to C, C++, and assembly source files.
+C_SRCS += main.c
 C_SRCS += alt_error_handler.c
-C_SRCS += iniche_init.c
-C_SRCS += led.c
-C_SRCS += network_utilities.c
-C_SRCS += simple_socket_server.c
 C_SRCS += tse_my_system.c
-CXX_SRCS :=
+C_SRCS += network_utilities.c
+CXX_SRCS += COMM_CarProtocol/ADCInfoMessage.cpp
+CXX_SRCS += COMM_CarProtocol/ADCValuesMessage.cpp
+CXX_SRCS += COMM_CarProtocol/AccelerationValuesMessage.cpp
+CXX_SRCS += COMM_CarProtocol/CarMessage.cpp
+CXX_SRCS += COMM_CarProtocol/CarProtocol.cpp
+CXX_SRCS += COMM_CarProtocol/MotorMeasurementMessage.cpp
+CXX_SRCS += COMM_CarProtocol/MotorVelocityMessage.cpp
+CXX_SRCS += COMM_CarProtocol/UltrasoundDistanceMessage.cpp
+CXX_SRCS += COMM_CarProtocol/WelcomeMessage.cpp
+CXX_SRCS += external_drivers/accelerometer_interface.cpp
+CXX_SRCS += external_drivers/adc_interface.cpp
+CXX_SRCS += sensors/AccelerationSensor.cpp
+CXX_SRCS += sensors/SensorState.cpp
+CXX_SRCS += sensors/UltrasoundSensor.cpp
+CXX_SRCS += etc/utility.cpp
+CXX_SRCS += terasic_lib/I2C.cpp
+CXX_SRCS += terasic_lib/accelerometer_adxl345_spi.cpp
+CXX_SRCS += terasic_lib/adc_spi_read.cpp
+CXX_SRCS += terasic_lib/terasic_spi.cpp
+CXX_SRCS += external_drivers/ultrasound_interface.cpp
+CXX_SRCS += sensors/ADCSensor.cpp
+CXX_SRCS += CarMessages/CEmergencyBrakeMessage.cpp
+CXX_SRCS += CarMessages/CControlMessage.cpp
+CXX_SRCS += socketserver.cpp
 ASM_SRCS :=
 
 
@@ -157,7 +178,7 @@ OBJ_ROOT_DIR := obj
 
 # Options to control objdump.
 CREATE_OBJDUMP := 1
-OBJDUMP_INCLUDE_SOURCE := 1
+OBJDUMP_INCLUDE_SOURCE := 0
 OBJDUMP_FULL_CONTENTS := 0
 
 # Options to enable/disable optional files.
@@ -182,10 +203,16 @@ CRT0 :=
 SYS_LIB :=
 
 # Define path to the root of the BSP.
-BSP_ROOT_DIR := C:/Users/Florian/Documents/GitHub/Car2X/software/Car2X_communication_bsp/
+BSP_ROOT_DIR := ../Car2X_communication_bsp/
 
 # List of application specific include directories, library directories and library names
-APP_INCLUDE_DIRS :=
+APP_INCLUDE_DIRS += COMM_CarProtocol/headers
+APP_INCLUDE_DIRS += CarMessages
+APP_INCLUDE_DIRS += etc
+APP_INCLUDE_DIRS += external_drivers
+APP_INCLUDE_DIRS += motor_control
+APP_INCLUDE_DIRS += sensors
+APP_INCLUDE_DIRS += terasic_lib
 APP_LIBRARY_DIRS :=
 APP_LIBRARY_NAMES :=
 
@@ -193,7 +220,6 @@ APP_LIBRARY_NAMES :=
 BUILD_PRE_PROCESS :=
 BUILD_POST_PROCESS :=
 
-QUARTUS_PROJECT_DIR := C:/Users/Florian/Documents/GitHub/Car2X/hardware/
 
 
 #END GENERATED

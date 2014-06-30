@@ -1,10 +1,10 @@
 /*
  * linker.x - Linker script
  *
- * Machine generated for CPU 'nios2_communication' in SOPC Builder design 'nios_system'
+ * Machine generated for CPU 'com_nios' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Mon Jun 16 15:31:47 CEST 2014
+ * Generated: Mon Jun 30 10:48:03 CEST 2014
  */
 
 /*
@@ -50,18 +50,19 @@
 
 MEMORY
 {
-    reset : ORIGIN = 0x4000000, LENGTH = 32
-    sdram_communication : ORIGIN = 0x4000020, LENGTH = 67108832
-    main_memory_communication : ORIGIN = 0x8020000, LENGTH = 102400
-    shared_memory : ORIGIN = 0x8040000, LENGTH = 4096
-    descriptor_memory : ORIGIN = 0x8041000, LENGTH = 4096
+    com_memory_BEFORE_RESET : ORIGIN = 0x4000000, LENGTH = 20480
+    reset : ORIGIN = 0x4005000, LENGTH = 32
+    com_memory : ORIGIN = 0x4005020, LENGTH = 67088352
+    ethernet_subsystem_descriptor_memory : ORIGIN = 0x8000000, LENGTH = 8192
+    shared_memory : ORIGIN = 0x8002000, LENGTH = 4096
+    com_ocmemory : ORIGIN = 0x8004000, LENGTH = 3072
 }
 
 /* Define symbols for each memory base-address */
-__alt_mem_sdram_communication = 0x4000000;
-__alt_mem_main_memory_communication = 0x8020000;
-__alt_mem_shared_memory = 0x8040000;
-__alt_mem_descriptor_memory = 0x8041000;
+__alt_mem_com_memory = 0x4000000;
+__alt_mem_ethernet_subsystem_descriptor_memory = 0x8000000;
+__alt_mem_shared_memory = 0x8002000;
+__alt_mem_com_ocmemory = 0x8004000;
 
 OUTPUT_FORMAT( "elf32-littlenios2",
                "elf32-littlenios2",
@@ -116,7 +117,7 @@ SECTIONS
         KEEP (*(.exceptions.exit));
         KEEP (*(.exceptions));
         PROVIDE (__ram_exceptions_end = ABSOLUTE(.));
-    } > sdram_communication
+    } > com_memory
 
     PROVIDE (__flash_exceptions_start = LOADADDR(.exceptions));
 
@@ -212,7 +213,7 @@ SECTIONS
         PROVIDE (__DTOR_END__ = ABSOLUTE(.));
         KEEP (*(.jcr))
         . = ALIGN(4);
-    } > sdram_communication = 0x3a880100 /* Nios II NOP instruction */
+    } > com_memory = 0x3a880100 /* Nios II NOP instruction */
 
     .rodata :
     {
@@ -222,7 +223,7 @@ SECTIONS
         *(.rodata1)
         . = ALIGN(4);
         PROVIDE (__ram_rodata_end = ABSOLUTE(.));
-    } > sdram_communication
+    } > com_memory
 
     PROVIDE (__flash_rodata_start = LOADADDR(.rodata));
 
@@ -256,7 +257,7 @@ SECTIONS
         _edata = ABSOLUTE(.);
         PROVIDE (edata = ABSOLUTE(.));
         PROVIDE (__ram_rwdata_end = ABSOLUTE(.));
-    } > sdram_communication
+    } > com_memory
 
     PROVIDE (__flash_rwdata_start = LOADADDR(.rwdata));
 
@@ -287,7 +288,7 @@ SECTIONS
 
         . = ALIGN(4);
         __bss_end = ABSOLUTE(.);
-    } > sdram_communication
+    } > com_memory
 
     /*
      *
@@ -312,18 +313,18 @@ SECTIONS
      *
      */
 
-    .sdram_communication LOADADDR (.bss) + SIZEOF (.bss) : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
+    .com_memory LOADADDR (.bss) + SIZEOF (.bss) : AT ( LOADADDR (.bss) + SIZEOF (.bss) )
     {
-        PROVIDE (_alt_partition_sdram_communication_start = ABSOLUTE(.));
-        *(.sdram_communication. sdram_communication.*)
+        PROVIDE (_alt_partition_com_memory_start = ABSOLUTE(.));
+        *(.com_memory. com_memory.*)
         . = ALIGN(4);
-        PROVIDE (_alt_partition_sdram_communication_end = ABSOLUTE(.));
+        PROVIDE (_alt_partition_com_memory_end = ABSOLUTE(.));
         _end = ABSOLUTE(.);
         end = ABSOLUTE(.);
         __alt_stack_base = ABSOLUTE(.);
-    } > sdram_communication
+    } > com_memory
 
-    PROVIDE (_alt_partition_sdram_communication_load_addr = LOADADDR(.sdram_communication));
+    PROVIDE (_alt_partition_com_memory_load_addr = LOADADDR(.com_memory));
 
     /*
      *
@@ -332,15 +333,15 @@ SECTIONS
      *
      */
 
-    .main_memory_communication : AT ( LOADADDR (.sdram_communication) + SIZEOF (.sdram_communication) )
+    .ethernet_subsystem_descriptor_memory : AT ( LOADADDR (.com_memory) + SIZEOF (.com_memory) )
     {
-        PROVIDE (_alt_partition_main_memory_communication_start = ABSOLUTE(.));
-        *(.main_memory_communication. main_memory_communication.*)
+        PROVIDE (_alt_partition_ethernet_subsystem_descriptor_memory_start = ABSOLUTE(.));
+        *(.ethernet_subsystem_descriptor_memory. ethernet_subsystem_descriptor_memory.*)
         . = ALIGN(4);
-        PROVIDE (_alt_partition_main_memory_communication_end = ABSOLUTE(.));
-    } > main_memory_communication
+        PROVIDE (_alt_partition_ethernet_subsystem_descriptor_memory_end = ABSOLUTE(.));
+    } > ethernet_subsystem_descriptor_memory
 
-    PROVIDE (_alt_partition_main_memory_communication_load_addr = LOADADDR(.main_memory_communication));
+    PROVIDE (_alt_partition_ethernet_subsystem_descriptor_memory_load_addr = LOADADDR(.ethernet_subsystem_descriptor_memory));
 
     /*
      *
@@ -349,7 +350,7 @@ SECTIONS
      *
      */
 
-    .shared_memory : AT ( LOADADDR (.main_memory_communication) + SIZEOF (.main_memory_communication) )
+    .shared_memory : AT ( LOADADDR (.ethernet_subsystem_descriptor_memory) + SIZEOF (.ethernet_subsystem_descriptor_memory) )
     {
         PROVIDE (_alt_partition_shared_memory_start = ABSOLUTE(.));
         *(.shared_memory. shared_memory.*)
@@ -366,15 +367,15 @@ SECTIONS
      *
      */
 
-    .descriptor_memory : AT ( LOADADDR (.shared_memory) + SIZEOF (.shared_memory) )
+    .com_ocmemory : AT ( LOADADDR (.shared_memory) + SIZEOF (.shared_memory) )
     {
-        PROVIDE (_alt_partition_descriptor_memory_start = ABSOLUTE(.));
-        *(.descriptor_memory. descriptor_memory.*)
+        PROVIDE (_alt_partition_com_ocmemory_start = ABSOLUTE(.));
+        *(.com_ocmemory. com_ocmemory.*)
         . = ALIGN(4);
-        PROVIDE (_alt_partition_descriptor_memory_end = ABSOLUTE(.));
-    } > descriptor_memory
+        PROVIDE (_alt_partition_com_ocmemory_end = ABSOLUTE(.));
+    } > com_ocmemory
 
-    PROVIDE (_alt_partition_descriptor_memory_load_addr = LOADADDR(.descriptor_memory));
+    PROVIDE (_alt_partition_com_ocmemory_load_addr = LOADADDR(.com_ocmemory));
 
     /*
      * Stabs debugging sections.

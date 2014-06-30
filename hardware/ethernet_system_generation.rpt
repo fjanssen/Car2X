@@ -1,0 +1,100 @@
+Info: Starting: Create HDL design files for synthesis
+Info: ip-generate --project-directory=C:/Users/Florian/Documents/GitHub/Car2X/hardware/ --output-directory=C:/Users/Florian/Documents/GitHub/Car2X/hardware/ethernet_system/synthesis/ --file-set=QUARTUS_SYNTH --report-file=sopcinfo:C:/Users/Florian/Documents/GitHub/Car2X/hardware/ethernet_system.sopcinfo --report-file=html:C:/Users/Florian/Documents/GitHub/Car2X/hardware/ethernet_system.html --report-file=qip:C:/Users/Florian/Documents/GitHub/Car2X/hardware/ethernet_system/synthesis/ethernet_system.qip --report-file=cmp:C:/Users/Florian/Documents/GitHub/Car2X/hardware/ethernet_system.cmp --system-info=DEVICE_FAMILY="Cyclone IV E" --system-info=DEVICE=EP4CE115F29C7 --system-info=DEVICE_SPEEDGRADE=7 --component-file=C:/Users/Florian/Documents/GitHub/Car2X/hardware/ethernet_system.qsys
+Progress: Loading hardware/ethernet_system.qsys
+Progress: Reading input file
+Progress: Adding clk [clock_source 12.1]
+Progress: Parameterizing module clk
+Progress: Adding ethernet_bridge [altera_avalon_mm_bridge 12.1]
+Progress: Parameterizing module ethernet_bridge
+Progress: Adding tse_mac [triple_speed_ethernet 12.1]
+Progress: Parameterizing module tse_mac
+Progress: Adding sgdma_rx [altera_avalon_sgdma 12.1]
+Progress: Parameterizing module sgdma_rx
+Progress: Adding sgdma_tx [altera_avalon_sgdma 12.1]
+Progress: Parameterizing module sgdma_tx
+Progress: Adding descriptor_memory [altera_avalon_onchip_memory2 12.1]
+Progress: Parameterizing module descriptor_memory
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: ethernet_system.tse_mac: Please apply the Quartus II and TimeQuest SDC constraints as mentioned in user guide
+Info: ethernet_system.descriptor_memory: Memory will be initialized from descriptor_memory.hex
+Info: ethernet_system: Generating ethernet_system "ethernet_system" for QUARTUS_SYNTH
+Info: pipeline_bridge_swap_transform: After transform: 6 modules, 23 connections
+Info: No custom instruction connections, skipping transform 
+Info: merlin_translator_transform: After transform: 15 modules, 50 connections
+Info: merlin_domain_transform: After transform: 30 modules, 126 connections
+Info: merlin_router_transform: After transform: 39 modules, 153 connections
+Info: merlin_traffic_limiter_transform: After transform: 40 modules, 157 connections
+Info: reset_adaptation_transform: After transform: 41 modules, 159 connections
+Info: merlin_network_to_switch_transform: After transform: 57 modules, 191 connections
+Info: limiter_update_transform: After transform: 57 modules, 192 connections
+Info: ethernet_bridge: "ethernet_system" instantiated altera_avalon_mm_bridge "ethernet_bridge"
+Info: tse_mac: Preparing to generate...
+Info: tse_mac: Variation name : ethernet_system_tse_mac
+Info: tse_mac: Variation language : Verilog HDL
+Info: tse_mac: Output directory : C:\Users\Florian\AppData\Local\Temp\alt6251_4943328890463619890.dir\0103_iptb_gen
+Info: tse_mac: Generating HDL... 
+Info: tse_mac: Generating QIP file ...
+Info: tse_mac: Updating user's project directory...
+Info: tse_mac: HDL generated
+Info: tse_mac: Generation successful.
+Info: tse_mac: "ethernet_system" instantiated triple_speed_ethernet "tse_mac"
+Info: Starting classic module elaboration.
+Qt: Untested Windows version 6.2 detected!
+"c:/altera/12.1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/12.1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/12.1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/12.1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/12.1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/12.1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0104_sopclgen  --no_splash --refresh C:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0104_sopclgen/yysystem.v --quartus_dir="c:/altera/12.1/quartus" --sopc_perl="c:/altera/12.1/quartus/bin/perl" --sopc_lib_path="++c:/altera/12.1/quartus/../ip/altera/sopc_builder_ip+c:/altera/12.1/quartus/../ip/altera/nios2_ip"
+Info: Finished elaborating classic module.
+Executing: C:/altera/12.1/quartus//sopc_builder/bin/sopc_builder --classic --generate C:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0104_sopclgen/yysystem.ptf
+Info: Running sopc_builder...
+Qt: Untested Windows version 6.2 detected!
+"c:/altera/12.1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/12.1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/12.1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/12.1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/12.1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/12.1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0104_sopclgen  --generate C:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0104_sopclgen/yysystem.v --quartus_dir="c:/altera/12.1/quartus" --sopc_perl="c:/altera/12.1/quartus/bin/perl" --sopc_lib_path="++c:/altera/12.1/quartus/../ip/altera/sopc_builder_ip+c:/altera/12.1/quartus/../ip/altera/nios2_ip"
+No .sopc_builder configuration file(!)
+.
+# 2014.06.30 10:44:12 (*) Success: sopc_builder finished.
+Info: sgdma_rx: "ethernet_system" instantiated altera_avalon_sgdma "sgdma_rx"
+Info: Starting classic module elaboration.
+Qt: Untested Windows version 6.2 detected!
+"c:/altera/12.1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/12.1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/12.1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/12.1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/12.1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/12.1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0105_sopclgen  --no_splash --refresh C:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0105_sopclgen/yysystem.v --quartus_dir="c:/altera/12.1/quartus" --sopc_perl="c:/altera/12.1/quartus/bin/perl" --sopc_lib_path="++c:/altera/12.1/quartus/../ip/altera/sopc_builder_ip+c:/altera/12.1/quartus/../ip/altera/nios2_ip"
+Info: Finished elaborating classic module.
+Executing: C:/altera/12.1/quartus//sopc_builder/bin/sopc_builder --classic --generate C:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0105_sopclgen/yysystem.ptf
+Info: Running sopc_builder...
+Qt: Untested Windows version 6.2 detected!
+"c:/altera/12.1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/12.1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/12.1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/12.1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/12.1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/12.1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0105_sopclgen  --generate C:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0105_sopclgen/yysystem.v --quartus_dir="c:/altera/12.1/quartus" --sopc_perl="c:/altera/12.1/quartus/bin/perl" --sopc_lib_path="++c:/altera/12.1/quartus/../ip/altera/sopc_builder_ip+c:/altera/12.1/quartus/../ip/altera/nios2_ip"
+No .sopc_builder configuration file(!)
+.
+# 2014.06.30 10:44:19 (*) Success: sopc_builder finished.
+Info: sgdma_tx: "ethernet_system" instantiated altera_avalon_sgdma "sgdma_tx"
+Info: Starting classic module elaboration.
+Qt: Untested Windows version 6.2 detected!
+"c:/altera/12.1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/12.1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/12.1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/12.1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/12.1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/12.1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0106_sopclgen  --no_splash --refresh C:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0106_sopclgen/yysystem.v --quartus_dir="c:/altera/12.1/quartus" --sopc_perl="c:/altera/12.1/quartus/bin/perl" --sopc_lib_path="++c:/altera/12.1/quartus/../ip/altera/sopc_builder_ip+c:/altera/12.1/quartus/../ip/altera/nios2_ip"
+Info: Finished elaborating classic module.
+Executing: C:/altera/12.1/quartus//sopc_builder/bin/sopc_builder --classic --generate C:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0106_sopclgen/yysystem.ptf
+Info: Running sopc_builder...
+Qt: Untested Windows version 6.2 detected!
+"c:/altera/12.1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/12.1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/12.1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/12.1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/12.1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/12.1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0106_sopclgen  --generate C:/Users/Florian/AppData/Local/Temp/alt6251_4943328890463619890.dir/0106_sopclgen/yysystem.v --quartus_dir="c:/altera/12.1/quartus" --sopc_perl="c:/altera/12.1/quartus/bin/perl" --sopc_lib_path="++c:/altera/12.1/quartus/../ip/altera/sopc_builder_ip+c:/altera/12.1/quartus/../ip/altera/nios2_ip"
+No .sopc_builder configuration file(!)
+..
+# 2014.06.30 10:44:25 (*) Success: sopc_builder finished.
+Info: descriptor_memory: "ethernet_system" instantiated altera_avalon_onchip_memory2 "descriptor_memory"
+Info: ethernet_bridge_m0_translator: "ethernet_system" instantiated altera_merlin_master_translator "ethernet_bridge_m0_translator"
+Info: tse_mac_control_port_translator: "ethernet_system" instantiated altera_merlin_slave_translator "tse_mac_control_port_translator"
+Info: ethernet_bridge_m0_translator_avalon_universal_master_0_agent: "ethernet_system" instantiated altera_merlin_master_agent "ethernet_bridge_m0_translator_avalon_universal_master_0_agent"
+Info: tse_mac_control_port_translator_avalon_universal_slave_0_agent: "ethernet_system" instantiated altera_merlin_slave_agent "tse_mac_control_port_translator_avalon_universal_slave_0_agent"
+Info: tse_mac_control_port_translator_avalon_universal_slave_0_agent_rsp_fifo: "ethernet_system" instantiated altera_avalon_sc_fifo "tse_mac_control_port_translator_avalon_universal_slave_0_agent_rsp_fifo"
+Info: addr_router: "ethernet_system" instantiated altera_merlin_router "addr_router"
+Info: id_router: "ethernet_system" instantiated altera_merlin_router "id_router"
+Info: addr_router_001: "ethernet_system" instantiated altera_merlin_router "addr_router_001"
+Info: id_router_003: "ethernet_system" instantiated altera_merlin_router "id_router_003"
+Info: limiter: "ethernet_system" instantiated altera_merlin_traffic_limiter "limiter"
+Info: rst_controller: "ethernet_system" instantiated altera_reset_controller "rst_controller"
+Info: cmd_xbar_demux: "ethernet_system" instantiated altera_merlin_demultiplexer "cmd_xbar_demux"
+Info: rsp_xbar_demux: "ethernet_system" instantiated altera_merlin_demultiplexer "rsp_xbar_demux"
+Info: rsp_xbar_mux: "ethernet_system" instantiated altera_merlin_multiplexer "rsp_xbar_mux"
+Info: cmd_xbar_demux_001: "ethernet_system" instantiated altera_merlin_demultiplexer "cmd_xbar_demux_001"
+Info: cmd_xbar_mux_003: "ethernet_system" instantiated altera_merlin_multiplexer "cmd_xbar_mux_003"
+Info: Reusing file C:/Users/Florian/Documents/GitHub/Car2X/hardware/ethernet_system/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_xbar_demux_003: "ethernet_system" instantiated altera_merlin_demultiplexer "rsp_xbar_demux_003"
+Info: ethernet_system: Done ethernet_system" with 23 modules, 238 files, 6820284 bytes
+Info: ip-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

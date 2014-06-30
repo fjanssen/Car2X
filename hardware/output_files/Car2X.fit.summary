@@ -1,16 +1,16 @@
-Fitter Status : Successful - Mon Jun 16 15:21:20 2014
+Fitter Status : Successful - Mon Jun 30 15:50:34 2014
 Quartus II 32-bit Version : 12.1 Build 177 11/07/2012 SJ Web Edition
 Revision Name : Car2X
 Top-level Entity Name : Car2X
 Family : Cyclone IV E
 Device : EP4CE115F29C7
 Timing Models : Final
-Total logic elements : 12,973 / 114,480 ( 11 % )
-    Total combinational functions : 9,850 / 114,480 ( 9 % )
-    Dedicated logic registers : 8,904 / 114,480 ( 8 % )
-Total registers : 9034
-Total pins : 76 / 529 ( 14 % )
+Total logic elements : 12,866 / 114,480 ( 11 % )
+    Total combinational functions : 9,599 / 114,480 ( 8 % )
+    Dedicated logic registers : 8,676 / 114,480 ( 8 % )
+Total registers : 8806
+Total pins : 77 / 529 ( 15 % )
 Total virtual pins : 0
-Total memory bits : 1,132,442 / 3,981,312 ( 28 % )
-Embedded Multiplier 9-bit elements : 8 / 532 ( 2 % )
-Total PLLs : 1 / 4 ( 25 % )
+Total memory bits : 2,791,578 / 3,981,312 ( 70 % )
+Embedded Multiplier 9-bit elements : 4 / 532 ( < 1 % )
+Total PLLs : 2 / 4 ( 50 % )

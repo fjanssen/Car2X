@@ -112,8 +112,8 @@ ALT_CPPFLAGS += -D__hal__
 BSP_TYPE := ucosii
 
 # CPU Name 
-# setting CPU_NAME is nios2_communication
-CPU_NAME = nios2_communication
+# setting CPU_NAME is com_nios
+CPU_NAME = com_nios
 ELF_PATCH_FLAG  += --cpu_name $(CPU_NAME)
 
 # Hardware Divider present. 
@@ -121,8 +121,8 @@ ELF_PATCH_FLAG  += --cpu_name $(CPU_NAME)
 ALT_CFLAGS += -mno-hw-div
 
 # Hardware Multiplier present. 
-# setting HARDWARE_MULTIPLY is true
-ALT_CFLAGS += -mhw-mul
+# setting HARDWARE_MULTIPLY is false
+ALT_CFLAGS += -mno-hw-mul
 
 # Hardware Mulx present. 
 # setting HARDWARE_MULX is false
@@ -237,18 +237,6 @@ ALT_CPPFLAGS += -DALT_NO_INSTRUCTION_EMULATION
 # SOPC_SYSID_FLAG in public.mk. none 
 # setting hal.enable_sopc_sysid_check is 1
 
-# The value is assigned to ALT_LOG_FLAGS in the generated public.mk. See 
-# hal.log_port setting description. Values can be -1 through 3. hal.log_port 
-# must be set for this to be used. 
-# setting hal.log_flags is 0
-ALT_CPPFLAGS += -DALT_LOG_FLAGS=0
-
-# Slave descriptor of debug logging character-mode device. If defined, it 
-# enables extra debug messages in the HAL source. This setting is used by the 
-# ALT_LOG_PORT family of defines in system.h. none 
-# setting hal.log_port is jtag_uart_communication
-ALT_CPPFLAGS += -DALT_LOG_ENABLE
-
 # Enable BSP generation to query if SOPC system is big endian. If true ignores 
 # export of 'ALT_CFLAGS += -EB' to public.mk if big endian system. If true 
 # ignores export of 'ALT_CFLAGS += -EL' if little endian system. none 
@@ -318,18 +306,18 @@ ALT_CPPFLAGS += -DALT_LOG_ENABLE
 
 # Slave descriptor of STDERR character-mode device. This setting is used by the 
 # ALT_STDERR family of defines in system.h. none 
-# setting hal.stderr is jtag_uart_communication
-ELF_PATCH_FLAG  += --stderr_dev jtag_uart_communication
+# setting hal.stderr is jtaguart_0
+ELF_PATCH_FLAG  += --stderr_dev jtaguart_0
 
 # Slave descriptor of STDIN character-mode device. This setting is used by the 
 # ALT_STDIN family of defines in system.h. none 
-# setting hal.stdin is jtag_uart_communication
-ELF_PATCH_FLAG  += --stdin_dev jtag_uart_communication
+# setting hal.stdin is jtaguart_0
+ELF_PATCH_FLAG  += --stdin_dev jtaguart_0
 
 # Slave descriptor of STDOUT character-mode device. This setting is used by the 
 # ALT_STDOUT family of defines in system.h. none 
-# setting hal.stdout is jtag_uart_communication
-ELF_PATCH_FLAG  += --stdout_dev jtag_uart_communication
+# setting hal.stdout is jtaguart_0
+ELF_PATCH_FLAG  += --stdout_dev jtaguart_0
 
 
 #------------------------------------------------------------------------------

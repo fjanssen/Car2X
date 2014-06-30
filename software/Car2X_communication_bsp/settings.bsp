@@ -2,19 +2,19 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>ucosii</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>16.06.2014 15:31:47</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1402925507536</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>30.06.2014 16:01:17</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1404136877141</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\Florian\Documents\GitHub\Car2X\software\Car2X_communication_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>C:\Users\Florian\Documents\GitHub\Car2X\hardware\nios_system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
-        <Cpu>nios2_communication</Cpu>
+        <Cpu>com_nios</Cpu>
         <SchemaVersion>1.9</SchemaVersion>
         <Setting>
                 <SettingName>hal.sys_clk_timer</SettingName>
                 <Identifier>ALT_SYS_CLK</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>interval_timer</Value>
+                <Value>com_timer</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of the system clock timer device. This device provides a periodic interrupt ("tick") and is typically required for RTOS use. This setting defines the value of ALT_SYS_CLK in system.h.</Description>
@@ -26,7 +26,7 @@
                 <SettingName>hal.timestamp_timer</SettingName>
                 <Identifier>ALT_TIMESTAMP_CLK</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>interval_timer</Value>
+                <Value>none</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of timestamp timer device. This device is used by Altera HAL timestamp drivers for high-resolution time measurement. This setting defines the value of ALT_TIMESTAMP_CLK in system.h.</Description>
@@ -146,7 +146,7 @@
                 <SettingName>hal.linker.exception_stack_memory_region_name</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>sdram_communication</Value>
+                <Value>com_memory</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>none</DestinationFile>
                 <Description>Name of the existing memory region that will be divided up to create the 'exception_stack' memory region. The selected region name will be adjusted automatically when the BSP is generated to create the 'exception_stack' memory region.</Description>
@@ -182,7 +182,7 @@
                 <SettingName>hal.linker.interrupt_stack_memory_region_name</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>sdram_communication</Value>
+                <Value>com_memory</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>none</DestinationFile>
                 <Description>Name of the existing memory region that will be divided up to create the 'interrupt_stack' memory region. The selected region name will be adjusted automatically when the BSP is generated to create the 'interrupt_stack' memory region.</Description>
@@ -194,7 +194,7 @@
                 <SettingName>hal.stdin</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>jtag_uart_communication</Value>
+                <Value>jtaguart_0</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of STDIN character-mode device. This setting is used by the ALT_STDIN family of defines in system.h.</Description>
@@ -206,7 +206,7 @@
                 <SettingName>hal.stdout</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>jtag_uart_communication</Value>
+                <Value>jtaguart_0</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of STDOUT character-mode device. This setting is used by the ALT_STDOUT family of defines in system.h.</Description>
@@ -218,7 +218,7 @@
                 <SettingName>hal.stderr</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>jtag_uart_communication</Value>
+                <Value>jtaguart_0</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of STDERR character-mode device. This setting is used by the ALT_STDERR family of defines in system.h.</Description>
@@ -230,7 +230,7 @@
                 <SettingName>hal.log_port</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>jtag_uart_communication</Value>
+                <Value>none</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>public_mk_define</DestinationFile>
                 <Description>Slave descriptor of debug logging character-mode device. If defined, it enables extra debug messages in the HAL source. This setting is used by the ALT_LOG_PORT family of defines in system.h.</Description>
@@ -1694,7 +1694,7 @@
                 <SettingName>altera_iniche.enable_dhcp_client</SettingName>
                 <Identifier>DHCP_CLIENT</Identifier>
                 <Type>BooleanDefineOnly</Type>
-                <Value>true</Value>
+                <Value>false</Value>
                 <DefaultValue>true</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Use DHCP to automatically assign IP address</Description>
@@ -1763,94 +1763,94 @@
                 <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
         </Setting>
         <MemoryMap>
-                <slaveDescriptor>sdram_communication</slaveDescriptor>
+                <slaveDescriptor>com_memory</slaveDescriptor>
                 <addressRange>0x04000000 - 0x07FFFFFF</addressRange>
                 <addressSpan>67108864</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>main_memory_communication</slaveDescriptor>
-                <addressRange>0x08020000 - 0x08038FFF</addressRange>
-                <addressSpan>102400</addressSpan>
+                <slaveDescriptor>ethernet_subsystem_descriptor_memory</slaveDescriptor>
+                <addressRange>0x08000000 - 0x08001FFF</addressRange>
+                <addressSpan>8192</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>shared_memory</slaveDescriptor>
-                <addressRange>0x08040000 - 0x08040FFF</addressRange>
+                <addressRange>0x08002000 - 0x08002FFF</addressRange>
                 <addressSpan>4096</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>descriptor_memory</slaveDescriptor>
-                <addressRange>0x08041000 - 0x08041FFF</addressRange>
-                <addressSpan>4096</addressSpan>
+                <slaveDescriptor>com_ocmemory</slaveDescriptor>
+                <addressRange>0x08004000 - 0x08004BFF</addressRange>
+                <addressSpan>3072</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>tse_mac</slaveDescriptor>
-                <addressRange>0x08043000 - 0x080433FF</addressRange>
+                <slaveDescriptor>ethernet_subsystem_tse_mac</slaveDescriptor>
+                <addressRange>0x08005800 - 0x08005BFF</addressRange>
                 <addressSpan>1024</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>sgdma_rx</slaveDescriptor>
-                <addressRange>0x08043400 - 0x0804343F</addressRange>
+                <slaveDescriptor>ethernet_subsystem_sgdma_rx</slaveDescriptor>
+                <addressRange>0x08005C00 - 0x08005C3F</addressRange>
                 <addressSpan>64</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>sgdma_tx</slaveDescriptor>
-                <addressRange>0x08043440 - 0x0804347F</addressRange>
+                <slaveDescriptor>ethernet_subsystem_sgdma_tx</slaveDescriptor>
+                <addressRange>0x08005C40 - 0x08005C7F</addressRange>
                 <addressSpan>64</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>interval_timer</slaveDescriptor>
-                <addressRange>0x08043480 - 0x0804349F</addressRange>
+                <slaveDescriptor>com_timer</slaveDescriptor>
+                <addressRange>0x08006800 - 0x0800681F</addressRange>
                 <addressSpan>32</addressSpan>
                 <attributes>timer</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>pio_communication_led</slaveDescriptor>
-                <addressRange>0x080434A0 - 0x080434AF</addressRange>
+                <slaveDescriptor>com_led</slaveDescriptor>
+                <addressRange>0x08006820 - 0x0800682F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>mutex_shared_memory</slaveDescriptor>
-                <addressRange>0x080434B0 - 0x080434B7</addressRange>
+                <slaveDescriptor>shared_memory_mutex</slaveDescriptor>
+                <addressRange>0x08006830 - 0x08006837</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>jtag_uart_communication</slaveDescriptor>
-                <addressRange>0x080434B8 - 0x080434BF</addressRange>
+                <slaveDescriptor>jtaguart_0</slaveDescriptor>
+                <addressRange>0x08006838 - 0x0800683F</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes>printable</attributes>
         </MemoryMap>
         <LinkerSection>
                 <sectionName>.text</sectionName>
-                <regionName>sdram_communication</regionName>
+                <regionName>com_memory</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.rodata</sectionName>
-                <regionName>sdram_communication</regionName>
+                <regionName>com_memory</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.rwdata</sectionName>
-                <regionName>sdram_communication</regionName>
+                <regionName>com_memory</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.bss</sectionName>
-                <regionName>sdram_communication</regionName>
+                <regionName>com_memory</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.heap</sectionName>
-                <regionName>sdram_communication</regionName>
+                <regionName>com_memory</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.stack</sectionName>
-                <regionName>sdram_communication</regionName>
+                <regionName>com_memory</regionName>
         </LinkerSection>
         <SoftwarePackageInfo>
                 <name>altera_iniche</name>
