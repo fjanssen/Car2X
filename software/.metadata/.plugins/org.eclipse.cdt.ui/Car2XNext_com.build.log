@@ -1,0 +1,10 @@
+
+**** Build of configuration Nios II for project Car2XNext_com ****
+
+make all 
+Info: Building C:/Car2XNext/Car2XNext_com_bsp/
+make --no-print-directory -C C:/Car2XNext/Car2XNext_com_bsp/
+[BSP build complete]
+[Car2XNext_com build complete]
+
+**** Build Finished ****

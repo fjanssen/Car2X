@@ -1,0 +1,10 @@
+
+**** Build of configuration Nios II for project Car2X_communication ****
+
+make all 
+Info: Building ../Car2X_communication_bsp/
+make --no-print-directory -C ../Car2X_communication_bsp/
+[BSP build complete]
+[Car2X_communication build complete]
+
+**** Build Finished ****
