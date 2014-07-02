@@ -11,12 +11,13 @@
  </systemtable>
  <clocktable>
   <columns>
-   <clockname preferredWidth="359" />
-   <clocksource preferredWidth="358" />
-   <frequency preferredWidth="353" />
+   <clockname preferredWidth="312" />
+   <clocksource preferredWidth="311" />
+   <frequency preferredWidth="306" />
   </columns>
  </clocktable>
- <library expandedCategories="Project,Library" />
+ <library
+   expandedCategories="Project,Library/University Program/Memory,Library/University Program,Library" />
  <window width="1382" height="744" x="-8" y="-8" />
  <generation
    block_symbol_file="0"
