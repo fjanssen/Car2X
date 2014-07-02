@@ -1,10 +1,7 @@
 
-**** Build of configuration Nios II for project Car2X_carControl ****
+**** Clean-only build of configuration Nios II for project Car2X_carControl ****
 
-make all 
-Info: Building C:/Users/Florian/Documents/GitHub/Car2X/software/Car2X_carControl_bsp/
-make --no-print-directory -C C:/Users/Florian/Documents/GitHub/Car2X/software/Car2X_carControl_bsp/
-[BSP build complete]
-[Car2X_carControl build complete]
+make clean 
+[Car2X_carControl clean complete]
 
 **** Build Finished ****

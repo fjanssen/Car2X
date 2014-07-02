@@ -308,3 +308,13 @@ java.lang.Exception
 
 !ENTRY com.altera.sbtgui.launch 1 0 2014-06-30 20:50:29.563
 !MESSAGE Executing: [C:/altera/12.1/quartus\bin\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --go --accept-bad-sysid --reset-target /cygdrive/c/Users/Florian/Documents/GitHub/Car2X/software/Car2X_communication/Car2X_communication.elf]
+!SESSION 2014-07-02 13:35:04.966 -----------------------------------------------
+eclipse.buildId=M20120208-0800
+java.version=1.6.0_23
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=de_DE
+Framework arguments:  -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.cpp.product -perspective com.altera.sbtgui.ui.cPerspective
+
+!ENTRY org.eclipse.core.resources 2 10035 2014-07-02 13:35:06.028
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.

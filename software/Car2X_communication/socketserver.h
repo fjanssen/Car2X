@@ -46,16 +46,6 @@ void SSSSimpleSocketServerTask();
 #define GWADDR2   0
 #define GWADDR3   0
 
-//#define IPADDR0   0
-//#define IPADDR1   0
-//#define IPADDR2   0
-//#define IPADDR3   0
-//
-//#define GWADDR0   0
-//#define GWADDR1   0
-//#define GWADDR2   0
-//#define GWADDR3   0
-
 #define MSKADDR0  255
 #define MSKADDR1  255
 #define MSKADDR2  255
@@ -65,7 +55,7 @@ void SSSSimpleSocketServerTask();
 /*
  * IP Port(s) for our application(s)
  */
-#define SSS_PORT 23//8899
+#define SSS_PORT 30
 
 /* Definition of Task Stack size for tasks not using Nichestack */
 #define   TASK_STACKSIZE       2048
@@ -73,8 +63,8 @@ void SSSSimpleSocketServerTask();
 /*
  * TX & RX buffer sizes for all socket sends & receives in our sss app
  */
-#define SSS_RX_BUF_SIZE  2048//1500
-#define SSS_TX_BUF_SIZE  2048//1500
+#define SSS_RX_BUF_SIZE  1500
+#define SSS_TX_BUF_SIZE  1500
 
 /*
  * Here we structure to manage sss communication for a single connection

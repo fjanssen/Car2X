@@ -57,9 +57,7 @@ void SSSInitialTask(void *task_data)
 	 *    "Inet main"  task with priority 2
 	 *    "clock tick" task with priority 3
 	 */
-
 	alt_iniche_init();
-
 	netmain();
 
 	/* Wait for the network stack to be ready before proceeding.

@@ -130,7 +130,7 @@ void sss_exec_command(CCarProtocol * receivedPacket)
 	}
 
 
-	alt_u32 iMessageCount = receivedPacket->getMessageCount();
+	int iMessageCount = receivedPacket->getMessageCount();
 
 	for(alt_u32 i = 0;i < iMessageCount;i++)
 	{
@@ -414,9 +414,9 @@ void SSSSimpleSocketServerTask()
         max_socket = conn.fd+1;
       }
     }
-    printf("here before select\n");
+
     select(max_socket, &readfds, NULL, NULL, NULL);
-    printf("here after select\n");
+
     /*
      * If fd_listen (the listening socket we originally created in this thread
      * is "set" in readfs, then we have an incoming connection request. We'll

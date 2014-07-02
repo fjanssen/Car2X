@@ -142,8 +142,13 @@ ACDS_VERSION := 12.1
 ELF := Car2X_carControl.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS := carCont.c
-CXX_SRCS :=
+C_SRCS :=
+CXX_SRCS += CarState.cpp
+CXX_SRCS += ErrHandler.cpp
+CXX_SRCS += ErrHandler_test.cpp
+CXX_SRCS += MemController.cpp
+CXX_SRCS += MemSharedArea.cpp
+CXX_SRCS += main.cpp
 ASM_SRCS :=
 
 
@@ -152,7 +157,7 @@ OBJ_ROOT_DIR := obj
 
 # Options to control objdump.
 CREATE_OBJDUMP := 1
-OBJDUMP_INCLUDE_SOURCE := 1
+OBJDUMP_INCLUDE_SOURCE := 0
 OBJDUMP_FULL_CONTENTS := 0
 
 # Options to enable/disable optional files.
@@ -168,7 +173,7 @@ APP_CFLAGS_WARNINGS := -Wall
 APP_CFLAGS_USER_FLAGS :=
 
 APP_ASFLAGS_USER :=
-APP_LDFLAGS_USER :=
+APP_LDFLAGS_USER := -lstdc++
 
 # Linker options that have default values assigned later if not
 # assigned here.
@@ -177,7 +182,7 @@ CRT0 :=
 SYS_LIB :=
 
 # Define path to the root of the BSP.
-BSP_ROOT_DIR := C:/Users/Florian/Documents/GitHub/Car2X/software/Car2X_carControl_bsp/
+BSP_ROOT_DIR := ../Car2X_carControl_bsp/
 
 # List of application specific include directories, library directories and library names
 APP_INCLUDE_DIRS :=
@@ -188,7 +193,6 @@ APP_LIBRARY_NAMES :=
 BUILD_PRE_PROCESS :=
 BUILD_POST_PROCESS :=
 
-QUARTUS_PROJECT_DIR := C:/Users/Florian/Documents/GitHub/Car2X/hardware/
 
 
 #END GENERATED
