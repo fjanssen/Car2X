@@ -74,6 +74,9 @@ typedef struct SSS_SOCKET
   enum { READY, COMPLETE, CLOSE } state;
   int       fd;
   int       close;
+  
+  enum {UNKNOWN,WHEEL_LF,WHEEL_LB,WHEEL_RF,WHEEL_RB,ULTRASOUND,CAMERA,WIPORT} client_type;
+  
   INT8U     rx_buffer[SSS_RX_BUF_SIZE];
   INT8U     *rx_wr_pos; // position we've written up to
 } SSSConn;
