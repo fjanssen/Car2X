@@ -10,7 +10,7 @@
 
 // Shared includes for all subclasses
 #include <alt_types.h>
-#include "utility.h"
+#include "../etc/utility.h"
 
 /*
  * Class CCarMessage.

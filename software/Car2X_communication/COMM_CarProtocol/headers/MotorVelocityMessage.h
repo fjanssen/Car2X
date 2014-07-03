@@ -8,7 +8,7 @@
 #ifndef MOTORVELOCITYMESSAGE_H_
 #define MOTORVELOCITYMESSAGE_H_
 
-#include "utility.h"
+#include "../etc/utility.h"
 #include "CarMessage.h"
 
 class CMotorVelocityMessage: public CCarMessage {

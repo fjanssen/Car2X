@@ -16,6 +16,10 @@ local.properties
 .settings/
 .loadpath
 
+.elf
+.objdump
+.map
+
 # External tool builders
 .externalToolBuilders/
 

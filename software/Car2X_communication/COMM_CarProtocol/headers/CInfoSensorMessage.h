@@ -1,9 +1,9 @@
 /*
- * CEInfoSensorMessage.h
- *
- * Created on: 06.01.2014
- * Author: Florian
- */
+* CEInfoSensorMessage.h
+*
+* Created on: 06.01.2014
+* Author: Florian
+*/
 
 #ifndef CINFOSENSORMESSAGE_H_
 #define CINFOSENSORMESSAGE_H_
@@ -12,19 +12,19 @@
 
 class CInfoSensorMessage: public CCarMessage {
 public:
-	CInfoSensorMessage();
-	CInfoSensorMessage(alt_u8* pMessage, int iLength);
-	virtual ~CInfoSensorMessage();
-	void answerMessage(bool executed_b);
-	void doAction();
-	bool getBytes(alt_u8* pMessage);
-	alt_u32 getLength();
+CInfoSensorMessage();
+CInfoSensorMessage(alt_u8* pMessage, int iLength);
+virtual ~CInfoSensorMessage();
+void answerMessage(bool executed_b);
+void doAction();
+bool getBytes(alt_u8* pMessage);
+alt_u32 getLength();
 
 
 private:
-	alt_u8	m_uiReserved;
+alt_u8	m_uiReserved;
 
-	void parseMessage(alt_u8 *pMessage, int iLength);
+void parseMessage(alt_u8 *pMessage, int iLength);
 
 
 };

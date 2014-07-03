@@ -14,11 +14,10 @@ CENTRAL_ECU_BUILD to distinguish the different builds!
 SubMessage Description:
 Message contains the distance and a valid-flag.
 **********************************************************************************/
-// TODO: put somewhere sensible
-#define CENTRAL_ECU_BUILD
+
 // Include guard for different build types
 #ifndef CENTRAL_ECU_BUILD
-#include "ultrasound_interface.h"
+#include "../external_drivers/ultrasound_interface.h"
 #endif /* CENTRAL_ECU_BUILD */
 
 // Export Interfaces

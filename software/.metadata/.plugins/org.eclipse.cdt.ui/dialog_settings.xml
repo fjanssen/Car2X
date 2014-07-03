@@ -4,9 +4,10 @@
 	<section name="completion_proposal_size">
 	</section>
 	<section name="PDOMSearchPage">
-		<item value="546" key="searchFlags"/>
+		<item value="131618" key="searchFlags"/>
 		<item value="false" key="caseSensitive"/>
 		<list key="previousPatterns">
+			<item value="socket"/>
 			<item value="dtrap"/>
 			<item value="buffers"/>
 		</list>
