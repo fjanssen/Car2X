@@ -26,8 +26,8 @@ alt_16 get_ip()
 return m_ip;	//m_ip = "m_ipPart1"+"."+"alt_8 m_ipPart2"+...
 }
 
-
 private:
+alt_32 m_ip;
 alt_8 m_ipPart1;
 alt_8 m_ipPart2;
 alt_8 m_ipPart3;

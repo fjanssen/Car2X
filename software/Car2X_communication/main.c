@@ -19,6 +19,8 @@
 #include "libport.h"
 #include "osport.h"
 
+#define ALT_LOG_ENABLE
+
 
 /* Definition of task stack for the initial task which will initialize the NicheStack
  * TCP/IP Stack and then initialize the rest of the Simple Socket Server example tasks.

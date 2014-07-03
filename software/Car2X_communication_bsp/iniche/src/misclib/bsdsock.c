@@ -554,11 +554,11 @@ bsd_recvfrom(BSD_SOCKET s,
  *          error occured.  The error would be available via bsd_errno(s).
  */
 int 
-bsd_select(int nfds,				//1
-           fd_set * readfds,		//{0} {sockids}
-           fd_set * writefds,		//null
-           fd_set * exceptfds,		//null
-           BSD_TIMEVAL_T * timeout) //null
+bsd_select(int nfds,
+           fd_set * readfds,
+           fd_set * writefds,
+           fd_set * exceptfds,
+           BSD_TIMEVAL_T * timeout)
 {
    long ltv;    /* timeout expressed in ticks */
    long tps;    /* local copy of TPS */

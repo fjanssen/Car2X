@@ -20,12 +20,10 @@ void doAction();
 bool getBytes(alt_u8* pMessage);
 alt_u32 getLength();
 
-
 private:
 alt_u8	m_uiReserved;
 
 void parseMessage(alt_u8 *pMessage, int iLength);
-
 
 };
 

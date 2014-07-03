@@ -5,8 +5,8 @@
 * Author: Florian
 */
 
-#ifndef CREMOTECONTROLMESSAGE_H_
-#define CREMOTECONTROLMESSAGE_H_
+#ifndef CVELOCITYMESSAGE_H_
+#define CVELOCITYMESSAGE_H_
 //struct for GUI:0x10060000XXXX
 #include "CarMessage.h"
 
@@ -33,4 +33,4 @@ alt_u8	m_uiReserved;
 void parseMessage(alt_u8 *pMessage, int iLength);
 };
 
-#endif /* CREMOTECONTROLMESSAGE_H_ */
+#endif /* CVELOCITYMESSAGE_H_ */

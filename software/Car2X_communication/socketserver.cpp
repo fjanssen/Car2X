@@ -1,7 +1,5 @@
 extern "C" {
     
-#include <vector>
-    
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -26,6 +24,7 @@ extern "C" {
     
 } // extern C
 
+#include <vector>
 //Message imports
 #include "WelcomeMessage.h"
 #include "MotorMeasurementMessage.h"
@@ -101,7 +100,7 @@ void sss_handle_accept(int listen_socket, SSSConn* conn)
         {
             (conn)->fd = socket;
             
-            std::string str_ip_addr = inet_ntoa(incoming_addr.sin_addr);
+            char* str_ip_addr = inet_ntoa(incoming_addr.sin_addr);
             
             printf("[sss_handle_accept] accepted connection request from %s\n",
                    str_ip_addr);
@@ -109,13 +108,13 @@ void sss_handle_accept(int listen_socket, SSSConn* conn)
             //here: check the incoming IP ADDR: and set conn->client_type accordingly
             //make sure static IP defines in the top of this file are correct!
             
-                 if(str_ip_addr.compare(IP_WHEEL_LF))    conn->client_type = WHEEL_LF;
-            else if(str_ip_addr.compare(IP_WHEEL_LB))    conn->client_type = WHEEL_LB;
-            else if(str_ip_addr.compare(IP_WHEEL_RF))    conn->client_type = WHEEL_RF;
-            else if(str_ip_addr.compare(IP_WHEEL_RB))    conn->client_type = WHEEL_RB;
-            else if(str_ip_addr.compare(IP_ULTRASOUND))  conn->client_type = ULTRASOUND;
-            else if(str_ip_addr.compare(IP_CAMERA))      conn->client_type = CAMERA;
-            else                                         conn->client_type = WIPORT;
+                 if(strcmp(str_ip_addr,IP_WHEEL_LF))    conn->client_type = SSSConn::WHEEL_LF;
+            else if(strcmp(str_ip_addr,IP_WHEEL_LF))    conn->client_type = SSSConn::WHEEL_LB;
+            else if(strcmp(str_ip_addr,IP_WHEEL_LF))    conn->client_type = SSSConn::WHEEL_RF;
+            else if(strcmp(str_ip_addr,IP_WHEEL_LF))    conn->client_type = SSSConn::WHEEL_RB;
+            else if(strcmp(str_ip_addr,IP_WHEEL_LF))  conn->client_type = SSSConn::ULTRASOUND;
+            else if(strcmp(str_ip_addr,IP_WHEEL_LF))      conn->client_type = SSSConn::CAMERA;
+            else                                         conn->client_type = SSSConn::WIPORT;
 
             
         }
@@ -368,6 +367,7 @@ void sss_handle_receive(SSSConn* conn)
  */
 void sss_handle_receive_new(SSSConn* conn)
 {
+	printf("handle receive\n");
     //we know some data can be received on the connection => reveive it to rx_buffer (will automatically increment rx_wr_pos
     //note: bytes may only be received once in this function as we assert that there is data to be read, otherwise this function may block out other connections 
     int iBytesReceived = receive_bytes(conn);
@@ -375,16 +375,31 @@ void sss_handle_receive_new(SSSConn* conn)
     //nothing received? => disconnect command
     if(iBytesReceived == 0)
     {
-        conns[i].state == SSSConn::CLOSE
+    	printf("empty msg\n");
+        conn->state = SSSConn::CLOSE;
         return;
     }
-        
+    printf("non empty msg\n");
+
+
+
     //check if CARP is somewhere in the buffer and throw everything away until CARP is there
-    int bytesInBuffer = conn->rx_buffer - conn->rx_wr_pos;
+    int bytesInBuffer =conn->rx_wr_pos - conn->rx_buffer ;
+
+    //output
+                printf("msg: ");
+                for (int i = 0; i < bytesInBuffer; i++) {
+                    printf("%02x ", conn->rx_buffer[i]&0xFF);
+                }
+                printf("\n");
+
+    if(bytesInBuffer < 4) return;
+    printf("header >= 4\n");
+
     while(bytesInBuffer >= 4)
     {
         
-        if (!(conn.rx_buffer[0] == 'C' && conn.rx_buffer[1] == 'A' && conn.rx_buffer[2] == 'R' && conn.rx_buffer[3] == 'P'))
+        if (!(conn->rx_buffer[0] == 'C' && conn->rx_buffer[1] == 'A' && conn->rx_buffer[2] == 'R' && conn->rx_buffer[3] == 'P'))
         {
             //no valid message detected yet => shift buffer one to the left and check again
             conn->rx_wr_pos -= 1;
@@ -398,6 +413,7 @@ void sss_handle_receive_new(SSSConn* conn)
     
     //now CARP has been received: check if payload len has been received yet
     if(bytesInBuffer < 8)return;
+    printf("header msg\n");
     
     //full header arrived, now parse payload length
     int 	iPayloadLength  = conn->rx_buffer[6] << 8;
@@ -405,6 +421,7 @@ void sss_handle_receive_new(SSSConn* conn)
     
     //check if the whole payload has been received
     if(bytesInBuffer - CAR_HEADER_LENGTH < iPayloadLength)return;
+    printf("payload msg\n");
     
     //parse the found CCarProtocol object
     CCarProtocol * parsedPacket = new CCarProtocol((alt_u8 *)conn->rx_buffer,iPayloadLength+CAR_HEADER_LENGTH);
@@ -417,6 +434,7 @@ void sss_handle_receive_new(SSSConn* conn)
     //execute the command
     sss_exec_command(parsedPacket,conn);
     delete(parsedPacket);
+    printf("msg executed!\n");
 }
 
 /*
@@ -511,23 +529,24 @@ void SSSSimpleSocketServerTask()
         FD_SET(fd_listen, &readfds);
         max_socket = fd_listen+1;
         
+        printf("conns: %i\n",conns.size());
+
         //check for each connection if its valid => set it
-        for(int i = 0;i < conns.length;i++)
+        for(int i = 0;i < conns.size();i++)
         {
-            if (conns[i].fd != -1)
+        	//check if a connection should be closed here, close it and delete it from vector
+        	if(conns[i].state == SSSConn::CLOSE)
+        	{
+        	    close(conns[i].fd);
+        	    conns.erase(conns.begin()+i);
+        	}
+
+        	if (conns[i].fd != -1)
             {
                 FD_SET(conns[i].fd, &readfds);
-                if (max_socket <= conns[i].fd)
-                {
-                    max_socket = conns[i].fd+1;
-                }
+                max_socket++;
             }
-			//check if a connection should be closed here, close it and delete it from vector
-            if(conns[i].state == SSSConn::CLOSE)
-            {
-                close(conn->fd);
-                vector.erase(vec.begin()+i);
-            }
+
         }
         
         printf("preselect\n");
@@ -557,7 +576,7 @@ void SSSSimpleSocketServerTask()
          */
         else
         {
-            for(int i = 0;i < conns.length;i++)
+            for(int i = 0;i < conns.size();i++)
             {
                 printf("elsefdisset\n");
                 if ((conns[i].fd != -1) && FD_ISSET(conns[i].fd, &readfds))

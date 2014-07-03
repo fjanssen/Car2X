@@ -26,9 +26,10 @@
 #include "CVelocityMessage.h"
 #include "CEmergencyBrakeMessage.h"
 #include "CControlMessage.h"
+#include "CRemoteControlMessage.h"
 #include "CInfoStateMessage.h"
 #include "CInfoSensorMessage.h"
-#include "CRemoteControlMessage.h"
+
 //end of includes
 
 CCarProtocol::CCarProtocol(alt_u8 *pPacket, int iLength)
@@ -189,7 +190,8 @@ break;
 // Velocity msg (incoming)-->other car tells us his velocity
 case 0x10: // TODO
 {
-m_pMessages[m_uiMessageCount] = new CVelocityMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
+//TODO: add cpp files
+	//m_pMessages[m_uiMessageCount] = new CVelocityMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
 uiPayloadOffset += 12;
 m_uiMessageCount++;
 break;
@@ -198,7 +200,7 @@ break;
 //do emergency braking
 case C2X_MSGID_EMERGENCY_BRAKE:
 {
-m_pMessages[m_uiMessageCount] = new CEmergencyBrakeMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
+//m_pMessages[m_uiMessageCount] = new CEmergencyBrakeMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
 uiPayloadOffset += 12;
 m_uiMessageCount++;
 break;
@@ -207,7 +209,7 @@ break;
 //set motor speeds from external source
 case C2X_MSGID_CONTROL: // remote control/autonomous driving mode TODO: implement control function somewhere
 {
-m_pMessages[m_uiMessageCount] = new CControlMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
+//m_pMessages[m_uiMessageCount] = new CControlMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
 uiPayloadOffset += 12;
 m_uiMessageCount++;
 break;
@@ -216,7 +218,7 @@ break;
 //tell our state
 case C2X_MSGID_INFO_STATE:
 {
-m_pMessages[m_uiMessageCount] = new CInfoStateMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
+//m_pMessages[m_uiMessageCount] = new CInfoStateMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
 uiPayloadOffset += 12;
 m_uiMessageCount++;
 break;
@@ -225,7 +227,7 @@ break;
 //tell our sensor data
 case C2X_MSGID_INFO_SENSORS:
 {
-m_pMessages[m_uiMessageCount] = new CInfoSensorMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
+//m_pMessages[m_uiMessageCount] = new CInfoSensorMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
 uiPayloadOffset += 12;
 m_uiMessageCount++;
 break;
@@ -234,7 +236,7 @@ break;
 //set external source as controlling unit
 case C2X_MSGID_REMOTE_CONTROL:
 {
-m_pMessages[m_uiMessageCount] = new CRemoteControlMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
+//m_pMessages[m_uiMessageCount] = new CRemoteControlMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
 uiPayloadOffset += 12;
 m_uiMessageCount++;
 break;
