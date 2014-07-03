@@ -173,20 +173,29 @@ LOCK_NET_RESOURCE(int resid)
    {
       do
       {
-         OSSemPend(resid_semaphore[resid], 0, &error);
+    	 //printf("OSSemPendTest\n");
+    	 OSSemPend(resid_semaphore[resid], 0, &error);
+
          /* 
           * Sometimes we get a "timeout" error even though we passed a zero
           * to indicate we'll wait forever. When this happens, try again:
           */
          if ((error == 10) && (++errct > 1000))
          {
+        	 printf("panic\n");
             panic("lock NET");   /* fatal */
             return;
          }
+         //if(errct%500==499){
+         //printf("error: %i\n",error);
+         //printf("errct: %i\n",errct);
+      //}
+
       } while (error == 10);
    }
-   else
-      dtrap();
+   else{
+	  dtrap();
+   }
 }
 
 void

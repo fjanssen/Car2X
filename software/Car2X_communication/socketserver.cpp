@@ -236,19 +236,25 @@ void sss_handle_receive(SSSConn* conn)
   int iBytesReceived = 0;
   conn->rx_wr_pos = conn->rx_buffer;
 
+  printf("recvloop\n");
+  conn->state = conn->close ? SSSConn::CLOSE : SSSConn::READY;
 
-  while(conn->state != SSSConn::CLOSE)
+  //while(conn->state != SSSConn::CLOSE)
+	  while(false)
   {
-
+	  printf("%i\n",conn->close);
 	 //start to receive a new CARP packet here
-
-
-	 while(iBytesReceived < 4){
+	  printf("recvzero\n");
+	 while(iBytesReceived < 4 && !conn->close){
 	 		 		iBytesReceived += receive_bytes(conn);
+	 		 		if(iBytesReceived==0){
+	 		 		conn->close=SSSConn::CLOSE;
+	 		 		}
 	 }
 
 	 //as long as the first 4 bytes are not CARP
-	 while(!(conn->rx_buffer[0] == 'C' && conn->rx_buffer[1] == 'A' && conn->rx_buffer[2] == 'R' && conn->rx_buffer[3] == 'P')){
+	 printf("notcarp\n");
+	 while(!(conn->rx_buffer[0] == 'C' && conn->rx_buffer[1] == 'A' && conn->rx_buffer[2] == 'R' && conn->rx_buffer[3] == 'P')&& !conn->close){
 
 		 iBytesReceived -= 1;
 		 conn->rx_wr_pos -= 1;
@@ -260,7 +266,7 @@ void sss_handle_receive(SSSConn* conn)
 		 *(conn->rx_wr_pos) = 0;
 
 		 //receive a new 4th byte if there are not enough bytes anymore
-		 while(iBytesReceived < 4){
+		 while(iBytesReceived < 4 && !conn->close){
 		 		iBytesReceived += receive_bytes(conn);
 		 }
 
@@ -268,8 +274,8 @@ void sss_handle_receive(SSSConn* conn)
 
 	 //CARP header was received successfully, starting at conn->rx_buffer
 	 //now wait for the full header (8 bytes) to arrive
-
-	 while(iBytesReceived < 8){
+	 printf("recvcarp\n");
+	 while(iBytesReceived < 8 && !conn->close){
 		 iBytesReceived += receive_bytes(conn);
 	 }
 
@@ -279,9 +285,21 @@ void sss_handle_receive(SSSConn* conn)
 
 	 //received payload so far is everything except CAR_HEADER_LENGTH = 8 bytes
 	 //wait for the whole payload to be received
-	 while(iBytesReceived - CAR_HEADER_LENGTH < iPayloadLength){
+	 printf("recvpayl\n");
+	 while(iBytesReceived - CAR_HEADER_LENGTH < iPayloadLength&& !conn->close){
 		 iBytesReceived += receive_bytes(conn);
 	 }
+
+	 //output
+	 printf("msg: ");
+	 for (int i = 0; i < iPayloadLength+CAR_HEADER_LENGTH; i++) {
+		 printf("%02x ", conn->rx_buffer[i]&0xFF);
+	 }
+	 printf("\n");
+
+	 //send dummy back
+	 send(conn->fd,(char*)conn->rx_buffer,iPayloadLength+CAR_HEADER_LENGTH,0);
+
 
 	 //parse the found CCarProtocol object
 	 CCarProtocol * parsedPacket = new CCarProtocol((alt_u8 *)conn->rx_buffer,iPayloadLength+CAR_HEADER_LENGTH);
@@ -414,9 +432,9 @@ void SSSSimpleSocketServerTask()
         max_socket = conn.fd+1;
       }
     }
-
+    printf("preselect\n");
     select(max_socket, &readfds, NULL, NULL, NULL);
-
+    printf("postselect\n");
     /*
      * If fd_listen (the listening socket we originally created in this thread
      * is "set" in readfs, then we have an incoming connection request. We'll
@@ -438,8 +456,10 @@ void SSSSimpleSocketServerTask()
      */
     else
     {
+    	printf("elsefdisset\n");
       if ((conn.fd != -1) && FD_ISSET(conn.fd, &readfds))
       {
+    	  printf("handlerecieve\n");
         sss_handle_receive(&conn);
       }
     }

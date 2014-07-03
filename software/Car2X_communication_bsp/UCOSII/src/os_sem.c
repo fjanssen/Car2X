@@ -307,6 +307,9 @@ void  OSSemPend (OS_EVENT *pevent, INT16U timeout, INT8U *perr)
         *perr = OS_ERR_PEND_LOCKED;                   /* ... can't PEND when locked                    */
         return;
     }
+
+    //printf("OSin\n");
+
     OS_ENTER_CRITICAL();
     if (pevent->OSEventCnt > 0) {                     /* If sem. is positive, resource available ...   */
         pevent->OSEventCnt--;                         /* ... decrement semaphore only if positive.     */
@@ -314,7 +317,8 @@ void  OSSemPend (OS_EVENT *pevent, INT16U timeout, INT8U *perr)
         *perr = OS_ERR_NONE;
         return;
     }
-                                                      /* Otherwise, must wait until event occurs       */
+
+    												  /* Otherwise, must wait until event occurs       */
     OSTCBCur->OSTCBStat     |= OS_STAT_SEM;           /* Resource not available, pend on semaphore     */
     OSTCBCur->OSTCBStatPend  = OS_STAT_PEND_OK;
     OSTCBCur->OSTCBDly       = timeout;               /* Store pend timeout in TCB                     */
@@ -344,6 +348,7 @@ void  OSSemPend (OS_EVENT *pevent, INT16U timeout, INT8U *perr)
     OSTCBCur->OSTCBEventMultiPtr = (OS_EVENT **)0;
 #endif
     OS_EXIT_CRITICAL();
+    printf("OSend\n");
 }
 
 /*$PAGE*/

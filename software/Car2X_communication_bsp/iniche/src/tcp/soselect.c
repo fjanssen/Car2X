@@ -55,10 +55,10 @@ int sock_select(long sock, int flags);
  */
 
 int
-t_select(fd_set * in,   /* lists of sockets to watch */
-   fd_set * out,
-   fd_set * ex,
-   long  tv)   /* ticks to wait */
+t_select(fd_set * in,   /* lists of sockets to watch */		// {0}
+   fd_set * out,											//null
+   fd_set * ex,												//null
+   long  tv)   /* ticks to wait */							//-1
 {
    fd_set obits[3], ibits [3];
    u_long   tmo;
@@ -74,6 +74,7 @@ t_select(fd_set * in,   /* lists of sockets to watch */
    if (ex)
       MEMCPY(&ibits[2], ex, sizeof(fd_set));
    tmo = cticks + tv;
+   printf("tmo: %i \n",tmo);
 
    /* if all the fd_sets are empty, just block;  else do a real select() */
    if ((ibits[0].fd_count == 0) && (ibits[1].fd_count == 0) &&
@@ -111,19 +112,22 @@ t_select(fd_set * in,   /* lists of sockets to watch */
        * return we will either call tcp_sleep(), which unlocks the
        * semaphore, or fall into the unlock statement.
        */
+      printf("presem\n");
       LOCK_NET_RESOURCE(NET_RESID);
+      printf("postsem\n");
       while ((retval = sock_selscan(ibits, obits)) == 0)
       {
-         if (tv != -1L) 
+         if (tv != -1L) //tv==-1
          {
             if (tmo <= cticks)
                break;
          }
          select_wait = 1;
-         tcp_sleep (&select_wait);
+         tcp_sleep (&select_wait);	//stuck here
       }
+      printf("preunlocksem\n");
       UNLOCK_NET_RESOURCE(NET_RESID);
-
+      printf("unlocksem\n");
    }
 
    if (retval >= 0)

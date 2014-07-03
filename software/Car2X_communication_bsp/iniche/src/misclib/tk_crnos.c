@@ -102,11 +102,13 @@ tcp_sleep(void * event)
           * signaling the event.
           */
          UNLOCK_NET_RESOURCE(NET_RESID);
-
+         printf("semunlocksleep\n");
          /* don't wait forever in case we miss the event */
          OSSemPend(global_TCPwakeup_set[i].semaphore, TPS, &err);
+         printf("OSEmPendleave\n");
          if (err == 10)
          {
+        	 printf("err=10\n");
             ++tcp_sleep_timeout;
 
             /* clear the entry */
@@ -116,6 +118,7 @@ tcp_sleep(void * event)
 
          /* Regain the lock */
          LOCK_NET_RESOURCE(NET_RESID);
+         printf("semlocksleep\n");
          return;
       }
    }
