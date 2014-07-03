@@ -7,6 +7,7 @@
 		<item value="131618" key="searchFlags"/>
 		<item value="false" key="caseSensitive"/>
 		<list key="previousPatterns">
+			<item value="ALT_LOG_ENABLE"/>
 			<item value="socket"/>
 			<item value="dtrap"/>
 			<item value="buffers"/>

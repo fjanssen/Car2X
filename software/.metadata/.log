@@ -605,3 +605,23 @@ java.io.FileNotFoundException: C:\Users\wji\car2x\repo\software\.metadata\.plugi
 	at org.eclipse.core.internal.resources.Workspace.save(Workspace.java:2375)
 	at org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor$5.run(IDEWorkbenchAdvisor.java:508)
 	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
+
+!ENTRY org.eclipse.ui.ide 4 4 2014-07-03 16:51:59.872
+!MESSAGE Problems saving workspace
+
+!ENTRY org.eclipse.ui.ide 4 1 2014-07-03 16:51:59.872
+!MESSAGE Problems occurred while trying to save the state of the workbench.
+!SUBENTRY 1 org.eclipse.core.resources 4 568 2014-07-03 16:51:59.872
+!MESSAGE Could not write metadata for '/RemoteSystemsTempFiles'.
+!STACK 0
+java.io.FileNotFoundException: C:\Users\wji\car2x\repo\software\.metadata\.plugins\org.eclipse.core.resources\.projects\RemoteSystemsTempFiles\.markers (The system cannot find the path specified)
+	at java.io.FileOutputStream.open(Native Method)
+	at java.io.FileOutputStream.<init>(Unknown Source)
+	at java.io.FileOutputStream.<init>(Unknown Source)
+	at org.eclipse.core.internal.localstore.SafeFileOutputStream.<init>(SafeFileOutputStream.java:47)
+	at org.eclipse.core.internal.resources.SaveManager.visitAndSave(SaveManager.java:1576)
+	at org.eclipse.core.internal.resources.SaveManager.visitAndSave(SaveManager.java:1656)
+	at org.eclipse.core.internal.resources.SaveManager.save(SaveManager.java:1142)
+	at org.eclipse.core.internal.resources.Workspace.save(Workspace.java:2375)
+	at org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor$5.run(IDEWorkbenchAdvisor.java:508)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:121)
