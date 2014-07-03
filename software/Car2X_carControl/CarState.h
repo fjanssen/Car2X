@@ -11,16 +11,30 @@
 
 #include "alt_types.h"
 
+// Car Hardware configuration
 #define CAR_NUM_MOTORS (4)
 #define CAR_NUM_USS    (2)
 
-namespace c2x {
+// Settings for the various Operation modes of the car.
+#define OPMODE_IDLE_MAXSPEED          (0u)
+#define OPMODE_AUTODRIVE_MAXSPEED     (200u)
+#define OPMODE_MANUDRIVE_MAXSPEED     (400u)
+#define OPMODE_EMERGENCYSTOP_MAXSPEED (0u)
 
-enum OperatingMode {
-	IDLE,
-	AUTONOMOUS_DRIVE,
-	REMOTE_DRIVE,
-	EMERGENCY_STOP,
+
+enum OpMode {
+	OPMODE_IDLE,
+	OPMODE_AUTODRIVE,
+	OPMODE_MANUDRIVE,
+	OPMODE_EMERGENCYSTOP,
+};
+
+struct Velocity
+{
+	alt_16 iFrontLeft;
+	alt_16 iFrontRight;
+	alt_16 iRearLeft;
+	alt_16 iRearRight;
 };
 
 struct UsSensor_State
@@ -53,15 +67,14 @@ struct MotorECU_State
 /*
  * This struct contains all information about one motor-ECU.
  */
-struct CarState {
+typedef struct CarState {
 	alt_u64 timeStamp;
 	alt_32 iMaxSpeed;
-	enum OperatingMode curMode;
-	enum OperatingMode reqMode;
+	enum OpMode currMode;
+	enum OpMode reqMode;
 	struct MotorECU_State motorEcus[CAR_NUM_MOTORS];
 	struct UsSensor_State usSensors[CAR_NUM_USS];
+	struct Velocity reqVelocity;
 };
 
-
-} /* namespace c2x */
 #endif /* CARSTATE_H_ */
