@@ -242,7 +242,7 @@ int receive_bytes(SSSConn* conn){
  * and pressed 'return'. If there is no newline in the buffer, we'll attempt
  * to receive data from the listening socket until there is.
  *
- * The connection will remain open until the user enters "Q\n" or "q\n", as
+ * The connection will remain open until the user sends a close() msg, as
  * deterimined by repeatedly calling recv(), and once a newline is found,
  * calling sss_exec_command(), which will determine whether the quit
  * command was received.
@@ -426,6 +426,9 @@ void sss_handle_receive_new(SSSConn* conn)
     //parse the found CCarProtocol object
     CCarProtocol * parsedPacket = new CCarProtocol((alt_u8 *)conn->rx_buffer,iPayloadLength+CAR_HEADER_LENGTH);
     
+    //send dummy msg back(for debug reasons)
+    send(conn->fd,(char*)conn->rx_buffer,iPayloadLength+CAR_HEADER_LENGTH,0);
+
     //clear the buffer: delete message from it:
     memmove(conn->rx_buffer,conn->rx_buffer+iPayloadLength+CAR_HEADER_LENGTH,bytesInBuffer-iPayloadLength-CAR_HEADER_LENGTH);
     conn->rx_wr_pos -= (iPayloadLength+CAR_HEADER_LENGTH);

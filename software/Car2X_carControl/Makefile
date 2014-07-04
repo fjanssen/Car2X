@@ -144,7 +144,6 @@ ELF := Car2X_carControl.elf
 # Paths to C, C++, and assembly source files.
 C_SRCS :=
 CXX_SRCS += CarState.cpp
-CXX_SRCS += ErrHandler.cpp
 CXX_SRCS += ErrHandler_test.cpp
 CXX_SRCS += MemController.cpp
 CXX_SRCS += MemSharedArea.cpp

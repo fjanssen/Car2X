@@ -168,6 +168,8 @@ CXX_SRCS += terasic_lib/terasic_spi.cpp
 CXX_SRCS += external_drivers/ultrasound_interface.cpp
 CXX_SRCS += sensors/ADCSensor.cpp
 CXX_SRCS += socketserver.cpp
+CXX_SRCS += COMM_CarProtocol/CControlMessage.cpp
+CXX_SRCS += COMM_CarProtocol/CEmergencyBrakeMessage.cpp
 ASM_SRCS :=
 
 

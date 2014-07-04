@@ -33,14 +33,14 @@ public:
 	T getLastElement(MemController::AreaId areaId);
 
 	template<typename T>
-	T getElement(MemController::AreaId areaId, uint32_t negIndex, bool blocking);
+	T getElement(MemController::AreaId areaId, alt_u32 negIndex, bool blocking);
 
 	template<typename T>
 	ErrCode getAllElements(
 			MemController::AreaId areaId,
 			T &elements,
-			uint32_t destSize_u32,
-			uint32_t &elementsCopied_u32);
+			alt_u32 destSize_u32,
+			alt_u32 &elementsCopied_u32);
 	template<typename T> void clearElements(MemController::AreaId areaId);
 
 private:

@@ -60,7 +60,6 @@ t_select(fd_set * in,   /* lists of sockets to watch */
    fd_set * ex,
    long  tv)   /* ticks to wait */
 {
-	printf("tselect\n");
    fd_set obits[3], ibits [3];
    u_long   tmo;
    int   retval   =  0;
@@ -112,9 +111,7 @@ t_select(fd_set * in,   /* lists of sockets to watch */
        * return we will either call tcp_sleep(), which unlocks the
        * semaphore, or fall into the unlock statement.
        */
-      printf("tselectprelock\n");
       LOCK_NET_RESOURCE(NET_RESID);
-      printf("tselectpostlock\n");
       while ((retval = sock_selscan(ibits, obits)) == 0)
       {
          if (tv != -1L) 
@@ -125,9 +122,8 @@ t_select(fd_set * in,   /* lists of sockets to watch */
          select_wait = 1;
          tcp_sleep (&select_wait);
       }
-      printf("tselectpreunlock\n");
       UNLOCK_NET_RESOURCE(NET_RESID);
-      printf("tselectpostunlock\n");
+
    }
 
    if (retval >= 0)
@@ -139,7 +135,6 @@ t_select(fd_set * in,   /* lists of sockets to watch */
       if (ex)
          MEMCPY(ex, &obits[2], sizeof(fd_set));
    }
-   printf("tselectend\n");
    return retval;
 }
 

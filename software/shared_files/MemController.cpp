@@ -38,8 +38,8 @@ MemController::~MemController() {
 template<typename T> ErrCode MemController::getAllElements(
 		MemController::AreaId areaId,
 		T &elements,
-		uint32_t destSize_u32,
-		uint32_t &elementsCopied_u32)
+		alt_u32 destSize_u32,
+		alt_u32 &elementsCopied_u32)
 {
 	/* --- local variables ---*/
 	ErrCode retVal = ERR_NONE;
@@ -123,13 +123,13 @@ template<typename T> ErrCode MemController::pushElement(MemController::AreaId ar
 	return retVal;
 }
 
-template<typename T> T MemController::getElement(MemController::AreaId areaId, uint32_t negIndex, bool blocking)
+template<typename T> T MemController::getElement(MemController::AreaId areaId, alt_u32 negIndex, bool blocking)
 {
 	/* --- local variables ---*/
 	ErrCode retVal = ERR_NONE;
 	const MemSharedArea<T> * memArea;
 	T element;
-	uint32_t index;
+	alt_u32 index;
 
 	/* --- validation ---*/
 	if(retVal = getSharedMemArea(areaId, memArea), retVal != ERR_NONE)

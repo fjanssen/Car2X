@@ -22,9 +22,9 @@ enum Bufferflags {
 
 template<typename T>
 struct MemSharedArea {
-	const uint32_t maxNumElements_u32;
+	const alt_u32 maxNumElements_u32;
 	T * content_a;
-	uint32_t index_u32;
+	alt_u32 index_u32;
 	enum Bufferflags flags_u32;
 };
 

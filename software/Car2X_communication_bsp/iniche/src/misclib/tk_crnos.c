@@ -101,7 +101,6 @@ tcp_sleep(void * event)
           * potentially cause a context switch to the task
           * signaling the event.
           */
-         printf("gotosleep\n");
          UNLOCK_NET_RESOURCE(NET_RESID);
 
          /* don't wait forever in case we miss the event */
@@ -117,7 +116,6 @@ tcp_sleep(void * event)
 
          /* Regain the lock */
          LOCK_NET_RESOURCE(NET_RESID);
-         printf("awake\n");
          return;
       }
    }
