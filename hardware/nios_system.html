@@ -67,7 +67,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   </table>
   <table class="blueBar">
    <tr>
-    <td class="l">2014.06.30.20:35:15</td>
+    <td class="l">2014.07.05.09:55:23</td>
     <td class="r">Datasheet</td>
    </tr>
   </table>
@@ -865,14 +865,20 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    <div class="greydiv">
     <table class="connectionboxes">
      <tr>
-      <td class="neighbor" rowspan="2">
+      <td class="neighbor" rowspan="4">
        <a href="#module_sys_clk">sys_clk</a>
       </td>
       <td class="from">clk_reset&#160;&#160;</td>
-      <td class="main" rowspan="69">com_nios</td>
+      <td class="main" rowspan="65">com_nios</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset_n</td>
+     </tr>
+     <tr>
+      <td class="from">clk&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;clk</td>
      </tr>
      <tr style="height:6px">
       <td></td>
@@ -885,18 +891,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset_n</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-      <td class="from">sys_clk&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk</td>
      </tr>
      <tr>
       <td></td>
@@ -1096,22 +1090,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
       <td></td>
       <td class="to">&#160;&#160;reset</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">jtag_debug_module_reset&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk_in_primary_reset</td>
      </tr>
      <tr style="height:6px">
       <td></td>
@@ -1626,7 +1604,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">clockFrequency</td>
-        <td class="parametervalue">50000000</td>
+        <td class="parametervalue">100000000</td>
        </tr>
        <tr>
         <td class="parametername">deviceFamilyName</td>
@@ -1703,7 +1681,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">CPU_FREQ</td>
-        <td class="parametervalue">50000000u</td>
+        <td class="parametervalue">100000000u</td>
        </tr>
        <tr>
         <td class="parametername">CPU_ID_SIZE</td>
@@ -1810,7 +1788,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        <a href="#module_com_nios">com_nios</a>
       </td>
       <td class="from">d_irq&#160;&#160;</td>
-      <td class="main" rowspan="12">jtaguart_0</td>
+      <td class="main" rowspan="11">jtaguart_0</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;irq</td>
@@ -1831,7 +1809,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
      </tr>
      <tr>
-      <td class="neighbor" rowspan="2">
+      <td class="neighbor" rowspan="4">
        <a href="#module_sys_clk">sys_clk</a>
       </td>
       <td class="from">clk_reset&#160;&#160;</td>
@@ -1839,14 +1817,8 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      <tr>
       <td class="to">&#160;&#160;reset</td>
      </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
      <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-      <td class="from">sys_clk&#160;&#160;</td>
+      <td class="from">clk&#160;&#160;</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;clk</td>
@@ -1958,14 +1930,20 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    <div class="greydiv">
     <table class="connectionboxes">
      <tr>
-      <td class="neighbor" rowspan="2">
+      <td class="neighbor" rowspan="4">
        <a href="#module_sys_clk">sys_clk</a>
       </td>
       <td class="from">clk_reset&#160;&#160;</td>
-      <td class="main" rowspan="39">carControl_nios</td>
+      <td class="main" rowspan="35">carControl_nios</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset_n</td>
+     </tr>
+     <tr>
+      <td class="from">clk&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;clk</td>
      </tr>
      <tr style="height:6px">
       <td></td>
@@ -1978,18 +1956,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset_n</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-      <td class="from">sys_clk&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk</td>
      </tr>
      <tr>
       <td></td>
@@ -2103,22 +2069,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
       <td></td>
       <td class="to">&#160;&#160;reset</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">jtag_debug_module_reset&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk_in_primary_reset</td>
      </tr>
      <tr style="height:6px">
       <td></td>
@@ -2563,7 +2513,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">clockFrequency</td>
-        <td class="parametervalue">50000000</td>
+        <td class="parametervalue">100000000</td>
        </tr>
        <tr>
         <td class="parametername">deviceFamilyName</td>
@@ -2640,7 +2590,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">CPU_FREQ</td>
-        <td class="parametervalue">50000000u</td>
+        <td class="parametervalue">100000000u</td>
        </tr>
        <tr>
         <td class="parametername">CPU_ID_SIZE</td>
@@ -2739,7 +2689,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        <a href="#module_com_nios">com_nios</a>
       </td>
       <td class="from">data_master&#160;&#160;</td>
-      <td class="main" rowspan="15">shared_memory</td>
+      <td class="main" rowspan="14">shared_memory</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;s1</td>
@@ -2772,7 +2722,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
      </tr>
      <tr>
-      <td class="neighbor" rowspan="2">
+      <td class="neighbor" rowspan="4">
        <a href="#module_sys_clk">sys_clk</a>
       </td>
       <td class="from">clk_reset&#160;&#160;</td>
@@ -2780,14 +2730,8 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      <tr>
       <td class="to">&#160;&#160;reset1</td>
      </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
      <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-      <td class="from">sys_clk&#160;&#160;</td>
+      <td class="from">clk&#160;&#160;</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;clk1</td>
@@ -2967,7 +2911,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        <a href="#module_carControl_nios">carControl_nios</a>
       </td>
       <td class="from">data_master&#160;&#160;</td>
-      <td class="main" rowspan="15">shared_memory_mutex</td>
+      <td class="main" rowspan="14">shared_memory_mutex</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;s1</td>
@@ -3000,7 +2944,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
      </tr>
      <tr>
-      <td class="neighbor" rowspan="2">
+      <td class="neighbor" rowspan="4">
        <a href="#module_sys_clk">sys_clk</a>
       </td>
       <td class="from">clk_reset&#160;&#160;</td>
@@ -3008,14 +2952,8 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      <tr>
       <td class="to">&#160;&#160;reset</td>
      </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
      <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-      <td class="from">sys_clk&#160;&#160;</td>
+      <td class="from">clk&#160;&#160;</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;clk</td>
@@ -3083,14 +3021,20 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    <div class="greydiv">
     <table class="connectionboxes">
      <tr>
-      <td class="neighbor" rowspan="2">
+      <td class="neighbor" rowspan="4">
        <a href="#module_sys_clk">sys_clk</a>
       </td>
       <td class="from">clk_reset&#160;&#160;</td>
-      <td class="main" rowspan="15">com_timer</td>
+      <td class="main" rowspan="14">com_timer</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset</td>
+     </tr>
+     <tr>
+      <td class="from">clk&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;clk</td>
      </tr>
      <tr style="height:6px">
       <td></td>
@@ -3127,18 +3071,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-      <td class="from">sys_clk&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk</td>
      </tr>
     </table>
    </div>
@@ -3179,7 +3111,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">systemFrequency</td>
-        <td class="parametervalue">50000000</td>
+        <td class="parametervalue">100000000</td>
        </tr>
        <tr>
         <td class="parametername">timeoutPulseOutput</td>
@@ -3236,11 +3168,11 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">FREQ</td>
-        <td class="parametervalue">50000000u</td>
+        <td class="parametervalue">100000000u</td>
        </tr>
        <tr>
         <td class="parametername">LOAD_VALUE</td>
-        <td class="parametervalue">499999ULL</td>
+        <td class="parametervalue">999999ULL</td>
        </tr>
        <tr>
         <td class="parametername">COUNTER_SIZE</td>
@@ -3267,14 +3199,20 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    <div class="greydiv">
     <table class="connectionboxes">
      <tr>
-      <td class="neighbor" rowspan="2">
+      <td class="neighbor" rowspan="4">
        <a href="#module_sys_clk">sys_clk</a>
       </td>
       <td class="from">clk_reset&#160;&#160;</td>
-      <td class="main" rowspan="13">com_led</td>
+      <td class="main" rowspan="12">com_led</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset</td>
+     </tr>
+     <tr>
+      <td class="from">clk&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;clk</td>
      </tr>
      <tr style="height:6px">
       <td></td>
@@ -3306,18 +3244,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      <tr>
       <td class="to">&#160;&#160;reset</td>
      </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-      <td class="from">sys_clk&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk</td>
-     </tr>
     </table>
    </div>
    <br/>
@@ -3341,7 +3267,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">clockRate</td>
-        <td class="parametervalue">50000000</td>
+        <td class="parametervalue">100000000</td>
        </tr>
        <tr>
         <td class="parametername">direction</td>
@@ -3442,7 +3368,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">FREQ</td>
-        <td class="parametervalue">50000000u</td>
+        <td class="parametervalue">100000000u</td>
        </tr>
       </table>
      </td>
@@ -3461,7 +3387,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        <a href="#module_com_nios">com_nios</a>
       </td>
       <td class="from">instruction_master&#160;&#160;</td>
-      <td class="main" rowspan="21">com_memory</td>
+      <td class="main" rowspan="20">com_memory</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;s1</td>
@@ -3482,13 +3408,19 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
      </tr>
      <tr>
-      <td class="neighbor" rowspan="2">
+      <td class="neighbor" rowspan="4">
        <a href="#module_sys_clk">sys_clk</a>
       </td>
       <td class="from">clk_reset&#160;&#160;</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset</td>
+     </tr>
+     <tr>
+      <td class="from">clk&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;clk</td>
      </tr>
      <tr style="height:6px">
       <td></td>
@@ -3501,18 +3433,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-      <td class="from">sys_clk&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk</td>
      </tr>
      <tr style="height:6px">
       <td></td>
@@ -3577,7 +3497,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">clockRate</td>
-        <td class="parametervalue">50000000</td>
+        <td class="parametervalue">100000000</td>
        </tr>
        <tr>
         <td class="parametername">columnWidth</td>
@@ -3761,286 +3681,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
     </tr>
    </table>
   </div>
-  <a name="module_com_sdram_clk"> </a>
-  <div>
-   <hr/>
-   <h2>com_sdram_clk</h2>altera_up_clocks v12.0
-   <br/>
-   <div class="greydiv">
-    <table class="connectionboxes">
-     <tr>
-      <td class="neighbor" rowspan="4">
-       <a href="#module_sys_clk">sys_clk</a>
-      </td>
-      <td class="from">clk&#160;&#160;</td>
-      <td class="main" rowspan="42">com_sdram_clk</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk_in_primary</td>
-     </tr>
-     <tr>
-      <td class="from">clk_reset&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk_in_primary_reset</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_nios">com_nios</a>
-      </td>
-      <td class="from">jtag_debug_module_reset&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk_in_primary_reset</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_carControl_nios">carControl_nios</a>
-      </td>
-      <td class="from">jtag_debug_module_reset&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk_in_primary_reset</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_led">com_led</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_timer">com_timer</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_shared_memory_mutex">shared_memory_mutex</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_shared_memory">shared_memory</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk1</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_jtaguart_0">jtaguart_0</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_memory">com_memory</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_nios">com_nios</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_carControl_nios">carControl_nios</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_onchip_memory2_0">onchip_memory2_0</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk1</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_ocmemory">com_ocmemory</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk1</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_ethernet_subsystem_clk">ethernet_subsystem_clk</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk_in</td>
-     </tr>
-    </table>
-   </div>
-   <br/>
-   <br/>
-   <table class="flowbox">
-    <tr>
-     <td class="parametersbox">
-      <h2>Parameters</h2>
-      <table>
-       <tr>
-        <td class="parametername">board</td>
-        <td class="parametervalue">DE2-115</td>
-       </tr>
-       <tr>
-        <td class="parametername">sys_clk_freq</td>
-        <td class="parametervalue">50</td>
-       </tr>
-       <tr>
-        <td class="parametername">sdram_clk</td>
-        <td class="parametervalue">true</td>
-       </tr>
-       <tr>
-        <td class="parametername">vga_clk</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">audio_clk</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">audio_clk_freq</td>
-        <td class="parametervalue">12.288</td>
-       </tr>
-       <tr>
-        <td class="parametername">AUTO_CLK_IN_PRIMARY_CLOCK_RATE</td>
-        <td class="parametervalue">100000000</td>
-       </tr>
-       <tr>
-        <td class="parametername">AUTO_DEVICE_FAMILY</td>
-        <td class="parametervalue">CYCLONEIVE</td>
-       </tr>
-       <tr>
-        <td class="parametername">deviceFamily</td>
-        <td class="parametervalue">Cyclone IV E</td>
-       </tr>
-       <tr>
-        <td class="parametername">generateLegacySim</td>
-        <td class="parametervalue">false</td>
-       </tr>
-      </table>
-     </td>
-    </tr>
-   </table>&#160;&#160;
-   <table class="flowbox">
-    <tr>
-     <td class="parametersbox">
-      <h2>Software Assignments</h2>(none)</td>
-    </tr>
-   </table>
-  </div>
   <a name="module_onchip_memory2_0"> </a>
   <div>
    <hr/>
@@ -4053,7 +3693,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        <a href="#module_carControl_nios">carControl_nios</a>
       </td>
       <td class="from">instruction_master&#160;&#160;</td>
-      <td class="main" rowspan="15">onchip_memory2_0</td>
+      <td class="main" rowspan="14">onchip_memory2_0</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;s1</td>
@@ -4074,13 +3714,19 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
      </tr>
      <tr>
-      <td class="neighbor" rowspan="2">
+      <td class="neighbor" rowspan="4">
        <a href="#module_sys_clk">sys_clk</a>
       </td>
       <td class="from">clk_reset&#160;&#160;</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset1</td>
+     </tr>
+     <tr>
+      <td class="from">clk&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;clk1</td>
      </tr>
      <tr style="height:6px">
       <td></td>
@@ -4093,18 +3739,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset1</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-      <td class="from">sys_clk&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk1</td>
      </tr>
     </table>
    </div>
@@ -4277,23 +3911,11 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    <div class="greydiv">
     <table class="connectionboxes">
      <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="main" rowspan="10">com_ocmemory</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk1</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
       <td class="neighbor" rowspan="4">
        <a href="#module_com_nios">com_nios</a>
       </td>
       <td class="from">instruction_master&#160;&#160;</td>
+      <td class="main" rowspan="9">com_ocmemory</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;s1</td>
@@ -4308,13 +3930,19 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
      </tr>
      <tr>
-      <td class="neighbor" rowspan="2">
+      <td class="neighbor" rowspan="4">
        <a href="#module_sys_clk">sys_clk</a>
       </td>
       <td class="from">clk_reset&#160;&#160;</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;reset1</td>
+     </tr>
+     <tr>
+      <td class="from">clk&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;clk1</td>
      </tr>
     </table>
    </div>
@@ -4493,7 +4121,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <table>
        <tr>
         <td class="parametername">AUTO_GENERATION_ID</td>
-        <td class="parametervalue">1404153314</td>
+        <td class="parametervalue">1404546921</td>
        </tr>
        <tr>
         <td class="parametername">AUTO_UNIQUE_ID</td>
@@ -4509,7 +4137,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">AUTO_ETHERNET_SUBSYS_CLK_IN_CLOCK_RATE</td>
-        <td class="parametervalue">50000000</td>
+        <td class="parametervalue">100000000</td>
        </tr>
        <tr>
         <td class="parametername">AUTO_ETHERNET_SUBSYS_CLK_IN_CLOCK_DOMAIN</td>
@@ -4546,26 +4174,20 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    <div class="greydiv">
     <table class="connectionboxes">
      <tr>
-      <td class="neighbor" rowspan="2">
-       <a href="#module_com_sdram_clk">com_sdram_clk</a>
-      </td>
-      <td class="from">sys_clk&#160;&#160;</td>
-      <td class="main" rowspan="37">ethernet_subsystem_clk</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk_in</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td class="neighbor" rowspan="2">
+      <td class="neighbor" rowspan="4">
        <a href="#module_sys_clk">sys_clk</a>
       </td>
       <td class="from">clk_reset&#160;&#160;</td>
+      <td class="main" rowspan="36">ethernet_subsystem_clk</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;clk_in_reset</td>
+     </tr>
+     <tr>
+      <td class="from">clk&#160;&#160;</td>
+     </tr>
+     <tr>
+      <td class="to">&#160;&#160;clk_in</td>
      </tr>
      <tr>
       <td></td>
@@ -4753,7 +4375,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">inputClockFrequency</td>
-        <td class="parametervalue">50000000</td>
+        <td class="parametervalue">100000000</td>
        </tr>
        <tr>
         <td class="parametername">resetSynchronousEdges</td>
@@ -4909,7 +4531,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">AUTO_CLK_CLOCK_RATE</td>
-        <td class="parametervalue">50000000</td>
+        <td class="parametervalue">100000000</td>
        </tr>
        <tr>
         <td class="parametername">AUTO_DEVICE_FAMILY</td>
@@ -6259,8 +5881,8 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   </div>
   <table class="blueBar">
    <tr>
-    <td class="l">generation took 0,00 seconds</td>
-    <td class="r">rendering took 0,30 seconds</td>
+    <td class="l">generation took 0,01 seconds</td>
+    <td class="r">rendering took 0,38 seconds</td>
    </tr>
   </table>
  </body>

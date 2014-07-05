@@ -12,19 +12,19 @@
    element $${FILENAME}
    {
    }
-   element jtaguart_1.avalon_jtag_slave
-   {
-      datum baseAddress
-      {
-         value = "1052672";
-         type = "String";
-      }
-   }
    element jtaguart_0.avalon_jtag_slave
    {
       datum baseAddress
       {
          value = "134244408";
+         type = "String";
+      }
+   }
+   element jtaguart_1.avalon_jtag_slave
+   {
+      datum baseAddress
+      {
+         value = "1052672";
          type = "String";
       }
    }
@@ -118,19 +118,19 @@
          type = "int";
       }
    }
-   element com_nios.jtag_debug_module
-   {
-      datum baseAddress
-      {
-         value = "134242304";
-         type = "String";
-      }
-   }
    element carControl_nios.jtag_debug_module
    {
       datum baseAddress
       {
          value = "1050624";
+         type = "String";
+      }
+   }
+   element com_nios.jtag_debug_module
+   {
+      datum baseAddress
+      {
+         value = "134242304";
          type = "String";
       }
    }
@@ -158,19 +158,11 @@
          type = "int";
       }
    }
-   element com_led.s1
+   element com_ocmemory.s1
    {
       datum baseAddress
       {
-         value = "134244384";
-         type = "String";
-      }
-   }
-   element shared_memory_mutex.s1
-   {
-      datum baseAddress
-      {
-         value = "134244400";
+         value = "134234112";
          type = "String";
       }
    }
@@ -182,14 +174,6 @@
          type = "String";
       }
    }
-   element onchip_memory2_0.s1
-   {
-      datum baseAddress
-      {
-         value = "524288";
-         type = "String";
-      }
-   }
    element com_timer.s1
    {
       datum baseAddress
@@ -198,19 +182,35 @@
          type = "String";
       }
    }
+   element onchip_memory2_0.s1
+   {
+      datum baseAddress
+      {
+         value = "524288";
+         type = "String";
+      }
+   }
+   element shared_memory_mutex.s1
+   {
+      datum baseAddress
+      {
+         value = "134244400";
+         type = "String";
+      }
+   }
+   element com_led.s1
+   {
+      datum baseAddress
+      {
+         value = "134244384";
+         type = "String";
+      }
+   }
    element com_memory.s1
    {
       datum baseAddress
       {
          value = "67108864";
-         type = "String";
-      }
-   }
-   element com_ocmemory.s1
-   {
-      datum baseAddress
-      {
-         value = "134234112";
          type = "String";
       }
    }
@@ -261,7 +261,7 @@
  <parameter name="projectName" value="Car2X.qpf" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="1" />
- <parameter name="timeStamp" value="1404152679445" />
+ <parameter name="timeStamp" value="1404546876083" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
  <interface name="clk" internal="sys_clk.clk_in" type="clock" dir="end" />
@@ -276,11 +276,7 @@
    internal="com_memory.wire"
    type="conduit"
    dir="end" />
- <interface
-   name="sdram_clk"
-   internal="com_sdram_clk.sdram_clk"
-   type="clock"
-   dir="start" />
+ <interface name="sdram_clk" internal="com_sdram_clk.sdram_clk" />
  <interface
    name="tse_conduit_connection"
    internal="ethernet_subsystem.tse_conduit_connection"
@@ -386,7 +382,7 @@
   <parameter name="tightlyCoupledInstructionMaster3AddrWidth" value="1" />
   <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='com_memory.s1' start='0x4000000' end='0x8000000' /><slave name='com_ocmemory.s1' start='0x8004000' end='0x8004400' /><slave name='com_nios.jtag_debug_module' start='0x8006000' end='0x8006800' /></address-map>]]></parameter>
   <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='com_memory.s1' start='0x4000000' end='0x8000000' /><slave name='ethernet_subsystem_descriptor_memory.s2' start='0x8000000' end='0x8002000' /><slave name='shared_memory.s1' start='0x8002000' end='0x8003000' /><slave name='com_ocmemory.s1' start='0x8004000' end='0x8004400' /><slave name='ethernet_subsystem_tse_mac.control_port' start='0x8005800' end='0x8005C00' /><slave name='ethernet_subsystem_sgdma_rx.csr' start='0x8005C00' end='0x8005C40' /><slave name='ethernet_subsystem_sgdma_tx.csr' start='0x8005C40' end='0x8005C80' /><slave name='com_nios.jtag_debug_module' start='0x8006000' end='0x8006800' /><slave name='com_timer.s1' start='0x8006800' end='0x8006820' /><slave name='com_led.s1' start='0x8006820' end='0x8006830' /><slave name='shared_memory_mutex.s1' start='0x8006830' end='0x8006838' /><slave name='jtaguart_0.avalon_jtag_slave' start='0x8006838' end='0x8006840' /></address-map>]]></parameter>
-  <parameter name="clockFrequency" value="50000000" />
+  <parameter name="clockFrequency" value="100000000" />
   <parameter name="deviceFamilyName" value="Cyclone IV E" />
   <parameter name="internalIrqMaskSystemInfo" value="15" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
@@ -516,7 +512,7 @@
   <parameter name="tightlyCoupledInstructionMaster3AddrWidth" value="1" />
   <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x80000' end='0xCB000' /><slave name='carControl_nios.jtag_debug_module' start='0x100800' end='0x101000' /></address-map>]]></parameter>
   <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x80000' end='0xCB000' /><slave name='carControl_nios.jtag_debug_module' start='0x100800' end='0x101000' /><slave name='shared_memory.s2' start='0x8002000' end='0x8003000' /><slave name='shared_memory_mutex.s1' start='0x8006830' end='0x8006838' /></address-map>]]></parameter>
-  <parameter name="clockFrequency" value="50000000" />
+  <parameter name="clockFrequency" value="100000000" />
   <parameter name="deviceFamilyName" value="Cyclone IV E" />
   <parameter name="internalIrqMaskSystemInfo" value="0" />
   <parameter name="customInstSlavesSystemInfo" value="&lt;info/&gt;" />
@@ -593,7 +589,7 @@
   <parameter name="periodUnits" value="MSEC" />
   <parameter name="resetOutput" value="false" />
   <parameter name="snapshot" value="false" />
-  <parameter name="systemFrequency" value="50000000" />
+  <parameter name="systemFrequency" value="100000000" />
   <parameter name="timeoutPulseOutput" value="false" />
   <parameter name="timerPreset">SIMPLE_PERIODIC_INTERRUPT</parameter>
  </module>
@@ -601,7 +597,7 @@
   <parameter name="bitClearingEdgeCapReg" value="false" />
   <parameter name="bitModifyingOutReg" value="false" />
   <parameter name="captureEdge" value="false" />
-  <parameter name="clockRate" value="50000000" />
+  <parameter name="clockRate" value="100000000" />
   <parameter name="direction" value="Output" />
   <parameter name="edgeType" value="RISING" />
   <parameter name="generateIRQ" value="false" />
@@ -623,7 +619,7 @@
   <parameter name="TRP" value="20.0" />
   <parameter name="TWR" value="14.0" />
   <parameter name="casLatency" value="3" />
-  <parameter name="clockRate" value="50000000" />
+  <parameter name="clockRate" value="100000000" />
   <parameter name="columnWidth" value="10" />
   <parameter name="dataWidth" value="32" />
   <parameter name="generateSimulationModel" value="false" />
@@ -642,7 +638,7 @@
  <module
    kind="altera_up_clocks"
    version="12.0"
-   enabled="1"
+   enabled="0"
    name="com_sdram_clk">
   <parameter name="board" value="DE2-115" />
   <parameter name="sys_clk_freq" value="50" />
@@ -712,9 +708,9 @@
   <parameter name="AUTO_UNIQUE_ID">$${FILENAME}_ethernet_subsystem</parameter>
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone IV E" />
   <parameter name="AUTO_DEVICE" value="EP4CE115F29C7" />
-  <parameter name="AUTO_ETHERNET_SUBSYS_CLK_IN_CLOCK_RATE" value="50000000" />
-  <parameter name="AUTO_ETHERNET_SUBSYS_CLK_IN_CLOCK_DOMAIN" value="6" />
-  <parameter name="AUTO_ETHERNET_SUBSYS_CLK_IN_RESET_DOMAIN" value="6" />
+  <parameter name="AUTO_ETHERNET_SUBSYS_CLK_IN_CLOCK_RATE" value="100000000" />
+  <parameter name="AUTO_ETHERNET_SUBSYS_CLK_IN_CLOCK_DOMAIN" value="1" />
+  <parameter name="AUTO_ETHERNET_SUBSYS_CLK_IN_RESET_DOMAIN" value="1" />
  </module>
  <connection
    kind="avalon"
@@ -982,41 +978,6 @@
    start="sys_clk.clk_reset"
    end="com_sdram_clk.clk_in_primary_reset" />
  <connection
-   kind="clock"
-   version="12.1"
-   start="com_sdram_clk.sys_clk"
-   end="com_led.clk" />
- <connection
-   kind="clock"
-   version="12.1"
-   start="com_sdram_clk.sys_clk"
-   end="com_timer.clk" />
- <connection
-   kind="clock"
-   version="12.1"
-   start="com_sdram_clk.sys_clk"
-   end="shared_memory_mutex.clk" />
- <connection
-   kind="clock"
-   version="12.1"
-   start="com_sdram_clk.sys_clk"
-   end="shared_memory.clk1" />
- <connection
-   kind="clock"
-   version="12.1"
-   start="com_sdram_clk.sys_clk"
-   end="jtaguart_0.clk" />
- <connection
-   kind="clock"
-   version="12.1"
-   start="com_sdram_clk.sys_clk"
-   end="com_memory.clk" />
- <connection
-   kind="clock"
-   version="12.1"
-   start="com_sdram_clk.sys_clk"
-   end="com_nios.clk" />
- <connection
    kind="reset"
    version="12.1"
    start="com_nios.jtag_debug_module_reset"
@@ -1069,22 +1030,7 @@
    kind="clock"
    version="12.1"
    start="com_sdram_clk.sys_clk"
-   end="carControl_nios.clk" />
- <connection
-   kind="clock"
-   version="12.1"
-   start="com_sdram_clk.sys_clk"
    end="jtaguart_1.clk" />
- <connection
-   kind="clock"
-   version="12.1"
-   start="com_sdram_clk.sys_clk"
-   end="onchip_memory2_0.clk1" />
- <connection
-   kind="clock"
-   version="12.1"
-   start="com_sdram_clk.sys_clk"
-   end="com_ocmemory.clk1" />
  <connection
    kind="avalon"
    version="12.1"
@@ -1106,11 +1052,6 @@
    version="12.1"
    start="sys_clk.clk_reset"
    end="com_ocmemory.reset1" />
- <connection
-   kind="clock"
-   version="12.1"
-   start="com_sdram_clk.sys_clk"
-   end="ethernet_subsystem.ethernet_subsys_clk_in" />
  <connection
    kind="reset"
    version="12.1"
@@ -1162,4 +1103,39 @@
    end="ethernet_subsystem.sgdma_tx_csr_irq">
   <parameter name="irqNumber" value="3" />
  </connection>
+ <connection kind="clock" version="12.1" start="sys_clk.clk" end="com_nios.clk" />
+ <connection
+   kind="clock"
+   version="12.1"
+   start="sys_clk.clk"
+   end="com_ocmemory.clk1" />
+ <connection kind="clock" version="12.1" start="sys_clk.clk" end="com_memory.clk" />
+ <connection kind="clock" version="12.1" start="sys_clk.clk" end="jtaguart_0.clk" />
+ <connection kind="clock" version="12.1" start="sys_clk.clk" end="com_timer.clk" />
+ <connection kind="clock" version="12.1" start="sys_clk.clk" end="com_led.clk" />
+ <connection
+   kind="clock"
+   version="12.1"
+   start="sys_clk.clk"
+   end="shared_memory_mutex.clk" />
+ <connection
+   kind="clock"
+   version="12.1"
+   start="sys_clk.clk"
+   end="shared_memory.clk1" />
+ <connection
+   kind="clock"
+   version="12.1"
+   start="sys_clk.clk"
+   end="carControl_nios.clk" />
+ <connection
+   kind="clock"
+   version="12.1"
+   start="sys_clk.clk"
+   end="onchip_memory2_0.clk1" />
+ <connection
+   kind="clock"
+   version="12.1"
+   start="sys_clk.clk"
+   end="ethernet_subsystem.ethernet_subsys_clk_in" />
 </system>

@@ -12,7 +12,6 @@
 			com_sdram_wire_dqm                               : out   std_logic_vector(3 downto 0);                     -- dqm
 			com_sdram_wire_ras_n                             : out   std_logic;                                        -- ras_n
 			com_sdram_wire_we_n                              : out   std_logic;                                        -- we_n
-			sdram_clk_clk                                    : out   std_logic;                                        -- clk
 			tse_conduit_connection_rgmii_in                  : in    std_logic_vector(3 downto 0)  := (others => 'X'); -- rgmii_in
 			tse_conduit_connection_rgmii_out                 : out   std_logic_vector(3 downto 0);                     -- rgmii_out
 			tse_conduit_connection_rx_control                : in    std_logic                     := 'X';             -- rx_control

@@ -1,12 +1,12 @@
-Analysis & Synthesis Status : Successful - Mon Jun 30 20:42:11 2014
+Analysis & Synthesis Status : Successful - Sat Jul 05 10:08:52 2014
 Quartus II 32-bit Version : 12.1 Build 177 11/07/2012 SJ Web Edition
 Revision Name : Car2X
 Top-level Entity Name : Car2X
 Family : Cyclone IV E
-Total logic elements : 17,525
-    Total combinational functions : 12,656
-    Dedicated logic registers : 11,025
-Total registers : 11037
+Total logic elements : 17,521
+    Total combinational functions : 12,652
+    Dedicated logic registers : 11,028
+Total registers : 11040
 Total pins : 77
 Total virtual pins : 0
 Total memory bits : 3,293,858
