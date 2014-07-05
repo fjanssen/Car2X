@@ -2,9 +2,9 @@
  * system.h - SOPC Builder system and BSP software package information
  *
  * Machine generated for CPU 'com_nios' in SOPC Builder design 'nios_system'
- * SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/hardware/nios_system.sopcinfo
+ * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Wed Jul 02 12:25:24 CEST 2014
+ * Generated: Sat Jul 05 13:31:48 CEST 2014
  */
 
 /*
@@ -63,7 +63,7 @@
 #define ALT_CPU_ARCHITECTURE "altera_nios2_qsys"
 #define ALT_CPU_BIG_ENDIAN 0
 #define ALT_CPU_BREAK_ADDR 0x8006020
-#define ALT_CPU_CPU_FREQ 50000000u
+#define ALT_CPU_CPU_FREQ 100000000u
 #define ALT_CPU_CPU_ID_SIZE 1
 #define ALT_CPU_CPU_ID_VALUE 0x00000000
 #define ALT_CPU_CPU_IMPLEMENTATION "fast"
@@ -73,7 +73,7 @@
 #define ALT_CPU_DCACHE_SIZE 4096
 #define ALT_CPU_EXCEPTION_ADDR 0x4005020
 #define ALT_CPU_FLUSHDA_SUPPORTED
-#define ALT_CPU_FREQ 50000000
+#define ALT_CPU_FREQ 100000000
 #define ALT_CPU_HARDWARE_DIVIDE_PRESENT 0
 #define ALT_CPU_HARDWARE_MULTIPLY_PRESENT 1
 #define ALT_CPU_HARDWARE_MULX_PRESENT 0
@@ -97,7 +97,7 @@
 
 #define NIOS2_BIG_ENDIAN 0
 #define NIOS2_BREAK_ADDR 0x8006020
-#define NIOS2_CPU_FREQ 50000000u
+#define NIOS2_CPU_FREQ 100000000u
 #define NIOS2_CPU_ID_SIZE 1
 #define NIOS2_CPU_ID_VALUE 0x00000000
 #define NIOS2_CPU_IMPLEMENTATION "fast"
@@ -131,7 +131,6 @@
 #define __ALTERA_AVALON_MUTEX
 #define __ALTERA_AVALON_NEW_SDRAM_CONTROLLER
 #define __ALTERA_AVALON_ONCHIP_MEMORY2
-#define __ALTERA_AVALON_PIO
 #define __ALTERA_AVALON_SGDMA
 #define __ALTERA_AVALON_TIMER
 #define __ALTERA_NIOS2_QSYS
@@ -182,33 +181,6 @@
 #define INCLUDE_TCP
 #define INICHE_DEFAULT_IF "NOT_USED"
 #define IP_FRAGMENTS
-
-
-/*
- * com_led configuration
- *
- */
-
-#define ALT_MODULE_CLASS_com_led altera_avalon_pio
-#define COM_LED_BASE 0x8006820
-#define COM_LED_BIT_CLEARING_EDGE_REGISTER 0
-#define COM_LED_BIT_MODIFYING_OUTPUT_REGISTER 0
-#define COM_LED_CAPTURE 0
-#define COM_LED_DATA_WIDTH 8
-#define COM_LED_DO_TEST_BENCH_WIRING 0
-#define COM_LED_DRIVEN_SIM_VALUE 0x0
-#define COM_LED_EDGE_TYPE "NONE"
-#define COM_LED_FREQ 50000000u
-#define COM_LED_HAS_IN 0
-#define COM_LED_HAS_OUT 1
-#define COM_LED_HAS_TRI 0
-#define COM_LED_IRQ -1
-#define COM_LED_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define COM_LED_IRQ_TYPE "NONE"
-#define COM_LED_NAME "/dev/com_led"
-#define COM_LED_RESET_VALUE 0x0
-#define COM_LED_SPAN 16
-#define COM_LED_TYPE "altera_avalon_pio"
 
 
 /*
@@ -327,35 +299,6 @@
 
 
 /*
- * com_ocmemory configuration
- *
- */
-
-#define ALT_MODULE_CLASS_com_ocmemory altera_avalon_onchip_memory2
-#define COM_OCMEMORY_ALLOW_IN_SYSTEM_MEMORY_CONTENT_EDITOR 0
-#define COM_OCMEMORY_ALLOW_MRAM_SIM_CONTENTS_ONLY_FILE 0
-#define COM_OCMEMORY_BASE 0x8004000
-#define COM_OCMEMORY_CONTENTS_INFO ""
-#define COM_OCMEMORY_DUAL_PORT 0
-#define COM_OCMEMORY_GUI_RAM_BLOCK_TYPE "Automatic"
-#define COM_OCMEMORY_INIT_CONTENTS_FILE "com_ocmemory"
-#define COM_OCMEMORY_INIT_MEM_CONTENT 1
-#define COM_OCMEMORY_INSTANCE_ID "NONE"
-#define COM_OCMEMORY_IRQ -1
-#define COM_OCMEMORY_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define COM_OCMEMORY_NAME "/dev/com_ocmemory"
-#define COM_OCMEMORY_NON_DEFAULT_INIT_FILE_ENABLED 0
-#define COM_OCMEMORY_RAM_BLOCK_TYPE "Auto"
-#define COM_OCMEMORY_READ_DURING_WRITE_MODE "DONT_CARE"
-#define COM_OCMEMORY_SINGLE_CLOCK_OP 0
-#define COM_OCMEMORY_SIZE_MULTIPLE 1
-#define COM_OCMEMORY_SIZE_VALUE 1024u
-#define COM_OCMEMORY_SPAN 1024
-#define COM_OCMEMORY_TYPE "altera_avalon_onchip_memory2"
-#define COM_OCMEMORY_WRITABLE 1
-
-
-/*
  * com_timer configuration
  *
  */
@@ -365,10 +308,10 @@
 #define COM_TIMER_BASE 0x8006800
 #define COM_TIMER_COUNTER_SIZE 32
 #define COM_TIMER_FIXED_PERIOD 1
-#define COM_TIMER_FREQ 50000000u
+#define COM_TIMER_FREQ 100000000u
 #define COM_TIMER_IRQ 1
 #define COM_TIMER_IRQ_INTERRUPT_CONTROLLER_ID 0
-#define COM_TIMER_LOAD_VALUE 499999ull
+#define COM_TIMER_LOAD_VALUE 999999ull
 #define COM_TIMER_MULT 0.0010
 #define COM_TIMER_NAME "/dev/com_timer"
 #define COM_TIMER_PERIOD 10

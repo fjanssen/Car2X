@@ -1,9 +1,9 @@
 # memory.gdb - GDB memory region definitions
 #
 # Machine generated for CPU 'com_nios' in SOPC Builder design 'nios_system'
-# SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/hardware/nios_system.sopcinfo
+# SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
 #
-# Generated: Wed Jul 02 12:25:24 CEST 2014
+# Generated: Sat Jul 05 13:31:48 CEST 2014
 
 # DO NOT MODIFY THIS FILE
 #
@@ -54,6 +54,3 @@ memory 0x8000000 0x8002000 cache
 
 # shared_memory
 memory 0x8002000 0x8003000 cache
-
-# com_ocmemory
-memory 0x8004000 0x8004400 cache

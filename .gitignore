@@ -17,9 +17,10 @@ local.properties
 .metadata/
 
 ## build artifacts
-.elf
-.objdump
-.map
+*.elf
+*.objdump
+*.map
+*.flock
 
 ## C2X generated BSP
 *_bsp/

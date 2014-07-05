@@ -178,9 +178,9 @@ $(MEM_0)_CREATE_LANES := 0
 .PHONY: com_memory
 com_memory: check_elf_exists $(HDL_SIM_DIR)/$(MEM_0).dat $(HDL_SIM_DIR)/$(MEM_0).sym
 
-# Memory: com_ocmemory
-MEM_1 := nios_system_com_ocmemory
-$(MEM_1)_NAME := com_ocmemory
+# Memory: ethernet_subsystem_descriptor_memory
+MEM_1 := nios_system_ethernet_subsystem_descriptor_memory
+$(MEM_1)_NAME := ethernet_subsystem_descriptor_memory
 $(MEM_1)_MEM_INIT_FILE_PARAM_NAME := INIT_FILE
 HEX_FILES += $(MEM_INIT_DIR)/$(MEM_1).hex
 MEM_INIT_INSTALL_FILES += $(MEM_INIT_INSTALL_DIR)/$(MEM_1).hex
@@ -188,19 +188,19 @@ DAT_FILES += $(HDL_SIM_DIR)/$(MEM_1).dat
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_1).dat
 SYM_FILES += $(HDL_SIM_DIR)/$(MEM_1).sym
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_1).sym
-$(MEM_1)_START := 0x08004000
-$(MEM_1)_END := 0x080043ff
-$(MEM_1)_HIERARCHICAL_PATH := com_ocmemory
+$(MEM_1)_START := 0x08000000
+$(MEM_1)_END := 0x08001fff
+$(MEM_1)_HIERARCHICAL_PATH := ethernet_subsystem.descriptor_memory
 $(MEM_1)_WIDTH := 32
 $(MEM_1)_ENDIANNESS := --little-endian-mem
 $(MEM_1)_CREATE_LANES := 0
 
-.PHONY: com_ocmemory
-com_ocmemory: check_elf_exists $(MEM_INIT_DIR)/$(MEM_1).hex $(HDL_SIM_DIR)/$(MEM_1).dat $(HDL_SIM_DIR)/$(MEM_1).sym
+.PHONY: ethernet_subsystem_descriptor_memory
+ethernet_subsystem_descriptor_memory: check_elf_exists $(MEM_INIT_DIR)/$(MEM_1).hex $(HDL_SIM_DIR)/$(MEM_1).dat $(HDL_SIM_DIR)/$(MEM_1).sym
 
-# Memory: ethernet_subsystem_descriptor_memory
-MEM_2 := nios_system_ethernet_subsystem_descriptor_memory
-$(MEM_2)_NAME := ethernet_subsystem_descriptor_memory
+# Memory: shared_memory
+MEM_2 := nios_system_shared_memory
+$(MEM_2)_NAME := shared_memory
 $(MEM_2)_MEM_INIT_FILE_PARAM_NAME := INIT_FILE
 HEX_FILES += $(MEM_INIT_DIR)/$(MEM_2).hex
 MEM_INIT_INSTALL_FILES += $(MEM_INIT_INSTALL_DIR)/$(MEM_2).hex
@@ -208,35 +208,15 @@ DAT_FILES += $(HDL_SIM_DIR)/$(MEM_2).dat
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_2).dat
 SYM_FILES += $(HDL_SIM_DIR)/$(MEM_2).sym
 HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_2).sym
-$(MEM_2)_START := 0x08000000
-$(MEM_2)_END := 0x08001fff
-$(MEM_2)_HIERARCHICAL_PATH := ethernet_subsystem.descriptor_memory
+$(MEM_2)_START := 0x08002000
+$(MEM_2)_END := 0x08002fff
+$(MEM_2)_HIERARCHICAL_PATH := shared_memory
 $(MEM_2)_WIDTH := 32
 $(MEM_2)_ENDIANNESS := --little-endian-mem
 $(MEM_2)_CREATE_LANES := 0
 
-.PHONY: ethernet_subsystem_descriptor_memory
-ethernet_subsystem_descriptor_memory: check_elf_exists $(MEM_INIT_DIR)/$(MEM_2).hex $(HDL_SIM_DIR)/$(MEM_2).dat $(HDL_SIM_DIR)/$(MEM_2).sym
-
-# Memory: shared_memory
-MEM_3 := nios_system_shared_memory
-$(MEM_3)_NAME := shared_memory
-$(MEM_3)_MEM_INIT_FILE_PARAM_NAME := INIT_FILE
-HEX_FILES += $(MEM_INIT_DIR)/$(MEM_3).hex
-MEM_INIT_INSTALL_FILES += $(MEM_INIT_INSTALL_DIR)/$(MEM_3).hex
-DAT_FILES += $(HDL_SIM_DIR)/$(MEM_3).dat
-HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_3).dat
-SYM_FILES += $(HDL_SIM_DIR)/$(MEM_3).sym
-HDL_SIM_INSTALL_FILES += $(HDL_SIM_INSTALL_DIR)/$(MEM_3).sym
-$(MEM_3)_START := 0x08002000
-$(MEM_3)_END := 0x08002fff
-$(MEM_3)_HIERARCHICAL_PATH := shared_memory
-$(MEM_3)_WIDTH := 32
-$(MEM_3)_ENDIANNESS := --little-endian-mem
-$(MEM_3)_CREATE_LANES := 0
-
 .PHONY: shared_memory
-shared_memory: check_elf_exists $(MEM_INIT_DIR)/$(MEM_3).hex $(HDL_SIM_DIR)/$(MEM_3).dat $(HDL_SIM_DIR)/$(MEM_3).sym
+shared_memory: check_elf_exists $(MEM_INIT_DIR)/$(MEM_2).hex $(HDL_SIM_DIR)/$(MEM_2).dat $(HDL_SIM_DIR)/$(MEM_2).sym
 
 
 #END OF BSP SPECIFIC

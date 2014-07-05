@@ -87,11 +87,11 @@ ACDS_VERSION := 12.1
 
 # Quartus Generated JDI File. Required for resolving node instance ID's with 
 # design component names. 
-JDI_FILE := C:/Users/HS/Documents/tortoise2x/trunk/hardware/Car2X.jdi
+JDI_FILE := C:/Users/Florian/Documents/GitHub/Car2X/hardware/Car2X.jdi
 
 # Qsys--generated SOPCINFO file. Required for resolving node instance ID's with 
 # design component names. 
-SOPCINFO_FILE := C:/Users/HS/Documents/tortoise2x/trunk/hardware/nios_system.sopcinfo
+SOPCINFO_FILE := C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
 
 # Big-Endian operation. 
 # setting BIG_ENDIAN is false
