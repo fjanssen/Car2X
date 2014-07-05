@@ -66,7 +66,9 @@ void sss_reset_connection(SSSConn* conn)
     
     conn->fd = -1;
     conn->state = SSS_SOCKET::READY;
+    printf("[RESET] wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos,conn->rx_buffer);
     conn->rx_wr_pos = conn->rx_buffer;
+    printf("[RESET] after set::: wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos,conn->rx_buffer);
     conn->client_type = SSS_SOCKET::UNKNOWN;
     return;
 }
@@ -124,7 +126,7 @@ void sss_handle_accept(int listen_socket, SSSConn* conn)
         printf("[sss_handle_accept] rejected connection request from %s\n",
                inet_ntoa(incoming_addr.sin_addr));
     }
-    
+    printf("[ACCEPT] wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos,conn->rx_buffer);
     return;
 }
 
@@ -222,7 +224,9 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
 int receive_bytes(SSSConn* conn){
 	int rx_code = recv(conn->fd, (char *) conn->rx_wr_pos,
                        SSS_RX_BUF_SIZE - (conn->rx_wr_pos - conn->rx_buffer) -1, 0);
-    
+    printf("rxcode = %i\n",rx_code);
+//	int rx_code = recv(conn->fd,(char*) conn->rx_wr_pos,1024, 0);
+
 	if(rx_code > 0)
 	{
         conn->rx_wr_pos += rx_code;
@@ -231,129 +235,9 @@ int receive_bytes(SSSConn* conn){
 	return rx_code;
 }
 
+//int receive_bytes_neu(SSSConn* conn)
 
 
-/*
- * sss_handle_receive()
- *
- * This routine is called whenever there is a sss connection established and
- * the socket assocaited with that connection has incoming data. We will first
- * look for a newline "\n" character to see if the user has entered something
- * and pressed 'return'. If there is no newline in the buffer, we'll attempt
- * to receive data from the listening socket until there is.
- *
- * The connection will remain open until the user sends a close() msg, as
- * deterimined by repeatedly calling recv(), and once a newline is found,
- * calling sss_exec_command(), which will determine whether the quit
- * command was received.
- *
- * Finally, each time we receive data we must manage our receive-side buffer.
- * New data is received from the sss socket onto the head of the buffer,
- * and popped off from the beginning of the buffer with the
- * sss_exec_command() routine. Aside from these, we must move incoming
- * (un-processed) data to buffer start as appropriate and keep track of
- * associated pointers.
- */
-void sss_handle_receive(SSSConn* conn)
-{
-    int data_used = 0, rx_code = 0;
-    int iBytesReceived = 0;
-    conn->rx_wr_pos = conn->rx_buffer;
-    
-    printf("recvloop\n");
-    conn->state = conn->close ? SSSConn::CLOSE : SSSConn::READY;
-    
-    //while(conn->state != SSSConn::CLOSE)
-    while(false)
-    {
-        printf("%i\n",conn->close);
-        //start to receive a new CARP packet here
-        printf("recvzero\n");
-        while(iBytesReceived < 4 && !conn->close){
-            iBytesReceived += receive_bytes(conn);
-            if(iBytesReceived==0){
-                conn->close=SSSConn::CLOSE;
-            }
-        }
-        
-        //as long as the first 4 bytes are not CARP
-        printf("notcarp\n");
-        while(!(conn->rx_buffer[0] == 'C' && conn->rx_buffer[1] == 'A' && conn->rx_buffer[2] == 'R' && conn->rx_buffer[3] == 'P')&& !conn->close){
-            
-            iBytesReceived -= 1;
-            conn->rx_wr_pos -= 1;
-            
-            //CARP HEADER NOT FOUND => THROW AWAY rx_buffer[0] and receive new 4th byte
-            memmove(conn->rx_buffer,conn->rx_buffer+1,iBytesReceived);
-            
-            //clear off the last element that has been moved to the left
-            *(conn->rx_wr_pos) = 0;
-            
-            //receive a new 4th byte if there are not enough bytes anymore
-            while(iBytesReceived < 4 && !conn->close){
-		 		iBytesReceived += receive_bytes(conn);
-            }
-            
-        }
-        
-        //CARP header was received successfully, starting at conn->rx_buffer
-        //now wait for the full header (8 bytes) to arrive
-        printf("recvcarp\n");
-        while(iBytesReceived < 8 && !conn->close){
-            iBytesReceived += receive_bytes(conn);
-        }
-        
-        //full header arrived, now parse payload length
-        int 	iPayloadLength  = conn->rx_buffer[6] << 8;
-        iPayloadLength += conn->rx_buffer[7];
-        
-        //received payload so far is everything except CAR_HEADER_LENGTH = 8 bytes
-        //wait for the whole payload to be received
-        printf("recvpayl\n");
-        while(iBytesReceived - CAR_HEADER_LENGTH < iPayloadLength&& !conn->close){
-            iBytesReceived += receive_bytes(conn);
-        }
-        
-        //output
-        printf("msg: ");
-        for (int i = 0; i < iPayloadLength+CAR_HEADER_LENGTH; i++) {
-            printf("%02x ", conn->rx_buffer[i]&0xFF);
-        }
-        printf("\n");
-        
-        //send dummy back
-        send(conn->fd,(char*)conn->rx_buffer,iPayloadLength+CAR_HEADER_LENGTH,0);
-        
-        
-        //parse the found CCarProtocol object
-        CCarProtocol * parsedPacket = new CCarProtocol((alt_u8 *)conn->rx_buffer,iPayloadLength+CAR_HEADER_LENGTH);
-        
-        //clear the buffer: delete message from it:
-        memmove(conn->rx_buffer,conn->rx_buffer+iPayloadLength+8,iBytesReceived-iPayloadLength-CAR_HEADER_LENGTH);
-        conn->rx_wr_pos -= (iPayloadLength+CAR_HEADER_LENGTH);
-        memset(conn->rx_wr_pos,0,iPayloadLength+CAR_HEADER_LENGTH);
-        
-        iBytesReceived -= (iPayloadLength+CAR_HEADER_LENGTH);
-        
-        //execute whatever the message wants us to to
-        sss_exec_command(parsedPacket,conn);
-        
-        delete(parsedPacket);
-        
-        /*
-         * When the quit command is received, update our connection state so that
-         * we can exit the while() loop and close the connection
-         */
-        conn->state = conn->close ? SSSConn::CLOSE : SSSConn::READY;
-        
-    }
-    
-    printf("[sss_handle_receive] closing connection\n");
-    close(conn->fd);
-    sss_reset_connection(conn);
-    
-    return;
-}
 
 /*
  * sss_handle_receive_new()
@@ -367,7 +251,7 @@ void sss_handle_receive(SSSConn* conn)
  */
 void sss_handle_receive_new(SSSConn* conn)
 {
-	printf("handle receive\n");
+
     //we know some data can be received on the connection => reveive it to rx_buffer (will automatically increment rx_wr_pos
     //note: bytes may only be received once in this function as we assert that there is data to be read, otherwise this function may block out other connections 
     int iBytesReceived = receive_bytes(conn);
@@ -379,13 +263,15 @@ void sss_handle_receive_new(SSSConn* conn)
         conn->state = SSSConn::CLOSE;
         return;
     }
-    printf("non empty msg\n");
+
 
 
 
     //check if CARP is somewhere in the buffer and throw everything away until CARP is there
     int bytesInBuffer =conn->rx_wr_pos - conn->rx_buffer ;
-
+    printf("bytesInbuffer = %i\n",bytesInBuffer);
+    printf("wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos, conn->rx_buffer);
+    printf("buffer[0] = %02x\n",conn->rx_buffer[bytesInBuffer]);
     //output
                 printf("msg: ");
                 for (int i = 0; i < bytesInBuffer; i++) {
@@ -532,7 +418,7 @@ void SSSSimpleSocketServerTask()
         FD_SET(fd_listen, &readfds);
         max_socket = fd_listen+1;
         
-        printf("conns: %i\n",conns.size());
+//        printf("conns: %i\n",conns.size());
 
         //check for each connection if its valid => set it
         for(int i = 0;i < conns.size();i++)
@@ -552,9 +438,9 @@ void SSSSimpleSocketServerTask()
 
         }
         
-        printf("preselect\n");
+
         select(max_socket, &readfds, NULL, NULL, NULL);
-        printf("postselect\n");
+
         /*
          * If fd_listen (the listening socket we originally created in this thread
          * is "set" in readfs, then we have an incoming connection request. We'll
@@ -568,6 +454,9 @@ void SSSSimpleSocketServerTask()
             sss_reset_connection(&new_conn);
             sss_handle_accept(fd_listen, &new_conn);
             conns.push_back(new_conn);
+            (conns[0]).rx_wr_pos = (conns[0]).rx_buffer;			//#TODO needs fixing, changes rx_buffer
+            printf("[PUSH] wr_pos = %i    rx_buffer = %i\n",(conns[0]).rx_wr_pos,(conns[0]).rx_buffer);
+
         }
         /*
          * If sss_handle_accept() accepts the connection, it creates *another*
@@ -581,10 +470,8 @@ void SSSSimpleSocketServerTask()
         {
             for(int i = 0;i < conns.size();i++)
             {
-                printf("elsefdisset\n");
                 if ((conns[i].fd != -1) && FD_ISSET(conns[i].fd, &readfds))
                 {
-                    printf("handlerecieve\n");
                     sss_handle_receive_new(&(conns[i]));
                 }
             }
