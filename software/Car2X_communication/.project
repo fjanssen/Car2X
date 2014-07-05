@@ -105,11 +105,6 @@
 			<locationURI>PARENT-1-PROJECT_LOC/shared_files/ErrHandler.h</locationURI>
 		</link>
 		<link>
-			<name>MemController.cpp</name>
-			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/shared_files/MemController.cpp</locationURI>
-		</link>
-		<link>
 			<name>MemController.h</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/shared_files/MemController.h</locationURI>

@@ -170,6 +170,8 @@ CXX_SRCS += sensors/ADCSensor.cpp
 CXX_SRCS += socketserver.cpp
 CXX_SRCS += COMM_CarProtocol/CControlMessage.cpp
 CXX_SRCS += COMM_CarProtocol/CEmergencyBrakeMessage.cpp
+CXX_SRCS += ../shared_files/MemController.cpp
+CXX_SRCS += ../shared_files/MemSharedArea.cpp
 ASM_SRCS :=
 
 
@@ -207,12 +209,11 @@ BSP_ROOT_DIR := ../Car2X_communication_bsp/
 
 # List of application specific include directories, library directories and library names
 APP_INCLUDE_DIRS += COMM_CarProtocol/headers
-APP_INCLUDE_DIRS += CarMessages
 APP_INCLUDE_DIRS += etc
 APP_INCLUDE_DIRS += external_drivers
-APP_INCLUDE_DIRS += motor_control
 APP_INCLUDE_DIRS += sensors
 APP_INCLUDE_DIRS += terasic_lib
+APP_INCLUDE_DIRS += ../shared_files
 APP_LIBRARY_DIRS :=
 APP_LIBRARY_NAMES :=
 

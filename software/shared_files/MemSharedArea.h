@@ -11,7 +11,6 @@
 #include <stdint.h>
 #include "CarState.h"
 
-namespace c2x {
 
 #define BUFFERSIZE_CARSTATE (10u)
 
@@ -31,6 +30,5 @@ struct MemSharedArea {
 extern struct MemSharedArea<CarState> AreaCarState;
 
 
-} /* namespace c2x */
 
 #endif /* MEMSHAREDAREA_H_ */

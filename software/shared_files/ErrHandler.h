@@ -9,6 +9,7 @@
 #define ERRHANDLER_H_
 
 #include "assert.h"
+#include "stdio.h"
 
 #define DEBUG
 
@@ -40,6 +41,7 @@ enum ErrCode {
 	ERR_MEM_NOINIT,
 	ERR_MEM_DESTTOOSMALL,
 	ERR_COMM_INVALID_MSG,
+	ERR_CARCTRL_INVALID_MODE,
 };
 
 #endif /* ERRHANDLER_H_ */

@@ -7,11 +7,9 @@
 
 #include "MemSharedArea.h"
 
-using namespace c2x;
-
 CarState bufferCarState[BUFFERSIZE_CARSTATE];
 
-struct MemSharedArea<CarState> AreaCarState __attribute__ ((section (".shared.rwdata"))) =
+struct MemSharedArea<CarState> AreaCarState __attribute__ ((section (".shared_memory"))) =
 {
 		2,
 		bufferCarState,

@@ -67,7 +67,7 @@ struct MotorECU_State
 /*
  * This struct contains all information about one motor-ECU.
  */
-typedef struct CarState {
+struct CarState {
 	alt_u64 timeStamp;
 	alt_32 iMaxSpeed;
 	enum OpMode currMode;

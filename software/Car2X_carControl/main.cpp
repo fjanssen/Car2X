@@ -4,9 +4,7 @@
 
 #include "MemController.h"
 #include "ErrHandler.h"
-
-using namespace c2x;
-
+#include <cstdlib>
 
 void switchState(CarState state);
 
@@ -15,20 +13,20 @@ void setMotorSpeeds(CarState state);
 
 int main()
 {
-	MemController ctrl = MemController();
+	MemController<CarState> ctrl = MemController<CarState>();
 
 	CarState state;
 
 	while(1)
 	{
 		// get the lastest car state from the shared memory
-		state = ctrl.getLastElement<CarState>(MemController::AreaId_CarState);
+		state = ctrl.getLastElement();
 
 		// print some diagnostics information
 		int speed = state.motorEcus[0].iCurrentSpeed + state.motorEcus[1].iCurrentSpeed + state.motorEcus[2].iCurrentSpeed + state.motorEcus[3].iCurrentSpeed;
 
-		printf("\rSpeed: %+5d mm/s, OpMode: %#x ", speed, state.currMode);
-		printf("yippee!");
+		LOG_DEBUG("\rSpeed: %+5d mm/s, OpMode: %#x ", speed, state.currMode);
+		LOG_DEBUG("yippee!");
 
 		// perform state switch if requested.
 		if(state.reqMode != state.currMode)
@@ -38,7 +36,7 @@ int main()
 
 		setMotorSpeeds(state);
 
-		ctrl.pushElement(MemController::AreaId_CarState, state);
+		ctrl.pushElement(state);
 
 		// TODO: write a delay function w/ timer. Otherwise we might run into problems blocking the mutex from all the shared memory reads...
 		// delay(10);
