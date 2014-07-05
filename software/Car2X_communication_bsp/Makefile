@@ -101,7 +101,7 @@ ACDS_VERSION := 12.1
 # BUILD_NUMBER: 177
 
 SETTINGS_FILE := settings.bsp
-SOPC_FILE := C:/Users/HS/Documents/tortoise2x/trunk/hardware/nios_system.sopcinfo
+SOPC_FILE := C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
 
 #-------------------------------------------------------------------------------
 #                             TOOL & COMMAND DEFINITIONS
@@ -235,10 +235,6 @@ altera_avalon_mutex_driver_SRCS_ROOT := drivers
 altera_avalon_mutex_driver_C_LIB_SRCS := \
 	$(altera_avalon_mutex_driver_SRCS_ROOT)/src/altera_avalon_mutex.c
 
-# altera_avalon_pio_driver sources root 
-altera_avalon_pio_driver_SRCS_ROOT := drivers
-
-# altera_avalon_pio_driver sources 
 # altera_avalon_sgdma_driver sources root 
 altera_avalon_sgdma_driver_SRCS_ROOT := drivers
 

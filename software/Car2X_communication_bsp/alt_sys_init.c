@@ -2,9 +2,9 @@
  * alt_sys_init.c - HAL initialization source
  *
  * Machine generated for CPU 'com_nios' in SOPC Builder design 'nios_system'
- * SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/hardware/nios_system.sopcinfo
+ * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Wed Jul 02 12:25:24 CEST 2014
+ * Generated: Sat Jul 05 13:31:48 CEST 2014
  */
 
 /*

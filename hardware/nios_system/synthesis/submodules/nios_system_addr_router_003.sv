@@ -32,10 +32,10 @@
 module nios_system_addr_router_003_default_decode
   #(
      parameter DEFAULT_CHANNEL = 1,
-               DEFAULT_DESTID = 12 
+               DEFAULT_DESTID = 10 
    )
   (output [102 - 99 : 0] default_destination_id,
-   output [13-1 : 0] default_src_channel
+   output [11-1 : 0] default_src_channel
   );
 
   assign default_destination_id = 
@@ -44,7 +44,7 @@ module nios_system_addr_router_003_default_decode
     if (DEFAULT_CHANNEL == -1)
       assign default_src_channel = '0;
     else
-      assign default_src_channel = 13'b1 << DEFAULT_CHANNEL;
+      assign default_src_channel = 11'b1 << DEFAULT_CHANNEL;
   end
   endgenerate
 
@@ -73,7 +73,7 @@ module nios_system_addr_router_003
     // -------------------
     output                          src_valid,
     output reg [113-1    : 0] src_data,
-    output reg [13-1 : 0] src_channel,
+    output reg [11-1 : 0] src_channel,
     output                          src_startofpacket,
     output                          src_endofpacket,
     input                           src_ready
@@ -87,7 +87,7 @@ module nios_system_addr_router_003
     localparam PKT_DEST_ID_H = 102;
     localparam PKT_DEST_ID_L = 99;
     localparam ST_DATA_W = 113;
-    localparam ST_CHANNEL_W = 13;
+    localparam ST_CHANNEL_W = 11;
     localparam DECODER_TYPE = 0;
 
     localparam PKT_TRANS_WRITE = 70;
@@ -129,7 +129,7 @@ module nios_system_addr_router_003
     assign src_endofpacket   = sink_endofpacket;
 
     wire [PKT_DEST_ID_W-1:0] default_destid;
-    wire [13-1 : 0] default_src_channel;
+    wire [11-1 : 0] default_src_channel;
 
 
 
@@ -151,14 +151,14 @@ module nios_system_addr_router_003
 
         // ( 0x80000 .. 0x100000 )
         if ( {address[RG:PAD0],{PAD0{1'b0}}} == 21'h80000 ) begin
-            src_channel = 13'b10;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 12;
+            src_channel = 11'b10;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 10;
         end
 
         // ( 0x100800 .. 0x101000 )
         if ( {address[RG:PAD1],{PAD1{1'b0}}} == 21'h100800 ) begin
-            src_channel = 13'b01;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 11;
+            src_channel = 11'b01;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 9;
         end
 
 end

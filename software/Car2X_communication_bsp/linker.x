@@ -2,9 +2,9 @@
  * linker.x - Linker script
  *
  * Machine generated for CPU 'com_nios' in SOPC Builder design 'nios_system'
- * SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/hardware/nios_system.sopcinfo
+ * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
  *
- * Generated: Wed Jul 02 12:25:24 CEST 2014
+ * Generated: Sat Jul 05 13:31:48 CEST 2014
  */
 
 /*
@@ -55,14 +55,12 @@ MEMORY
     com_memory : ORIGIN = 0x4005020, LENGTH = 67088352
     ethernet_subsystem_descriptor_memory : ORIGIN = 0x8000000, LENGTH = 8192
     shared_memory : ORIGIN = 0x8002000, LENGTH = 4096
-    com_ocmemory : ORIGIN = 0x8004000, LENGTH = 1024
 }
 
 /* Define symbols for each memory base-address */
 __alt_mem_com_memory = 0x4000000;
 __alt_mem_ethernet_subsystem_descriptor_memory = 0x8000000;
 __alt_mem_shared_memory = 0x8002000;
-__alt_mem_com_ocmemory = 0x8004000;
 
 OUTPUT_FORMAT( "elf32-littlenios2",
                "elf32-littlenios2",
@@ -359,23 +357,6 @@ SECTIONS
     } > shared_memory
 
     PROVIDE (_alt_partition_shared_memory_load_addr = LOADADDR(.shared_memory));
-
-    /*
-     *
-     * This section's LMA is set to the .text region.
-     * crt0 will copy to this section's specified mapped region virtual memory address (VMA)
-     *
-     */
-
-    .com_ocmemory : AT ( LOADADDR (.shared_memory) + SIZEOF (.shared_memory) )
-    {
-        PROVIDE (_alt_partition_com_ocmemory_start = ABSOLUTE(.));
-        *(.com_ocmemory. com_ocmemory.*)
-        . = ALIGN(4);
-        PROVIDE (_alt_partition_com_ocmemory_end = ABSOLUTE(.));
-    } > com_ocmemory
-
-    PROVIDE (_alt_partition_com_ocmemory_load_addr = LOADADDR(.com_ocmemory));
 
     /*
      * Stabs debugging sections.

@@ -63,6 +63,9 @@ module Car2X(
 	                ena_10   ? clk_2p5 :       // 10Mb Mode  = 2.5MHz clock
 	                           clk_25;         // 100Mb Mode = 25 MHz clock
 	
+	sdram_pll neg_3ns (sys_clk, DRAM_CLK);
+
+	
 	my_ddio_out ddio_out_inst(
 		.datain_h(1'b1),
 		.datain_l(1'b0),
@@ -96,7 +99,7 @@ module Car2X(
       .com_sdram_wire_dqm                               (DRAM_DQM),                               //                                          .dqm
       .com_sdram_wire_ras_n                             (DRAM_RAS_N),                             //                                          .ras_n
       .com_sdram_wire_we_n                              (DRAM_WE_N),                              //                                          .we_n
-		.sdram_clk_clk												  (DRAM_CLK)
+		//.sdram_clk_clk												  (DRAM_CLK)
 		);
 
 endmodule 
