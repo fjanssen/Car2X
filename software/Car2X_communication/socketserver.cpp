@@ -24,6 +24,8 @@ extern "C" {
     
 } // extern C
 
+#include "MemController.h"
+
 #include <vector>
 //Message imports
 #include "WelcomeMessage.h"
@@ -147,8 +149,12 @@ void sss_handle_accept(int listen_socket, SSSConn* conn)
  */
 void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
 {
-    //TODO: read received data from connection struct and write to shared memory
-    
+	alt_u32 iMessageCount, i;
+	MemController<CarState> sharedMem;
+	CarState state;
+
+	sharedMem = MemController<CarState>();
+
 	if(!receivedPacket->isValid())
 	{
 		printf("the received packet was not generated successfully and cant be handled by sss_exec_command!\n");
@@ -156,10 +162,12 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
 	}
     
     
-	int iMessageCount = receivedPacket->getMessageCount();
+	iMessageCount = receivedPacket->getMessageCount();
     
-	for(alt_u32 i = 0;i < iMessageCount;i++)
+	for(i = 0;i < iMessageCount;i++)
 	{
+		sharedMem.getLastElement(true);
+
 		//handle each message separately
 		CCarMessage *currentMessage = receivedPacket->getNthMessage(i);
         
@@ -207,9 +215,31 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
 					CADCValuesMessage 	*adcValuesMessage = (CADCValuesMessage *) currentMessage;
                 break;
             }
-                //TODO: Add the other message types too (Check CarProtocol.cpp)
-                
+            // Remote control message
+            case 0x60:
+            {
+            	CRemoteControlMessage * remoteControlMessage = (CRemoteControlMessage *) currentMessage;
+            	state.reqMode = OPMODE_MANUDRIVE;
+            	break;
+            }
+            // Control message
+            case 0x30:
+            {
+            	CControlMessage * carControlMessage = (CControlMessage *) currentMessage;
+            	state.reqVelocity.iFrontLeft  = carControlMessage->get_siVelFrontLeft();
+            	state.reqVelocity.iFrontRight = carControlMessage->get_siVelFrontRight();
+            	state.reqVelocity.iRearLeft   = carControlMessage->get_siVelRearLeft();
+            	state.reqVelocity.iRearRight  = carControlMessage->get_siVelRearRight();
+            	break;
+            }
+            default:
+            {
+            	LOG_ERROR(ERR_COMM_INVALID_MSG, "Received unsupported message with ID %d.", messageType);
+            	break;
+            }
 		}
+
+        sharedMem.pushElement(state);
 	}
     
     

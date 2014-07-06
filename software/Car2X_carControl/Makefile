@@ -143,11 +143,9 @@ ELF := Car2X_carControl.elf
 
 # Paths to C, C++, and assembly source files.
 C_SRCS :=
-CXX_SRCS += CarState.cpp
-CXX_SRCS += ErrHandler_test.cpp
-CXX_SRCS += MemController.cpp
-CXX_SRCS += MemSharedArea.cpp
 CXX_SRCS += main.cpp
+CXX_SRCS += ../shared_files/MemController.cpp
+CXX_SRCS += ../shared_files/MemSharedArea.cpp
 ASM_SRCS :=
 
 
@@ -184,7 +182,7 @@ SYS_LIB :=
 BSP_ROOT_DIR := ../Car2X_carControl_bsp/
 
 # List of application specific include directories, library directories and library names
-APP_INCLUDE_DIRS :=
+APP_INCLUDE_DIRS := ../shared_files
 APP_LIBRARY_DIRS :=
 APP_LIBRARY_NAMES :=
 
