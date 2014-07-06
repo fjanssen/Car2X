@@ -61,7 +61,17 @@ public:
 
 
 		m_memArea_p = &AreaCarState;
-		m_mutexArea_p = altera_avalon_mutex_open("");
+		m_mutexArea_p = altera_avalon_mutex_open("/dev/shared_memory_mutex");
+
+		if(m_memArea_p->content_a == NULL)
+		{
+			LOG_DEBUG("Initialising shared memory...");
+			getSharedMemArea();
+			m_memArea_p->content_a = (CarState *)0x08002000;
+			m_memArea_p->index_u32 = 0;
+			m_memArea_p->maxNumElements_u32 = 10;
+			releaseSharedMemArea();
+		}
 
 		// make sure that all mutexes were acquired.
 		if(m_mutexArea_p == NULL)
@@ -69,6 +79,9 @@ public:
 			LOG_ERROR(ERR_MEM_OPENMUTEX, "Failed to acquire all hardware mutexes: " \
 					"carMsgRx@%#x", (unsigned int) m_mutexArea_p);
 		}
+
+		LOG_DEBUG("Memcontroller constructed. m_memArea_p: %#x, size: %d, index %d",
+				m_memArea_p, m_memArea_p->maxNumElements_u32, m_memArea_p->index_u32);
 	}
 
 	~MemController() {
@@ -82,33 +95,25 @@ public:
 	{
 		/* --- local variables ---*/
 		ErrCode retVal = ERR_NONE;
-		MemSharedArea<T> * memArea;
 
 		/* --- validation ---*/
-		if(retVal = getSharedMemArea(memArea), retVal != ERR_NONE)
+		if(retVal = getSharedMemArea(), retVal != ERR_NONE)
 		{
 			LOG_DEBUG("Throwing error up.");
 			return retVal;
 		}
-		if(destSize_u32 < memArea->maxNumElements_u32)
-		{
-			releaseSharedMemArea();
-			LOG_ERROR_RETURN(ERR_MEM_DESTTOOSMALL, "The destination buffer is too small!" \
-						     "Trying to copy %d Elements into buffer of size %d .",
-						     memArea->index_u32, destSize_u32);
-		}
 
 		/* --- function body ---*/
 		// copy the actual data
-		memcpy(&(memArea->content_a),
-			   memArea->index * sizeof(*(memArea->content_a)),
+		memcpy(&(m_memArea_p->content_a),
+			   m_memArea_p->index * sizeof(*(m_memArea_p->content_a)),
 			   &elements);
 
-		elementsCopied_u32 = memArea->index_u32;
+		elementsCopied_u32 = m_memArea_p->index_u32;
 
 		// reset element count, flags
-		memArea->index_u32 = 0;
-		memArea->flags_u32 = MEM_BUFFERFLAGS_NONE;
+		m_memArea_p->index_u32 = 0;
+		m_memArea_p->flags_u32 = MEM_BUFFERFLAGS_NONE;
 
 		// Release the mutex for the source memory area, this is important!!!
 		releaseSharedMemArea();
@@ -120,41 +125,35 @@ public:
 	{
 		/* --- local variables ---*/
 		ErrCode retVal = ERR_NONE;
-		MemSharedArea<T> * memArea;
 
 		/* --- validation ---*/
-		if(retVal = getSharedMemArea(memArea), retVal != ERR_NONE)
+		if(retVal = getSharedMemArea(), retVal != ERR_NONE)
 		{
 			LOG_DEBUG("Throwing error up.");
 			return;
 		}
 
-		memArea->index_u32 = 0;
-		memArea->flags_u32 = MEM_BUFFERFLAGS_NONE;
+		m_memArea_p->index_u32 = 0;
+		m_memArea_p->flags_u32 = MEM_BUFFERFLAGS_NONE;
 	}
 
 	ErrCode pushElement(T &element)
 	{
 		/* --- local variables ---*/
 		ErrCode retVal = ERR_NONE;
-		MemSharedArea<T> * memArea;
 
 		/* --- validation ---*/
-		if(retVal = getSharedMemArea(memArea), retVal != ERR_NONE)
+		if(retVal = getSharedMemArea(), retVal != ERR_NONE)
 		{
 			LOG_DEBUG("Throwing error up.");
 			return retVal;
 		}
-		if(memArea->index_u32 == memArea->maxNumElements_u32)
-		{
-			releaseSharedMemArea();
-			LOG_ERROR_RETURN(ERR_MEM_DESTTOOSMALL, "The destination buffer is full, contains %u elements.",
-					(unsigned int)memArea->index_u32);
-		}
 
 		// circular buffer
-		memArea->index_u32 = (memArea->index_u32 < (memArea->maxNumElements_u32 - 1)) ? memArea->index_u32 + 1 : 0;
-		memArea->content_a[memArea->index_u32] = element;
+		LOG_DEBUG("push element to index %d", m_memArea_p->index_u32);
+
+		m_memArea_p->index_u32 = (m_memArea_p->index_u32 < (m_memArea_p->maxNumElements_u32 - 1)) ? m_memArea_p->index_u32 + 1 : 0;
+		m_memArea_p->content_a[m_memArea_p->index_u32] = element;
 
 		releaseSharedMemArea();
 
@@ -165,39 +164,34 @@ public:
 	{
 		/* --- local variables ---*/
 		ErrCode retVal = ERR_NONE;
-		MemSharedArea<T> * memArea;
 		T element; // TODO: should return some sort of error instaed of uninitialised element
 		alt_u32 index;
 
 		/* --- validation ---*/
-		if(retVal = getSharedMemArea(memArea), retVal != ERR_NONE)
+		if(retVal = getSharedMemArea(), retVal != ERR_NONE)
 		{
 			LOG_DEBUG("Throwing error up.");
 			return element;
 		}
-		if(memArea->index_u32 == memArea->maxNumElements_u32)
-		{
-			releaseSharedMemArea();
-			LOG_ERROR(ERR_MEM_DESTTOOSMALL, "The destination buffer is full, contains %d elements.",
-					memArea->index_u32);
-			return element;
-		}
 
-		if(memArea->index_u32 - negIndex < 0)
+
+		if(m_memArea_p->index_u32 - negIndex < 0)
 		{
-			index = memArea->index_u32 - negIndex;
+			index = m_memArea_p->index_u32 - negIndex;
 		}
 		else
 		{
-			index = memArea->maxNumElements_u32 + (memArea->index_u32 - negIndex);
+			index = m_memArea_p->maxNumElements_u32 + (m_memArea_p->index_u32 - negIndex);
 		}
 
-		element = memArea->content_a[index];
+		element = m_memArea_p->content_a[index];
 
 		if(blocking == false)
 		{
 			releaseSharedMemArea();
 		}
+
+		LOG_DEBUG("get last element.");
 
 		return element;
 	}
@@ -228,17 +222,24 @@ private:
 	alt_mutex_dev * m_mutexArea_p;
 
 	// memory areas
-	const MemSharedArea<T> * m_memArea_p;
-
+	MemSharedArea<T> * m_memArea_p;
 
 	/** getSharedMemArea
 	 *
 	 * \details */
-	ErrCode getSharedMemArea(MemSharedArea<T> * memArea_p)
+	ErrCode getSharedMemArea()
 	{
-		// TODO: conditional lock, only if we don't currently have it.
-		altera_avalon_mutex_lock(m_mutexArea_p, 1); //TODO: ??? 1
+		bool isMine = altera_avalon_mutex_is_mine(m_mutexArea_p);
 
+		if(!isMine)
+		{
+			LOG_DEBUG("locking mutex");
+			altera_avalon_mutex_lock(m_mutexArea_p, 1);
+		}
+		else
+		{
+			LOG_DEBUG("mutex already mine.");
+		}
 		return ERR_NONE;
 	}
 
@@ -247,7 +248,17 @@ private:
 	 * \details */
 	bool releaseSharedMemArea()
 	{
-		altera_avalon_mutex_unlock(m_mutexArea_p);
+		bool isMine = altera_avalon_mutex_is_mine(m_mutexArea_p);
+
+		if(isMine)
+		{
+			LOG_DEBUG("unlocking mutex");
+			altera_avalon_mutex_unlock(m_mutexArea_p);
+		}
+		else
+		{
+			LOG_DEBUG("unlocking mutex failed, is not mine.");
+		}
 
 		return 0;
 	}

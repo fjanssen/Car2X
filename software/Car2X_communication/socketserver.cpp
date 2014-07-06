@@ -21,6 +21,7 @@ extern "C" {
     
     //use alt types
 #include <alt_types.h>
+#include "ErrHandler.h"
     
 } // extern C
 
@@ -166,7 +167,7 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
     
 	for(i = 0;i < iMessageCount;i++)
 	{
-		sharedMem.getLastElement(true);
+		state = sharedMem.getLastElement(true);
 
 		//handle each message separately
 		CCarMessage *currentMessage = receivedPacket->getNthMessage(i);
@@ -185,6 +186,10 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
             case 0x04:
             {
                 CMotorVelocityMessage *motorVelocityMessage = (CMotorVelocityMessage *) currentMessage;
+                LOG_DEBUG("Setting motor ctrl [%d] velocity to %d", 0, motorVelocityMessage->getIDesiredSpeed());
+                LOG_DEBUG("Setting motor ctrl [%d] velocity to %d", 1, motorVelocityMessage->getIDesiredSpeed());
+                LOG_DEBUG("Setting motor ctrl [%d] velocity to %d", 2, motorVelocityMessage->getIDesiredSpeed());
+                LOG_DEBUG("Setting motor ctrl [%d] velocity to %d", 3, motorVelocityMessage->getIDesiredSpeed());
                 break;
             }
                 // MotorMeasurement
@@ -220,6 +225,7 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
             {
             	CRemoteControlMessage * remoteControlMessage = (CRemoteControlMessage *) currentMessage;
             	state.reqMode = OPMODE_MANUDRIVE;
+            	LOG_DEBUG("Switching to manual control.");
             	break;
             }
             // Control message
@@ -230,6 +236,9 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
             	state.reqVelocity.iFrontRight = carControlMessage->get_siVelFrontRight();
             	state.reqVelocity.iRearLeft   = carControlMessage->get_siVelRearLeft();
             	state.reqVelocity.iRearRight  = carControlMessage->get_siVelRearRight();
+            	LOG_DEBUG("Requested velocities: %d, %d, %d, %d",
+            			state.reqVelocity.iFrontLeft, state.reqVelocity.iFrontRight,
+            			state.reqVelocity.iRearLeft, state.reqVelocity.iRearRight);
             	break;
             }
             default:
@@ -255,6 +264,7 @@ int receive_bytes(SSSConn* conn){
 	int rx_code = recv(conn->fd, (char *) conn->rx_wr_pos,
                        SSS_RX_BUF_SIZE - (conn->rx_wr_pos - conn->rx_buffer) -1, 0);
     printf("rxcode = %i\n",rx_code);
+
 //	int rx_code = recv(conn->fd,(char*) conn->rx_wr_pos,1024, 0);
 
 	if(rx_code > 0)
@@ -287,7 +297,7 @@ void sss_handle_receive_new(SSSConn* conn)
     int iBytesReceived = receive_bytes(conn);
     
     //nothing received? => disconnect command
-    if(iBytesReceived == 0)
+    if(iBytesReceived <= 0)
     {
     	printf("empty msg\n");
         conn->state = SSSConn::CLOSE;
@@ -324,6 +334,11 @@ void sss_handle_receive_new(SSSConn* conn)
             //clear off last element that has already been shifted
             *(conn->rx_wr_pos) = 0;
             bytesInBuffer--;
+        }
+
+        else
+        {
+        	break;
         }
     }
     
@@ -370,7 +385,7 @@ void SSSSimpleSocketServerTask()
 {
     int fd_listen, max_socket;
     struct sockaddr_in addr;
-    static std::vector<SSSConn> conns;
+    static std::vector<SSSConn *> conns;
     fd_set readfds;
     
     /*
@@ -451,18 +466,19 @@ void SSSSimpleSocketServerTask()
 //        printf("conns: %i\n",conns.size());
 
         //check for each connection if its valid => set it
-        for(int i = 0;i < conns.size();i++)
+        for(unsigned int i = 0;i < conns.size();i++)
         {
         	//check if a connection should be closed here, close it and delete it from vector
-        	if(conns[i].state == SSSConn::CLOSE)
+        	if(conns[i]->state == SSSConn::CLOSE)
         	{
-        	    close(conns[i].fd);
+        	    close(conns[i]->fd);
+        	    delete conns[i];
         	    conns.erase(conns.begin()+i);
         	}
 
-        	if (conns[i].fd != -1)
+        	if (conns[i]->fd != -1)
             {
-                FD_SET(conns[i].fd, &readfds);
+                FD_SET(conns[i]->fd, &readfds);
                 max_socket++;
             }
 
@@ -480,12 +496,12 @@ void SSSSimpleSocketServerTask()
          */
         if (FD_ISSET(fd_listen, &readfds))
         {
-            SSSConn new_conn;
-            sss_reset_connection(&new_conn);
-            sss_handle_accept(fd_listen, &new_conn);
+            SSSConn * new_conn = new SSSConn;
+            sss_reset_connection(new_conn);
+            sss_handle_accept(fd_listen, new_conn);
             conns.push_back(new_conn);
-            (conns[0]).rx_wr_pos = (conns[0]).rx_buffer;			//#TODO needs fixing, changes rx_buffer
-            printf("[PUSH] wr_pos = %i    rx_buffer = %i\n",(conns[0]).rx_wr_pos,(conns[0]).rx_buffer);
+            //(conns[0]).rx_wr_pos = (conns[0]).rx_buffer;			//#TODO needs fixing, changes rx_buffer
+            printf("[PUSH] wr_pos = %i    rx_buffer = %i\n",(conns[0])->rx_wr_pos,(conns[0])->rx_buffer);
 
         }
         /*
@@ -500,9 +516,9 @@ void SSSSimpleSocketServerTask()
         {
             for(int i = 0;i < conns.size();i++)
             {
-                if ((conns[i].fd != -1) && FD_ISSET(conns[i].fd, &readfds))
+                if ((conns[i]->fd != -1) && FD_ISSET(conns[i]->fd, &readfds))
                 {
-                    sss_handle_receive_new(&(conns[i]));
+                    sss_handle_receive_new(conns[i]);
                 }
             }
         }

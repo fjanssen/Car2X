@@ -170,8 +170,8 @@ CXX_SRCS += sensors/ADCSensor.cpp
 CXX_SRCS += socketserver.cpp
 CXX_SRCS += COMM_CarProtocol/CControlMessage.cpp
 CXX_SRCS += COMM_CarProtocol/CEmergencyBrakeMessage.cpp
-CXX_SRCS += ../shared_files/MemController.cpp
 CXX_SRCS += ../shared_files/MemSharedArea.cpp
+CXX_SRCS += COMM_CarProtocol/CRemoteControlMessage.cpp
 ASM_SRCS :=
 
 

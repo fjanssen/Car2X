@@ -7,7 +7,12 @@ CControlMessage::CControlMessage()
 
 CControlMessage::CControlMessage(alt_u8 * pMessage, int iLength)
 {
-	parseMessage(pMessage, iLength);
+    parseHeader(pMessage, iLength);
+    if(m_bValid)
+    {
+        m_bValid = false;
+        parseMessage(pMessage+4, iLength-4);
+    }
 }
 
 CControlMessage::~CControlMessage()
@@ -42,4 +47,6 @@ void CControlMessage::parseMessage(alt_u8 *pMessage, int iLength)
 	m_siVelFrontLeft  = pMessage[1];
 	m_siVelRearRight  = pMessage[2];
 	m_siVelRearLeft   = pMessage[3];
+
+	m_bValid = true;
 }
