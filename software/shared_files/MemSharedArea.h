@@ -28,6 +28,7 @@ struct MemSharedArea {
 };
 
 extern struct MemSharedArea<CarState> AreaCarState;
+extern CarState AreaCarStateBuffer[BUFFERSIZE_CARSTATE];
 
 
 

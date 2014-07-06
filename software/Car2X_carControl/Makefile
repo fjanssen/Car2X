@@ -144,7 +144,6 @@ ELF := Car2X_carControl.elf
 # Paths to C, C++, and assembly source files.
 C_SRCS :=
 CXX_SRCS += main.cpp
-CXX_SRCS += ../shared_files/MemController.cpp
 CXX_SRCS += ../shared_files/MemSharedArea.cpp
 ASM_SRCS :=
 

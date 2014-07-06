@@ -7,13 +7,7 @@
 
 #include "MemSharedArea.h"
 
-CarState bufferCarState[BUFFERSIZE_CARSTATE] __attribute__ ((section (".shared_memory")));
+CarState AreaCarStateBuffer[BUFFERSIZE_CARSTATE] __attribute__ ((section (".shared_memory")));
 
-struct MemSharedArea<CarState> AreaCarState __attribute__ ((section (".shared_memory"))) =
-{
-		BUFFERSIZE_CARSTATE,
-		bufferCarState,
-		0,
-		MEM_BUFFERFLAGS_NONE
-};
+struct MemSharedArea<CarState> AreaCarState __attribute__ ((section (".shared_memory")));
 

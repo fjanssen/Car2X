@@ -67,9 +67,9 @@ public:
 		{
 			LOG_DEBUG("Initialising shared memory...");
 			getSharedMemArea();
-			m_memArea_p->content_a = (CarState *)0x08002000;
+			m_memArea_p->content_a = AreaCarStateBuffer;
 			m_memArea_p->index_u32 = 0;
-			m_memArea_p->maxNumElements_u32 = 10;
+			m_memArea_p->maxNumElements_u32 = BUFFERSIZE_CARSTATE;
 			releaseSharedMemArea();
 		}
 
