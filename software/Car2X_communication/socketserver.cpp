@@ -69,9 +69,9 @@ void sss_reset_connection(SSSConn* conn)
     
     conn->fd = -1;
     conn->state = SSS_SOCKET::READY;
-    printf("[RESET] wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos,conn->rx_buffer);
+    LOG_DEBUG("[RESET] wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos,conn->rx_buffer);
     conn->rx_wr_pos = conn->rx_buffer;
-    printf("[RESET] after set::: wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos,conn->rx_buffer);
+    LOG_DEBUG("[RESET] after set::: wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos,conn->rx_buffer);
     conn->client_type = SSS_SOCKET::UNKNOWN;
     return;
 }
@@ -107,7 +107,7 @@ void sss_handle_accept(int listen_socket, SSSConn* conn)
             
             char* str_ip_addr = inet_ntoa(incoming_addr.sin_addr);
             
-            printf("[sss_handle_accept] accepted connection request from %s\n",
+            LOG_DEBUG("[sss_handle_accept] accepted connection request from %s\n",
                    str_ip_addr);
             
             //here: check the incoming IP ADDR: and set conn->client_type accordingly
@@ -126,10 +126,10 @@ void sss_handle_accept(int listen_socket, SSSConn* conn)
     }
     else
     {
-        printf("[sss_handle_accept] rejected connection request from %s\n",
+        LOG_DEBUG("[sss_handle_accept] rejected connection request from %s\n",
                inet_ntoa(incoming_addr.sin_addr));
     }
-    printf("[ACCEPT] wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos,conn->rx_buffer);
+    LOG_DEBUG("[ACCEPT] wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos,conn->rx_buffer);
     return;
 }
 
@@ -158,7 +158,7 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
 
 	if(!receivedPacket->isValid())
 	{
-		printf("the received packet was not generated successfully and cant be handled by sss_exec_command!\n");
+		LOG_DEBUG("the received packet was not generated successfully and cant be handled by sss_exec_command!\n");
 		return;
 	}
     
@@ -186,10 +186,10 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
             case 0x04:
             {
                 CMotorVelocityMessage *motorVelocityMessage = (CMotorVelocityMessage *) currentMessage;
-                LOG_DEBUG("Setting motor ctrl [%d] velocity to %d", 0, motorVelocityMessage->getIDesiredSpeed());
-                LOG_DEBUG("Setting motor ctrl [%d] velocity to %d", 1, motorVelocityMessage->getIDesiredSpeed());
-                LOG_DEBUG("Setting motor ctrl [%d] velocity to %d", 2, motorVelocityMessage->getIDesiredSpeed());
-                LOG_DEBUG("Setting motor ctrl [%d] velocity to %d", 3, motorVelocityMessage->getIDesiredSpeed());
+                LOG_DEBUG("Setting motor ctrl [%d] velocity to %d", motorVelocityMessage->getSubType(), motorVelocityMessage->getIDesiredSpeed());
+                // TODO: actually generate an answer
+                char answer[] = {'C', 'A', 'R', 'R', 0x0, 0x0, 0x0, 0x0, 0x04, 0x0, 0x0, 0x0, motorVelocityMessage->getIDesiredSpeed()};
+                send(conn->fd, answer, 14, 0);
                 break;
             }
                 // MotorMeasurement
@@ -226,6 +226,8 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
             	CRemoteControlMessage * remoteControlMessage = (CRemoteControlMessage *) currentMessage;
             	state.reqMode = OPMODE_MANUDRIVE;
             	LOG_DEBUG("Switching to manual control.");
+                char answer[] = {'C', 'A', 'R', 'R', 0x0, 0x0, 0x0, 0x0, 0x60, 0x0, 0x0, 0x0, motorVelocityMessage->getIDesiredSpeed()};
+                send(conn->fd, answer, 14, 0);
             	break;
             }
             // Control message
@@ -263,7 +265,7 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
 int receive_bytes(SSSConn* conn){
 	int rx_code = recv(conn->fd, (char *) conn->rx_wr_pos,
                        SSS_RX_BUF_SIZE - (conn->rx_wr_pos - conn->rx_buffer) -1, 0);
-    printf("rxcode = %i\n",rx_code);
+    LOG_DEBUG("rxcode = %i\n",rx_code);
 
 //	int rx_code = recv(conn->fd,(char*) conn->rx_wr_pos,1024, 0);
 
@@ -299,7 +301,7 @@ void sss_handle_receive_new(SSSConn* conn)
     //nothing received? => disconnect command
     if(iBytesReceived <= 0)
     {
-    	printf("empty msg\n");
+    	LOG_DEBUG("empty msg\n");
         conn->state = SSSConn::CLOSE;
         return;
     }
@@ -309,18 +311,18 @@ void sss_handle_receive_new(SSSConn* conn)
 
     //check if CARP is somewhere in the buffer and throw everything away until CARP is there
     int bytesInBuffer =conn->rx_wr_pos - conn->rx_buffer ;
-    printf("bytesInbuffer = %i\n",bytesInBuffer);
-    printf("wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos, conn->rx_buffer);
-    printf("buffer[0] = %02x\n",conn->rx_buffer[bytesInBuffer]);
+    LOG_DEBUG("bytesInbuffer = %i\n",bytesInBuffer);
+    LOG_DEBUG("wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos, conn->rx_buffer);
+    LOG_DEBUG("buffer[0] = %02x\n",conn->rx_buffer[bytesInBuffer]);
     //output
-                printf("msg: ");
-                for (int i = 0; i < bytesInBuffer; i++) {
-                    printf("%02x ", conn->rx_buffer[i]&0xFF);
-                }
-                printf("\n");
+                //LOG_DEBUG("msg: ");
+                //for (int i = 0; i < bytesInBuffer; i++) {
+                //    LOG_DEBUG("%02x ", conn->rx_buffer[i]&0xFF);
+                //}
+                //LOG_DEBUG("\n");
 
     if(bytesInBuffer < 4) return;
-    printf("header >= 4\n");
+    LOG_DEBUG("header >= 4\n");
 
     while(bytesInBuffer >= 4)
     {
@@ -344,7 +346,7 @@ void sss_handle_receive_new(SSSConn* conn)
     
     //now CARP has been received: check if payload len has been received yet
     if(bytesInBuffer < 8)return;
-    printf("header msg\n");
+    LOG_DEBUG("header msg\n");
     
     //full header arrived, now parse payload length
     int 	iPayloadLength  = conn->rx_buffer[6] << 8;
@@ -352,14 +354,11 @@ void sss_handle_receive_new(SSSConn* conn)
     
     //check if the whole payload has been received
     if(bytesInBuffer - CAR_HEADER_LENGTH < iPayloadLength)return;
-    printf("payload msg\n");
+    LOG_DEBUG("payload msg\n");
     
     //parse the found CCarProtocol object
     CCarProtocol * parsedPacket = new CCarProtocol((alt_u8 *)conn->rx_buffer,iPayloadLength+CAR_HEADER_LENGTH);
     
-    //send dummy msg back(for debug reasons)
-    send(conn->fd,(char*)conn->rx_buffer,iPayloadLength+CAR_HEADER_LENGTH,0);
-
     //clear the buffer: delete message from it:
     memmove(conn->rx_buffer,conn->rx_buffer+iPayloadLength+CAR_HEADER_LENGTH,bytesInBuffer-iPayloadLength-CAR_HEADER_LENGTH);
     conn->rx_wr_pos -= (iPayloadLength+CAR_HEADER_LENGTH);
@@ -368,7 +367,7 @@ void sss_handle_receive_new(SSSConn* conn)
     //execute the command
     sss_exec_command(parsedPacket,conn);
     delete(parsedPacket);
-    printf("msg executed!\n");
+    LOG_DEBUG("msg executed!\n");
 }
 
 /*
@@ -437,7 +436,7 @@ void SSSSimpleSocketServerTask()
     /* At this point we have successfully created a socket which is listening
      * on SSS_PORT for connection requests from any remote address.
      */
-    printf("[sss_task] Simple Socket Server listening on port %d\n", SSS_PORT);
+    LOG_DEBUG("[sss_task] Simple Socket Server listening on port %d\n", SSS_PORT);
     
     while(1)
     {
@@ -463,7 +462,7 @@ void SSSSimpleSocketServerTask()
         FD_SET(fd_listen, &readfds);
         max_socket = fd_listen+1;
         
-//        printf("conns: %i\n",conns.size());
+//        LOG_DEBUG("conns: %i\n",conns.size());
 
         //check for each connection if its valid => set it
         for(unsigned int i = 0;i < conns.size();i++)
@@ -501,7 +500,7 @@ void SSSSimpleSocketServerTask()
             sss_handle_accept(fd_listen, new_conn);
             conns.push_back(new_conn);
             //(conns[0]).rx_wr_pos = (conns[0]).rx_buffer;			//#TODO needs fixing, changes rx_buffer
-            printf("[PUSH] wr_pos = %i    rx_buffer = %i\n",(conns[0])->rx_wr_pos,(conns[0])->rx_buffer);
+            LOG_DEBUG("[PUSH] wr_pos = %i    rx_buffer = %i\n",(conns[0])->rx_wr_pos,(conns[0])->rx_buffer);
 
         }
         /*
