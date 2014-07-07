@@ -69,9 +69,9 @@ void sss_reset_connection(SSSConn* conn)
     
     conn->fd = -1;
     conn->state = SSS_SOCKET::READY;
-    LOG_DEBUG("[RESET] wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos,conn->rx_buffer);
+    LOG_DEBUG("[RESET] wr_pos = %i    rx_buffer = %i",conn->rx_wr_pos,conn->rx_buffer);
     conn->rx_wr_pos = conn->rx_buffer;
-    LOG_DEBUG("[RESET] after set::: wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos,conn->rx_buffer);
+    LOG_DEBUG("[RESET] after set::: wr_pos = %i    rx_buffer = %i",conn->rx_wr_pos,conn->rx_buffer);
     conn->client_type = SSS_SOCKET::UNKNOWN;
     return;
 }
@@ -107,7 +107,7 @@ void sss_handle_accept(int listen_socket, SSSConn* conn)
             
             char* str_ip_addr = inet_ntoa(incoming_addr.sin_addr);
             
-            LOG_DEBUG("[sss_handle_accept] accepted connection request from %s\n",
+            LOG_DEBUG("[sss_handle_accept] accepted connection request from %s",
                    str_ip_addr);
             
             //here: check the incoming IP ADDR: and set conn->client_type accordingly
@@ -126,10 +126,10 @@ void sss_handle_accept(int listen_socket, SSSConn* conn)
     }
     else
     {
-        LOG_DEBUG("[sss_handle_accept] rejected connection request from %s\n",
+        LOG_DEBUG("[sss_handle_accept] rejected connection request from %s",
                inet_ntoa(incoming_addr.sin_addr));
     }
-    LOG_DEBUG("[ACCEPT] wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos,conn->rx_buffer);
+    LOG_DEBUG("[ACCEPT] wr_pos = %i    rx_buffer = %i",conn->rx_wr_pos,conn->rx_buffer);
     return;
 }
 
@@ -158,7 +158,7 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
 
 	if(!receivedPacket->isValid())
 	{
-		LOG_DEBUG("the received packet was not generated successfully and cant be handled by sss_exec_command!\n");
+		LOG_DEBUG("the received packet was not generated successfully and cant be handled by sss_exec_command!");
 		return;
 	}
     
@@ -221,7 +221,7 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
                 break;
             }
             // Remote control message
-            case 0x60:
+            case C2X_MSGID_REMOTE_CONTROL:
             {
             	CRemoteControlMessage * remoteControlMessage = (CRemoteControlMessage *) currentMessage;
             	state.reqMode = OPMODE_MANUDRIVE;
@@ -231,7 +231,7 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
             	break;
             }
             // Control message
-            case 0x30:
+            case C2X_MSGID_CONTROL:
             {
             	CControlMessage * carControlMessage = (CControlMessage *) currentMessage;
             	state.reqVelocity.iFrontLeft  = carControlMessage->get_siVelFrontLeft();
@@ -241,6 +241,13 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
             	LOG_DEBUG("Requested velocities: %d, %d, %d, %d",
             			state.reqVelocity.iFrontLeft, state.reqVelocity.iFrontRight,
             			state.reqVelocity.iRearLeft, state.reqVelocity.iRearRight);
+            	break;
+            }
+            case C2X_MSGID_EMERGENCY_BRAKE:
+            {
+            	CEmergencyBrakeMessage * emergencyMessage = (CEmergencyBrakeMessage *) currentMessage;
+            	state.reqMode  = OPMODE_EMERGENCYSTOP;
+            	LOG_DEBUG("Requested emergency brake");
             	break;
             }
             default:
@@ -265,7 +272,7 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
 int receive_bytes(SSSConn* conn){
 	int rx_code = recv(conn->fd, (char *) conn->rx_wr_pos,
                        SSS_RX_BUF_SIZE - (conn->rx_wr_pos - conn->rx_buffer) -1, 0);
-    LOG_DEBUG("rxcode = %i\n",rx_code);
+    LOG_DEBUG("rxcode = %i",rx_code);
 
 //	int rx_code = recv(conn->fd,(char*) conn->rx_wr_pos,1024, 0);
 
@@ -301,7 +308,7 @@ void sss_handle_receive_new(SSSConn* conn)
     //nothing received? => disconnect command
     if(iBytesReceived <= 0)
     {
-    	LOG_DEBUG("empty msg\n");
+    	LOG_DEBUG("empty msg");
         conn->state = SSSConn::CLOSE;
         return;
     }
@@ -311,18 +318,18 @@ void sss_handle_receive_new(SSSConn* conn)
 
     //check if CARP is somewhere in the buffer and throw everything away until CARP is there
     int bytesInBuffer =conn->rx_wr_pos - conn->rx_buffer ;
-    LOG_DEBUG("bytesInbuffer = %i\n",bytesInBuffer);
-    LOG_DEBUG("wr_pos = %i    rx_buffer = %i\n",conn->rx_wr_pos, conn->rx_buffer);
-    LOG_DEBUG("buffer[0] = %02x\n",conn->rx_buffer[bytesInBuffer]);
+    LOG_DEBUG("bytesInbuffer = %i",bytesInBuffer);
+    LOG_DEBUG("wr_pos = %i    rx_buffer = %i",conn->rx_wr_pos, conn->rx_buffer);
+    LOG_DEBUG("buffer[0] = %02x",conn->rx_buffer[bytesInBuffer]);
     //output
                 //LOG_DEBUG("msg: ");
                 //for (int i = 0; i < bytesInBuffer; i++) {
                 //    LOG_DEBUG("%02x ", conn->rx_buffer[i]&0xFF);
                 //}
-                //LOG_DEBUG("\n");
+                //LOG_DEBUG("");
 
     if(bytesInBuffer < 4) return;
-    LOG_DEBUG("header >= 4\n");
+    LOG_DEBUG("header >= 4");
 
     while(bytesInBuffer >= 4)
     {
@@ -346,7 +353,7 @@ void sss_handle_receive_new(SSSConn* conn)
     
     //now CARP has been received: check if payload len has been received yet
     if(bytesInBuffer < 8)return;
-    LOG_DEBUG("header msg\n");
+    LOG_DEBUG("header msg");
     
     //full header arrived, now parse payload length
     int 	iPayloadLength  = conn->rx_buffer[6] << 8;
@@ -354,7 +361,7 @@ void sss_handle_receive_new(SSSConn* conn)
     
     //check if the whole payload has been received
     if(bytesInBuffer - CAR_HEADER_LENGTH < iPayloadLength)return;
-    LOG_DEBUG("payload msg\n");
+    LOG_DEBUG("payload msg");
     
     //parse the found CCarProtocol object
     CCarProtocol * parsedPacket = new CCarProtocol((alt_u8 *)conn->rx_buffer,iPayloadLength+CAR_HEADER_LENGTH);
@@ -367,7 +374,7 @@ void sss_handle_receive_new(SSSConn* conn)
     //execute the command
     sss_exec_command(parsedPacket,conn);
     delete(parsedPacket);
-    LOG_DEBUG("msg executed!\n");
+    LOG_DEBUG("msg executed!");
 }
 
 /*
@@ -436,7 +443,7 @@ void SSSSimpleSocketServerTask()
     /* At this point we have successfully created a socket which is listening
      * on SSS_PORT for connection requests from any remote address.
      */
-    LOG_DEBUG("[sss_task] Simple Socket Server listening on port %d\n", SSS_PORT);
+    LOG_DEBUG("[sss_task] Simple Socket Server listening on port %d", SSS_PORT);
     
     while(1)
     {
@@ -462,7 +469,7 @@ void SSSSimpleSocketServerTask()
         FD_SET(fd_listen, &readfds);
         max_socket = fd_listen+1;
         
-//        LOG_DEBUG("conns: %i\n",conns.size());
+//        LOG_DEBUG("conns: %i",conns.size());
 
         //check for each connection if its valid => set it
         for(unsigned int i = 0;i < conns.size();i++)
@@ -500,7 +507,7 @@ void SSSSimpleSocketServerTask()
             sss_handle_accept(fd_listen, new_conn);
             conns.push_back(new_conn);
             //(conns[0]).rx_wr_pos = (conns[0]).rx_buffer;			//#TODO needs fixing, changes rx_buffer
-            LOG_DEBUG("[PUSH] wr_pos = %i    rx_buffer = %i\n",(conns[0])->rx_wr_pos,(conns[0])->rx_buffer);
+            LOG_DEBUG("[PUSH] wr_pos = %i    rx_buffer = %i",(conns[0])->rx_wr_pos,(conns[0])->rx_buffer);
 
         }
         /*
