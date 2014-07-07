@@ -188,8 +188,8 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
                 CMotorVelocityMessage *motorVelocityMessage = (CMotorVelocityMessage *) currentMessage;
                 LOG_DEBUG("Setting motor ctrl [%d] velocity to %d", motorVelocityMessage->getSubType(), motorVelocityMessage->getIDesiredSpeed());
                 // TODO: actually generate an answer
-                char answer[] = {'C', 'A', 'R', 'R', 0x0, 0x0, 0x0, 0x0, 0x04, 0x0, 0x0, 0x0, motorVelocityMessage->getIDesiredSpeed()};
-                send(conn->fd, answer, 14, 0);
+                //char answer[] = {'C', 'A', 'R', 'R', 0x0, 0x0, 0x0, 0x0, 0x04, 0x0, 0x0, 0x0, motorVelocityMessage->getIDesiredSpeed()};
+               // send(conn->fd, answer, 14, 0);
                 break;
             }
                 // MotorMeasurement
@@ -226,8 +226,8 @@ void sss_exec_command(CCarProtocol * receivedPacket,SSSConn* conn)
             	CRemoteControlMessage * remoteControlMessage = (CRemoteControlMessage *) currentMessage;
             	state.reqMode = OPMODE_MANUDRIVE;
             	LOG_DEBUG("Switching to manual control.");
-                char answer[] = {'C', 'A', 'R', 'R', 0x0, 0x0, 0x0, 0x0, 0x60, 0x0, 0x0, 0x0, motorVelocityMessage->getIDesiredSpeed()};
-                send(conn->fd, answer, 14, 0);
+                //char answer[] = {'C', 'A', 'R', 'R', 0x0, 0x0, 0x0, 0x0, 0x60, 0x0, 0x0, 0x0, motorVelocityMessage->getIDesiredSpeed()};
+                //send(conn->fd, answer, 14, 0);
             	break;
             }
             // Control message
