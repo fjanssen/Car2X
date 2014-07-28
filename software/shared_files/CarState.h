@@ -68,7 +68,8 @@ struct MotorECU_State
  * This struct contains all information about one motor-ECU.
  */
 struct CarState {
-	alt_u64 timeStamp;
+	alt_u32 counterCarControl;
+	alt_u32 counterComm;
 	alt_32 iMaxSpeed;
 	enum OpMode currMode;
 	enum OpMode reqMode;
