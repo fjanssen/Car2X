@@ -1,0 +1,16 @@
+Warning (10236): Verilog HDL Implicit Net warning at altera_tse_pcs_pma.v(282): created implicit net for "tbi_tx_clk"
+Warning (10236): Verilog HDL Implicit Net warning at altera_tse_pcs_pma_gige.v(260): created implicit net for "pcs_rx_carrierdetected"
+Warning (10236): Verilog HDL Implicit Net warning at altera_tse_ptp_1588_tx_top.v(384): created implicit net for "data_src_ready_int"
+Warning (10037): Verilog HDL or VHDL warning at nios_system_com_nios.v(2066): conditional expression evaluates to a constant
+Warning (10037): Verilog HDL or VHDL warning at nios_system_com_nios.v(2068): conditional expression evaluates to a constant
+Warning (10037): Verilog HDL or VHDL warning at nios_system_com_nios.v(2224): conditional expression evaluates to a constant
+Warning (10037): Verilog HDL or VHDL warning at nios_system_com_nios.v(3143): conditional expression evaluates to a constant
+Warning (10037): Verilog HDL or VHDL warning at nios_system_carControl_nios.v(1748): conditional expression evaluates to a constant
+Warning (10037): Verilog HDL or VHDL warning at nios_system_carControl_nios.v(1750): conditional expression evaluates to a constant
+Warning (10037): Verilog HDL or VHDL warning at nios_system_carControl_nios.v(1906): conditional expression evaluates to a constant
+Warning (10037): Verilog HDL or VHDL warning at nios_system_carControl_nios.v(2825): conditional expression evaluates to a constant
+Warning (10037): Verilog HDL or VHDL warning at nios_system_com_memory.v(316): conditional expression evaluates to a constant
+Warning (10037): Verilog HDL or VHDL warning at nios_system_com_memory.v(326): conditional expression evaluates to a constant
+Warning (10037): Verilog HDL or VHDL warning at nios_system_com_memory.v(336): conditional expression evaluates to a constant
+Warning (10037): Verilog HDL or VHDL warning at nios_system_com_memory.v(680): conditional expression evaluates to a constant
+Warning (10037): Verilog HDL or VHDL warning at nios_system_ethernet_subsystem_sgdma_tx.v(1462): conditional expression evaluates to a constant
