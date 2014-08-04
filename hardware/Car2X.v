@@ -49,7 +49,7 @@ module Car2X(
 	assign NET0_RESET_N = core_reset_n;
 
 	
-	my_pll pll_inst(
+	tse_pll pll_inst(
 		.areset	(~KEY[0]),
 		.inclk0	(CLOCK_50),
 		.c0		(sys_clk),
@@ -66,7 +66,7 @@ module Car2X(
 	sdram_pll neg_3ns (sys_clk, DRAM_CLK);
 
 	
-	my_ddio_out ddio_out_inst(
+	tse_ddio_out ddio_out_inst(
 		.datain_h(1'b1),
 		.datain_l(1'b0),
 		.outclock(tx_clk),

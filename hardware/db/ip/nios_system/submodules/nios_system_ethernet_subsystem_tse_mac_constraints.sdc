@@ -28,7 +28,7 @@
 # command in the Quartus II TCL console:
 # set_global_assignment -name SDC_FILE "nios_system_ethernet_subsystem_tse_mac"_constraints.sdc
 #
-# Generated on Sat Aug 02 10:53:37 CEST 2014
+# Generated on Mon Aug 04 14:59:34 CEST 2014
 #
 #####################################################################################
 
