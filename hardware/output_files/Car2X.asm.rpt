@@ -1,5 +1,5 @@
 Assembler report for Car2X
-Sat Jul 05 13:30:34 2014
+Sat Aug 02 11:01:58 2014
 Quartus II 32-bit Version 12.1 Build 177 11/07/2012 SJ Web Edition
 
 
@@ -11,7 +11,7 @@ Quartus II 32-bit Version 12.1 Build 177 11/07/2012 SJ Web Edition
   3. Assembler Settings
   4. Assembler Encrypted IP Cores Summary
   5. Assembler Generated Files
-  6. Assembler Device Options: C:/Users/Florian/Documents/GitHub/Car2X/hardware/output_files/Car2X_time_limited.sof
+  6. Assembler Device Options: C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/output_files/Car2X_time_limited.sof
   7. Assembler Messages
 
 
@@ -38,7 +38,7 @@ applicable agreement for further details.
 +---------------------------------------------------------------+
 ; Assembler Summary                                             ;
 +-----------------------+---------------------------------------+
-; Assembler Status      ; Successful - Sat Jul 05 13:30:34 2014 ;
+; Assembler Status      ; Successful - Sat Aug 02 11:01:58 2014 ;
 ; Revision Name         ; Car2X                                 ;
 ; Top-level Entity Name ; Car2X                                 ;
 ; Family                ; Cyclone IV E                          ;
@@ -90,24 +90,24 @@ applicable agreement for further details.
 +--------+-------------------------------------+---------------+
 
 
-+--------------------------------------------------------------------------------------+
-; Assembler Generated Files                                                            ;
-+--------------------------------------------------------------------------------------+
-; File Name                                                                            ;
-+--------------------------------------------------------------------------------------+
-; C:/Users/Florian/Documents/GitHub/Car2X/hardware/output_files/Car2X_time_limited.sof ;
-+--------------------------------------------------------------------------------------+
++-------------------------------------------------------------------------------------------+
+; Assembler Generated Files                                                                 ;
++-------------------------------------------------------------------------------------------+
+; File Name                                                                                 ;
++-------------------------------------------------------------------------------------------+
+; C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/output_files/Car2X_time_limited.sof ;
++-------------------------------------------------------------------------------------------+
 
 
-+----------------------------------------------------------------------------------------------------------------+
-; Assembler Device Options: C:/Users/Florian/Documents/GitHub/Car2X/hardware/output_files/Car2X_time_limited.sof ;
-+----------------+-----------------------------------------------------------------------------------------------+
-; Option         ; Setting                                                                                       ;
-+----------------+-----------------------------------------------------------------------------------------------+
-; Device         ; EP4CE115F29C7                                                                                 ;
-; JTAG usercode  ; 0xFFFFFFFF                                                                                    ;
-; Checksum       ; 0x010EA6FB                                                                                    ;
-+----------------+-----------------------------------------------------------------------------------------------+
++---------------------------------------------------------------------------------------------------------------------+
+; Assembler Device Options: C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/output_files/Car2X_time_limited.sof ;
++----------------+----------------------------------------------------------------------------------------------------+
+; Option         ; Setting                                                                                            ;
++----------------+----------------------------------------------------------------------------------------------------+
+; Device         ; EP4CE115F29C7                                                                                      ;
+; JTAG usercode  ; 0xFFFFFFFF                                                                                         ;
+; Checksum       ; 0x010CF5DB                                                                                         ;
++----------------+----------------------------------------------------------------------------------------------------+
 
 
 +--------------------+
@@ -116,16 +116,16 @@ applicable agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus II 32-bit Assembler
     Info: Version 12.1 Build 177 11/07/2012 SJ Web Edition
-    Info: Processing started: Sat Jul 05 13:30:24 2014
+    Info: Processing started: Sat Aug 02 11:01:46 2014
 Info: Command: quartus_asm --read_settings_files=off --write_settings_files=off Car2X -c Car2X
 Info (115031): Writing out detailed assembly data for power analysis
 Info (115030): Assembler is generating device programming files
 Info (115017): Design contains a time-limited core -- only a single, time-limited programming file can be generated
 Warning (210042): Can't convert time-limited SOF into POF, HEX File, TTF, or RBF
 Info: Quartus II 32-bit Assembler was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 425 megabytes
-    Info: Processing ended: Sat Jul 05 13:30:34 2014
-    Info: Elapsed time: 00:00:10
-    Info: Total CPU time (on all processors): 00:00:10
+    Info: Peak virtual memory: 426 megabytes
+    Info: Processing ended: Sat Aug 02 11:01:58 2014
+    Info: Elapsed time: 00:00:12
+    Info: Total CPU time (on all processors): 00:00:11
 
 
