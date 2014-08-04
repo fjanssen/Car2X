@@ -81,7 +81,28 @@ typedef struct SSS_SOCKET
   INT8U     *rx_wr_pos; // position we've written up to
 } SSSConn;
 
+typedef struct currEmReqAnswer{
+	int stateVersion;
+	int fd;
+};
 
+typedef struct currRemCtrlAnswer{
+	int stateVersion;
+	alt_u8 ip1;
+	alt_u8 ip2;
+	alt_u8 ip3;
+	alt_u8 ip4;
+	int fd;
+};
+
+typedef struct currCCtrlAnswer{
+	int stateVersion;
+	int v1;
+	int v2;
+	int v3;
+	int v4;
+	int fd;
+};
 
 #endif /* SOCKETSERVER_H_ */
 

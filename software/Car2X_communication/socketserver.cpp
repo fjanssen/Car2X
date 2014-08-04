@@ -23,6 +23,8 @@ extern "C" {
 #include <alt_types.h>
 #include "ErrHandler.h"
 
+#include "pendingAnswers.cpp"
+
 } // extern C
 
 #include "MemController.h"
@@ -150,7 +152,7 @@ void sss_handle_accept(int listen_socket, SSSConn* conn) {
  * struct, which will be looked at back in sss_handle_receive() when it
  * comes time to see whether to close the connection or not.
  */
-void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn) {
+void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn, currEmReqAnswer* cERA, currRemCtrlAnswer* cRCA, currCCtrlAnswer* cCCA) {
 	alt_u32 iMessageCount, i;
 	MemController<CarState> sharedMem;
 	CarState state;
@@ -252,9 +254,17 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn) {
 		case C2X_MSGID_EMERGENCY_BRAKE: {
 			CEmergencyBrakeMessage * emergencyMessage =
 					(CEmergencyBrakeMessage *) currentMessage;
-			state.reqMode = OPMODE_EMERGENCYSTOP;
+				//update state
+				state.reqMode = OPMODE_EMERGENCYSTOP;
+				state.counterComm++;
+			//write message to list/queue
+			if(cERA->stateVersion>0){
+				//reply old msg for outdated
+
+			}
+			cERA->fd=conn->fd;
+			cERA->fd=state.counterComm;
 			LOG_DEBUG("Requested emergency brake");
-			//TODO: set pending acknowledgement
 			break;
 		}
 		case C2X_MSGID_INFO_STATE: {
@@ -576,6 +586,11 @@ void SSSSimpleSocketServerTask() {
 	static std::vector<SSSConn *> conns;
 	fd_set readfds;
 
+	//init currMsgStructs
+
+	struct currEmReqAnswer  cERA;
+	struct currRemCtrlAnswer  cRCA;
+	struct currCCtrlAnswer  cCCA;
 	/*
 	 * Sockets primer...
 	 * The socket() call creates an endpoint for TCP of UDP communication. It
@@ -649,6 +664,7 @@ void SSSSimpleSocketServerTask() {
 		FD_ZERO(&readfds);
 		FD_SET(fd_listen, &readfds);
 		max_socket = fd_listen + 1;
+		//processAnswerMessages();
 
 //        LOG_DEBUG("conns: %i",conns.size());
 
