@@ -2,9 +2,9 @@
  * alt_sys_init.c - HAL initialization source
  *
  * Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
- * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
+ * SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/nios_system.sopcinfo
  *
- * Generated: Sat Jun 21 15:58:57 CEST 2014
+ * Generated: Sat Aug 02 10:45:27 CEST 2014
  */
 
 /*
@@ -67,7 +67,7 @@
  */
 
 ALTERA_NIOS2_QSYS_IRQ_INSTANCE ( CARCONTROL_NIOS, carControl_nios);
-ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAGUART_1, jtaguart_1);
+ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAGUART_0, jtaguart_0);
 ALTERA_AVALON_MUTEX_INSTANCE ( SHARED_MEMORY_MUTEX, shared_memory_mutex);
 
 /*
@@ -91,6 +91,6 @@ void alt_irq_init ( const void* base )
 
 void alt_sys_init( void )
 {
-    ALTERA_AVALON_JTAG_UART_INIT ( JTAGUART_1, jtaguart_1);
+    ALTERA_AVALON_JTAG_UART_INIT ( JTAGUART_0, jtaguart_0);
     ALTERA_AVALON_MUTEX_INIT ( SHARED_MEMORY_MUTEX, shared_memory_mutex);
 }

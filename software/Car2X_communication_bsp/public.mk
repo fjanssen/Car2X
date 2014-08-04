@@ -87,11 +87,11 @@ ACDS_VERSION := 12.1
 
 # Quartus Generated JDI File. Required for resolving node instance ID's with 
 # design component names. 
-JDI_FILE := C:/Users/Florian/Documents/GitHub/Car2X/hardware/Car2X.jdi
+JDI_FILE := C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/Car2X.jdi
 
 # Qsys--generated SOPCINFO file. Required for resolving node instance ID's with 
 # design component names. 
-SOPCINFO_FILE := C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
+SOPCINFO_FILE := C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/nios_system.sopcinfo
 
 # Big-Endian operation. 
 # setting BIG_ENDIAN is false
@@ -306,18 +306,18 @@ ALT_CPPFLAGS += -DALT_NO_INSTRUCTION_EMULATION
 
 # Slave descriptor of STDERR character-mode device. This setting is used by the 
 # ALT_STDERR family of defines in system.h. none 
-# setting hal.stderr is jtaguart_0
-ELF_PATCH_FLAG  += --stderr_dev jtaguart_0
+# setting hal.stderr is none
+ELF_PATCH_FLAG  += --stderr_dev none
 
 # Slave descriptor of STDIN character-mode device. This setting is used by the 
 # ALT_STDIN family of defines in system.h. none 
-# setting hal.stdin is jtaguart_0
-ELF_PATCH_FLAG  += --stdin_dev jtaguart_0
+# setting hal.stdin is none
+ELF_PATCH_FLAG  += --stdin_dev none
 
 # Slave descriptor of STDOUT character-mode device. This setting is used by the 
 # ALT_STDOUT family of defines in system.h. none 
-# setting hal.stdout is jtaguart_0
-ELF_PATCH_FLAG  += --stdout_dev jtaguart_0
+# setting hal.stdout is none
+ELF_PATCH_FLAG  += --stdout_dev none
 
 
 #------------------------------------------------------------------------------

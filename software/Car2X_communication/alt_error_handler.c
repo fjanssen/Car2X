@@ -215,6 +215,7 @@ void alt_uCOSIIErrorHandler(INT8U error_code, void *expanded_diagnosis_ptr)
       default:
          printf("\n[MicroC/OS-II]: See STDERR (FAULT_LEVEL is Unknown).\n");
          fprintf(stderr, "\n[MicroC/OS-II]: FAULT_LEVEL is unknown!?!\n");
+         break;
    }
    while(1); /* Correct Program Flow never gets here. */
 }
@@ -281,6 +282,7 @@ void alt_NetworkErrorHandler(INT8U error_code, void *expanded_diagnosis_ptr)
       default:
          printf("\n[Network]: See STDERR (FAULT_LEVEL is unknown).\n");    
          fprintf(stderr, "\n[Network] FAULT_LEVEL is unknown !?!\n");
+         break;
    }
    while(1); /* Correct Program Flow never gets here. */
 }
@@ -317,6 +319,7 @@ void alt_SSSErrorHandler(INT8U error_code,
          printf("\n[SSS]: See STDERR.\n");    
          fprintf(stderr, "\n[SSS]: Error_code %d!", error_code);        
          perror("\n[SSS]:  ERRNO: ");
+         break;
    }
 
    /* Process the error based on the fault level, 
@@ -354,6 +357,7 @@ void alt_SSSErrorHandler(INT8U error_code,
       default:
          printf("\n[SSS]: See STDERR (FAULT_LEVEL is Unknown).\n");
          fprintf(stderr, "\n[SSS] FAULT_LEVEL is unknown!?!\n");
+         break;
    }
    while(1); /* Correct Program Flow never gets here. */
 }

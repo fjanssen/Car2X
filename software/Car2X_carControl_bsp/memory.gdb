@@ -1,9 +1,9 @@
 # memory.gdb - GDB memory region definitions
 #
 # Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
-# SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
+# SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/nios_system.sopcinfo
 #
-# Generated: Mon Jun 23 15:08:31 CEST 2014
+# Generated: Wed Jul 30 12:34:21 CEST 2014
 
 # DO NOT MODIFY THIS FILE
 #
@@ -50,4 +50,4 @@
 memory 0x80000 0xcb000 cache
 
 # shared_memory
-memory 0x8000000 0x8001000 cache
+memory 0x8002000 0x8003000 cache

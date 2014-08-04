@@ -127,7 +127,7 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 // Do as long there are messages (payload bytes) left and the count of messages dont exceeds 8.
 		while (uiPayloadOffset < uiPayloadLength && m_uiMessageCount < 8) {
 // Parse the message type and switch along it
-			switch (pPacket[uiStartIdx + uiPayloadOffset]) {
+		switch (pPacket[uiStartIdx + uiPayloadOffset]) {
 // The following cases parse the message along there type in different classes.
 // TODO: Add new message classes here!!!!!
 
@@ -194,10 +194,10 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 				break;
 
 // Velocity msg (incoming)-->other car tells us his velocity
-			case 0x10: // TODO
+			case C2X_MSGID_VELOCITY: // TODO
 			{
 //TODO: add cpp files
-				//m_pMessages[m_uiMessageCount] = new CVelocityMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
+				m_pMessages[m_uiMessageCount] = new CVelocityMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
 				uiPayloadOffset += 12;
 				m_uiMessageCount++;
 				break;
@@ -205,7 +205,7 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 
 //do emergency braking
 			case C2X_MSGID_EMERGENCY_BRAKE: {
-//m_pMessages[m_uiMessageCount] = new CEmergencyBrakeMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
+				m_pMessages[m_uiMessageCount] = new CEmergencyBrakeMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
 				uiPayloadOffset += 12;
 				m_uiMessageCount++;
 				break;
@@ -222,7 +222,7 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 
 			//tell our state
 			case C2X_MSGID_INFO_STATE: {
-				//m_pMessages[m_uiMessageCount] = new CInfoStateMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
+				m_pMessages[m_uiMessageCount] = new CInfoStateMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
 				uiPayloadOffset += 12;
 				m_uiMessageCount++;
 				break;
@@ -230,7 +230,7 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 
 			//tell our sensor data
 			case C2X_MSGID_INFO_SENSORS: {
-				//m_pMessages[m_uiMessageCount] = new CInfoSensorMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
+				m_pMessages[m_uiMessageCount] = new CInfoSensorMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
 				uiPayloadOffset += 12;
 				m_uiMessageCount++;
 				break;

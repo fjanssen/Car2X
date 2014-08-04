@@ -6,7 +6,7 @@ CEmergencyBrakeMessage::CEmergencyBrakeMessage()
 
 CEmergencyBrakeMessage::CEmergencyBrakeMessage(alt_u8* pMessage, int iLength)
 {
-
+	parseHeader(pMessage, iLength);
 }
 
 CEmergencyBrakeMessage::~CEmergencyBrakeMessage()

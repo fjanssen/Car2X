@@ -2,9 +2,9 @@
  * system.h - SOPC Builder system and BSP software package information
  *
  * Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
- * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
+ * SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/nios_system.sopcinfo
  *
- * Generated: Mon Jun 23 15:22:47 CEST 2014
+ * Generated: Sat Aug 02 11:03:27 CEST 2014
  */
 
 /*
@@ -63,7 +63,7 @@
 #define ALT_CPU_ARCHITECTURE "altera_nios2_qsys"
 #define ALT_CPU_BIG_ENDIAN 0
 #define ALT_CPU_BREAK_ADDR 0x100820
-#define ALT_CPU_CPU_FREQ 50000000u
+#define ALT_CPU_CPU_FREQ 100000000u
 #define ALT_CPU_CPU_ID_SIZE 16
 #define ALT_CPU_CPU_ID_VALUE 0x00010000
 #define ALT_CPU_CPU_IMPLEMENTATION "small"
@@ -73,7 +73,7 @@
 #define ALT_CPU_DCACHE_SIZE 0
 #define ALT_CPU_EXCEPTION_ADDR 0x80020
 #define ALT_CPU_FLUSHDA_SUPPORTED
-#define ALT_CPU_FREQ 50000000
+#define ALT_CPU_FREQ 100000000
 #define ALT_CPU_HARDWARE_DIVIDE_PRESENT 0
 #define ALT_CPU_HARDWARE_MULTIPLY_PRESENT 1
 #define ALT_CPU_HARDWARE_MULX_PRESENT 0
@@ -95,7 +95,7 @@
 
 #define NIOS2_BIG_ENDIAN 0
 #define NIOS2_BREAK_ADDR 0x100820
-#define NIOS2_CPU_FREQ 50000000u
+#define NIOS2_CPU_FREQ 100000000u
 #define NIOS2_CPU_ID_SIZE 16
 #define NIOS2_CPU_ID_VALUE 0x00010000
 #define NIOS2_CPU_IMPLEMENTATION "small"
@@ -144,21 +144,21 @@
 #define ALT_NUM_EXTERNAL_INTERRUPT_CONTROLLERS 0
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
-#define ALT_STDERR "/dev/jtaguart_1"
-#define ALT_STDERR_BASE 0x101000
-#define ALT_STDERR_DEV jtaguart_1
+#define ALT_STDERR "/dev/jtaguart_0"
+#define ALT_STDERR_BASE 0x8006838
+#define ALT_STDERR_DEV jtaguart_0
 #define ALT_STDERR_IS_JTAG_UART
 #define ALT_STDERR_PRESENT
 #define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
-#define ALT_STDIN "/dev/jtaguart_1"
-#define ALT_STDIN_BASE 0x101000
-#define ALT_STDIN_DEV jtaguart_1
+#define ALT_STDIN "/dev/jtaguart_0"
+#define ALT_STDIN_BASE 0x8006838
+#define ALT_STDIN_DEV jtaguart_0
 #define ALT_STDIN_IS_JTAG_UART
 #define ALT_STDIN_PRESENT
 #define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
-#define ALT_STDOUT "/dev/jtaguart_1"
-#define ALT_STDOUT_BASE 0x101000
-#define ALT_STDOUT_DEV jtaguart_1
+#define ALT_STDOUT "/dev/jtaguart_0"
+#define ALT_STDOUT_BASE 0x8006838
+#define ALT_STDOUT_DEV jtaguart_0
 #define ALT_STDOUT_IS_JTAG_UART
 #define ALT_STDOUT_PRESENT
 #define ALT_STDOUT_TYPE "altera_avalon_jtag_uart"
@@ -176,21 +176,21 @@
 
 
 /*
- * jtaguart_1 configuration
+ * jtaguart_0 configuration
  *
  */
 
-#define ALT_MODULE_CLASS_jtaguart_1 altera_avalon_jtag_uart
-#define JTAGUART_1_BASE 0x101000
-#define JTAGUART_1_IRQ 0
-#define JTAGUART_1_IRQ_INTERRUPT_CONTROLLER_ID 0
-#define JTAGUART_1_NAME "/dev/jtaguart_1"
-#define JTAGUART_1_READ_DEPTH 64
-#define JTAGUART_1_READ_THRESHOLD 8
-#define JTAGUART_1_SPAN 8
-#define JTAGUART_1_TYPE "altera_avalon_jtag_uart"
-#define JTAGUART_1_WRITE_DEPTH 64
-#define JTAGUART_1_WRITE_THRESHOLD 8
+#define ALT_MODULE_CLASS_jtaguart_0 altera_avalon_jtag_uart
+#define JTAGUART_0_BASE 0x8006838
+#define JTAGUART_0_IRQ 0
+#define JTAGUART_0_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define JTAGUART_0_NAME "/dev/jtaguart_0"
+#define JTAGUART_0_READ_DEPTH 64
+#define JTAGUART_0_READ_THRESHOLD 8
+#define JTAGUART_0_SPAN 8
+#define JTAGUART_0_TYPE "altera_avalon_jtag_uart"
+#define JTAGUART_0_WRITE_DEPTH 64
+#define JTAGUART_0_WRITE_THRESHOLD 8
 
 
 /*
@@ -230,7 +230,7 @@
 #define ALT_MODULE_CLASS_shared_memory altera_avalon_onchip_memory2
 #define SHARED_MEMORY_ALLOW_IN_SYSTEM_MEMORY_CONTENT_EDITOR 0
 #define SHARED_MEMORY_ALLOW_MRAM_SIM_CONTENTS_ONLY_FILE 0
-#define SHARED_MEMORY_BASE 0x8000000
+#define SHARED_MEMORY_BASE 0x8002000
 #define SHARED_MEMORY_CONTENTS_INFO ""
 #define SHARED_MEMORY_DUAL_PORT 1
 #define SHARED_MEMORY_GUI_RAM_BLOCK_TYPE "Automatic"
@@ -257,7 +257,7 @@
  */
 
 #define ALT_MODULE_CLASS_shared_memory_mutex altera_avalon_mutex
-#define SHARED_MEMORY_MUTEX_BASE 0x80034b0
+#define SHARED_MEMORY_MUTEX_BASE 0x8006830
 #define SHARED_MEMORY_MUTEX_IRQ -1
 #define SHARED_MEMORY_MUTEX_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define SHARED_MEMORY_MUTEX_NAME "/dev/shared_memory_mutex"

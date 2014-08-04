@@ -2,9 +2,9 @@
  * linker.h - Linker script mapping information
  *
  * Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
- * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
+ * SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/nios_system.sopcinfo
  *
- * Generated: Mon Jun 23 15:08:31 CEST 2014
+ * Generated: Wed Jul 30 12:34:21 CEST 2014
  */
 
 /*
@@ -69,7 +69,7 @@
 #define ONCHIP_MEMORY2_0_REGION_SPAN 307168
 #define RESET_REGION_BASE 0x80000
 #define RESET_REGION_SPAN 32
-#define SHARED_MEMORY_REGION_BASE 0x8000000
+#define SHARED_MEMORY_REGION_BASE 0x8002000
 #define SHARED_MEMORY_REGION_SPAN 4096
 
 

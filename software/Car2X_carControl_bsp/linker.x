@@ -2,9 +2,9 @@
  * linker.x - Linker script
  *
  * Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
- * SOPC Builder design path: C:/Users/Florian/Documents/GitHub/Car2X/hardware/nios_system.sopcinfo
+ * SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/nios_system.sopcinfo
  *
- * Generated: Mon Jun 23 15:08:31 CEST 2014
+ * Generated: Wed Jul 30 12:34:21 CEST 2014
  */
 
 /*
@@ -52,12 +52,12 @@ MEMORY
 {
     reset : ORIGIN = 0x80000, LENGTH = 32
     onchip_memory2_0 : ORIGIN = 0x80020, LENGTH = 307168
-    shared_memory : ORIGIN = 0x8000000, LENGTH = 4096
+    shared_memory : ORIGIN = 0x8002000, LENGTH = 4096
 }
 
 /* Define symbols for each memory base-address */
 __alt_mem_onchip_memory2_0 = 0x80000;
-__alt_mem_shared_memory = 0x8000000;
+__alt_mem_shared_memory = 0x8002000;
 
 OUTPUT_FORMAT( "elf32-littlenios2",
                "elf32-littlenios2",
