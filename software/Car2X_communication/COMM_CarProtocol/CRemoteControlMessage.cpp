@@ -41,4 +41,8 @@ alt_u32 CRemoteControlMessage::getLength()
 void CRemoteControlMessage::parseMessage(alt_u8 *pMessage, int iLength)
 {
 	m_bValid = true;
+	m_ipPart1=pMessage[0];
+	m_ipPart2=pMessage[1];
+	m_ipPart3=pMessage[2];
+	m_ipPart4=pMessage[3];
 }

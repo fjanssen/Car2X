@@ -17,6 +17,30 @@ int main()
 
 	CarState state;
 
+	//initial state:
+	state = ctrl.getLastElement();
+	state.counterCarControl=0;
+	state.counterComm=0;
+	state.currMode=OPMODE_IDLE;
+	state.iMaxSpeed=0;
+	state.ip1=0;
+	state.ip2=0;
+	state.ip3=0;
+	state.ip4=0;
+	state.reqMode=OPMODE_IDLE;
+	state.reqVelocity={0};
+	state.reqip1=0;
+	state.reqip2=0;
+	state.reqip3=0;
+	state.reqip4=0;
+	state.usSensors[0]={0};
+	state.usSensors[1]={0};
+	state.motorEcus[0]={0};
+	state.motorEcus[1]={0};
+	state.motorEcus[2]={0};
+	state.motorEcus[3]={0};
+	ctrl.pushElement(state);
+
 	while(1)
 	{
 		// get the lastest car state from the shared memory
@@ -33,13 +57,13 @@ int main()
 		{
 			switchState(state);
 		}
-
+		state.counterCarControl=state.counterComm;
 		setMotorSpeeds(state);
 
 		ctrl.pushElement(state);
 
 		// TODO: write a delay function w/ timer. Otherwise we might run into problems blocking the mutex from all the shared memory reads...
-		// delay(10);
+		//delay(10);
 	}
 
 	return -1;

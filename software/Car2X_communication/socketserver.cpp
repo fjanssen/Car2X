@@ -14,6 +14,7 @@ extern "C" {
 /* Nichestack definitions */
 #include "ipport.h"
 #include "tcpport.h"
+#include "ip.h"
 
 //CarProtocol: Used to parse the received bytes from the TCP connection into a Message
 #include "CarProtocol.h"
@@ -44,7 +45,6 @@ extern "C" {
 #include "CInfoStateMessage.h"
 #include "CInfoSensorMessage.h"
 #include "CRemoteControlMessage.h"
-#include "CVelocityMessage.h"
 //end of message includes
 
 #define CAR_HEADER_LENGTH 8
@@ -94,16 +94,24 @@ void sss_reset_connection(SSSConn* conn) {
 void sss_handle_accept(int listen_socket, SSSConn* conn) {
 	int socket, len;
 	struct sockaddr_in incoming_addr;
-
+	unsigned long* addr_ptr=&incoming_addr.sin_addr.s_addr;
 	len = sizeof(incoming_addr);
 
 	if ((conn)->fd == -1) {
-		if ((socket = accept(listen_socket,(struct sockaddr*)&incoming_addr,&len))
+		if ((socket =
+				accept(listen_socket,(struct sockaddr*)&incoming_addr,&len))
 				< 0) {
 			alt_NetworkErrorHandler(EXPANDED_DIAGNOSIS_CODE,
 					(void *) "[sss_handle_accept] accept failed");
 		} else {
 			(conn)->fd = socket;
+
+			struct l2b ip;
+			ip.ip.iplong=incoming_addr.sin_addr.s_addr;
+			conn->ip1=(alt_u8)ip.ip.ipchar[0];
+			conn->ip2=(alt_u8)ip.ip.ipchar[1];
+			conn->ip3=(alt_u8)ip.ip.ipchar[2];
+			conn->ip4=(alt_u8)ip.ip.ipchar[3];
 
 			char* str_ip_addr = inet_ntoa(incoming_addr.sin_addr);
 
@@ -152,7 +160,8 @@ void sss_handle_accept(int listen_socket, SSSConn* conn) {
  * struct, which will be looked at back in sss_handle_receive() when it
  * comes time to see whether to close the connection or not.
  */
-void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn, currEmReqAnswer* cERA, currRemCtrlAnswer* cRCA, currCCtrlAnswer* cCCA) {
+void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
+		currEmReqAnswer* cERA, currRemCtrlAnswer* cRCA, currCCtrlAnswer* cCCA) {
 	alt_u32 iMessageCount, i;
 	MemController<CarState> sharedMem;
 	CarState state;
@@ -226,18 +235,185 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn, currEmReqAns
 		case C2X_MSGID_REMOTE_CONTROL: {
 			CRemoteControlMessage * remoteControlMessage =
 					(CRemoteControlMessage *) currentMessage;
-			state.reqMode = OPMODE_MANUDRIVE;
-			LOG_DEBUG("Switching to manual control.");
-			//TODO: implement switching back and lock controling ip
-			//TODO: set pending acknowledgement
-			//char answer[] = {'C', 'A', 'R', 'R', 0x0, 0x0, 0x0, 0x0, 0x60, 0x0, 0x0, 0x0, motorVelocityMessage->getIDesiredSpeed()};
-			//send(conn->fd, answer, 14, 0);
+			if(remoteControlMessage->get_ipPart1()==0&&remoteControlMessage->get_ipPart2()==0&&remoteControlMessage->get_ipPart3()==0&&remoteControlMessage->get_ipPart4()==0){
+				state.reqMode=OPMODE_AUTODRIVE;
+				LOG_DEBUG("Switching back to automatic control.");
+			}
+			else{
+				state.reqMode = OPMODE_MANUDRIVE;
+				LOG_DEBUG("Switching to manual control.");
+			}
+			state.reqip1=remoteControlMessage->get_ipPart1();
+			state.reqip2=remoteControlMessage->get_ipPart2();
+			state.reqip3=remoteControlMessage->get_ipPart3();
+			state.reqip4=remoteControlMessage->get_ipPart4();
+			state.counterComm++;
+
+			LOG_DEBUG("locked IP is: %d, %d, %d, %d requested IP is: %d, %d, %d, %d",
+												state.ip1, state.ip2, state.ip3, state.ip4,state.reqip1,state.reqip2,state.reqip3,state.reqip4);
+
+
+			//write message to list/queue
+			if (cRCA->stateVersion > 0) {
+				//reply old msg for outdated
+				int payloadLength = sizeof(alt_u16)+4*sizeof(state.ip1);
+				int answerLength = 4 + sizeof(state.counterCarControl)
+						+ sizeof(state.counterComm) + sizeof(payloadLength) + 1
+						+ sizeof((alt_u8) C2X_MSGID_REMOTE_CONTROL)
+						+ payloadLength;
+				int offset = 4;
+
+				//Allocate memory for the answer char array
+				char* answer = (char*) malloc(answerLength);
+				answer[0] = 'C';
+				answer[1] = 'A';
+				answer[2] = 'R';
+				answer[3] = 'P';
+				//controlcore state counter
+				memcpy(answer + offset, &state.counterCarControl,
+						sizeof(state.counterCarControl));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.counterCarControl));
+				offset += sizeof(state.counterCarControl);
+				//commcore state counter
+				memcpy(answer + offset, &state.counterComm,
+						sizeof(state.counterComm));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.counterComm));
+				offset += sizeof(state.counterComm);
+				//payloadlength
+				memcpy(answer + offset, &payloadLength, sizeof(payloadLength));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(payloadLength));
+				offset += sizeof(payloadLength);
+				//type def
+				answer[offset++] = 'O';													//'O' for outdated
+				answer[offset++] = (alt_u8) C2X_MSGID_REMOTE_CONTROL;
+				//packetID
+				memcpy(answer + offset, &cRCA->msgID, sizeof(cRCA->msgID));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(cRCA->msgID));
+				offset += sizeof(cRCA->msgID);
+				//ip1
+				memcpy(answer + offset, &state.ip1, sizeof(state.ip1));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.ip1));
+				offset += sizeof(state.ip1);
+				//ip2
+				memcpy(answer + offset, &state.ip2, sizeof(state.ip2));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.ip2));
+				offset += sizeof(state.ip2);
+				//ip3
+				memcpy(answer + offset, &state.ip3, sizeof(state.ip3));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.ip3));
+				offset += sizeof(state.ip3);
+				//ip4
+				memcpy(answer + offset, &state.ip4, sizeof(state.ip4));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.ip4));
+				offset += sizeof(state.ip4);
+
+				//send msg
+				send(cRCA->fd, answer, answerLength, 0);
+				free(answer);
+			}
+			cRCA->fd = conn->fd;
+			cRCA->stateVersion = state.counterComm;
+			cRCA->msgID = receivedPacket->getUiPacketNumber();
+			cRCA->ip1=state.ip1;
+			cRCA->ip2=state.ip2;
+			cRCA->ip3=state.ip3;
+			cRCA->ip4=state.ip4;
 			break;
 		}
-			// Control message
+		// Control message
 		case C2X_MSGID_CONTROL: {
 			CControlMessage * carControlMessage =
 					(CControlMessage *) currentMessage;
+			//check if control is allowed
+			state.counterComm++;
+			if(state.currMode!=OPMODE_MANUDRIVE||(state.ip1!=conn->ip1||state.ip2!=conn->ip2||state.ip3!=conn->ip3||state.ip4!=conn->ip4)){
+				LOG_DEBUG("Control Msg failed because control not allowed!");
+				if(state.currMode==OPMODE_MANUDRIVE){
+				LOG_DEBUG("locked IP is: %d, %d, %d, %d current IP is: %d, %d, %d, %d",
+									state.ip1, state.ip2, state.ip3, state.ip4,conn->ip1,conn->ip2,conn->ip3,conn->ip4);
+				}
+				else{
+				LOG_DEBUG("mode not MANUDRIVE");
+				LOG_DEBUG("locked IP is: %d, %d, %d, %d current IP is: %d, %d, %d, %d",
+													state.ip1, state.ip2, state.ip3, state.ip4,conn->ip1,conn->ip2,conn->ip3,conn->ip4);
+
+				}
+
+				//control not allowed-->send fail msg
+				int payloadLength = sizeof(alt_u16)+4*sizeof(alt_u8);
+				int answerLength = 4 + sizeof(state.counterCarControl)
+						+ sizeof(state.counterComm) + sizeof(payloadLength) + 1
+						+ sizeof((alt_u8) C2X_MSGID_CONTROL)
+						+ payloadLength;
+				int offset = 4;
+
+				//Allocate memory for the answer char array
+				char* answer = (char*) malloc(answerLength);
+				answer[0] = 'C';
+				answer[1] = 'A';
+				answer[2] = 'R';
+				answer[3] = 'P';
+				//controlcore state counter
+				memcpy(answer + offset, &state.counterCarControl,
+						sizeof(state.counterCarControl));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.counterCarControl));
+				offset += sizeof(state.counterCarControl);
+				//commcore state counter
+				memcpy(answer + offset, &state.counterComm,
+						sizeof(state.counterComm));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.counterComm));
+				offset += sizeof(state.counterComm);
+				//payloadlength
+				memcpy(answer + offset, &payloadLength, sizeof(payloadLength));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(payloadLength));
+				offset += sizeof(payloadLength);
+				//type def
+				answer[offset++] = 'F';													//'F' for failed
+				answer[offset++] = (alt_u8) C2X_MSGID_CONTROL;
+				//packetID
+				memcpy(answer + offset, &cCCA->msgID, sizeof(cCCA->msgID));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(cCCA->msgID));
+				offset += sizeof(cCCA->msgID);
+				//v1
+				memcpy(answer + offset, &state.motorEcus[0].iCurrentSpeed, sizeof(state.motorEcus[0].iCurrentSpeed));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.motorEcus[0].iCurrentSpeed));
+				offset += sizeof(state.motorEcus[0].iCurrentSpeed);
+				//v2
+				memcpy(answer + offset, &state.motorEcus[1].iCurrentSpeed, sizeof(state.motorEcus[1].iCurrentSpeed));
+				swapEndianess((alt_u8*) (answer + offset),
+							(alt_u32) sizeof(state.motorEcus[1].iCurrentSpeed));
+				offset += sizeof(state.motorEcus[1].iCurrentSpeed);
+				//v3
+				memcpy(answer + offset, &state.motorEcus[2].iCurrentSpeed, sizeof(state.motorEcus[2].iCurrentSpeed));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.motorEcus[2].iCurrentSpeed));
+				offset += sizeof(state.motorEcus[2].iCurrentSpeed);
+				//v4
+				memcpy(answer + offset, &state.motorEcus[3].iCurrentSpeed, sizeof(state.motorEcus[3].iCurrentSpeed));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.motorEcus[3].iCurrentSpeed));
+				offset += sizeof(state.motorEcus[3].iCurrentSpeed);
+
+				//send msg
+				send(cCCA->fd, answer, answerLength, 0);
+				free(answer);
+
+				break;
+			}
+
 			state.reqVelocity.iFrontLeft =
 					carControlMessage->get_siVelFrontLeft();
 			state.reqVelocity.iFrontRight =
@@ -248,27 +424,145 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn, currEmReqAns
 					carControlMessage->get_siVelRearRight();
 			LOG_DEBUG("Requested velocities: %d, %d, %d, %d",
 					state.reqVelocity.iFrontLeft, state.reqVelocity.iFrontRight, state.reqVelocity.iRearLeft, state.reqVelocity.iRearRight);
-			//TODO: set pending acknowledgement
+
+			//write message to list/queue
+			if (cCCA->stateVersion > 0) {
+				//reply old msg for outdated
+				int payloadLength = sizeof(alt_u16)+4*sizeof(alt_u8);
+				int answerLength = 4 + sizeof(state.counterCarControl)
+						+ sizeof(state.counterComm) + sizeof(payloadLength) + 1
+						+ sizeof((alt_u8) C2X_MSGID_CONTROL)
+						+ payloadLength;
+				int offset = 4;
+
+				//Allocate memory for the answer char array
+				char* answer = (char*) malloc(answerLength);
+				answer[0] = 'C';
+				answer[1] = 'A';
+				answer[2] = 'R';
+				answer[3] = 'P';
+				//controlcore state counter
+				memcpy(answer + offset, &state.counterCarControl,
+						sizeof(state.counterCarControl));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.counterCarControl));
+				offset += sizeof(state.counterCarControl);
+				//commcore state counter
+				memcpy(answer + offset, &state.counterComm,
+						sizeof(state.counterComm));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.counterComm));
+				offset += sizeof(state.counterComm);
+				//payloadlength
+				memcpy(answer + offset, &payloadLength, sizeof(payloadLength));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(payloadLength));
+				offset += sizeof(payloadLength);
+				//type def
+				answer[offset++] = 'O';													//'O' for outdated
+				answer[offset++] = (alt_u8) C2X_MSGID_CONTROL;
+				//packetID
+				memcpy(answer + offset, &cCCA->msgID, sizeof(cCCA->msgID));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(cCCA->msgID));
+				offset += sizeof(cCCA->msgID);
+				//v1
+				memcpy(answer + offset, &state.motorEcus[0].iCurrentSpeed, sizeof(state.motorEcus[0].iCurrentSpeed));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.motorEcus[0].iCurrentSpeed));
+				offset += sizeof(state.motorEcus[0].iCurrentSpeed);
+				//v2
+				memcpy(answer + offset, &state.motorEcus[1].iCurrentSpeed, sizeof(state.motorEcus[1].iCurrentSpeed));
+				swapEndianess((alt_u8*) (answer + offset),
+							(alt_u32) sizeof(state.motorEcus[1].iCurrentSpeed));
+				offset += sizeof(state.motorEcus[1].iCurrentSpeed);
+				//v3
+				memcpy(answer + offset, &state.motorEcus[2].iCurrentSpeed, sizeof(state.motorEcus[2].iCurrentSpeed));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.motorEcus[2].iCurrentSpeed));
+				offset += sizeof(state.motorEcus[2].iCurrentSpeed);
+				//v4
+				memcpy(answer + offset, &state.motorEcus[3].iCurrentSpeed, sizeof(state.motorEcus[3].iCurrentSpeed));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.motorEcus[3].iCurrentSpeed));
+				offset += sizeof(state.motorEcus[3].iCurrentSpeed);
+
+				//send msg
+				send(cCCA->fd, answer, answerLength, 0);
+				free(answer);
+			}
+			cCCA->fd = conn->fd;
+			cCCA->stateVersion = state.counterComm;
+			cCCA->msgID = receivedPacket->getUiPacketNumber();
+			cCCA->v1=carControlMessage->get_siVelFrontRight();
+			cCCA->v2=carControlMessage->get_siVelFrontLeft();
+			cCCA->v3=carControlMessage->get_siVelRearRight();
+			cCCA->v4=carControlMessage->get_siVelRearLeft();
+
 			break;
 		}
 		case C2X_MSGID_EMERGENCY_BRAKE: {
 			CEmergencyBrakeMessage * emergencyMessage =
 					(CEmergencyBrakeMessage *) currentMessage;
-				//update state
-				state.reqMode = OPMODE_EMERGENCYSTOP;
-				state.counterComm++;
+			//update state
+			state.reqMode = OPMODE_EMERGENCYSTOP;
+			state.counterComm++;
 			//write message to list/queue
-			if(cERA->stateVersion>0){
+			if (cERA->stateVersion > 0) {
 				//reply old msg for outdated
+				int payloadLength = sizeof(alt_u16);
+				int answerLength = 4 + sizeof(state.counterCarControl)
+						+ sizeof(state.counterComm) + sizeof(payloadLength) + 1
+						+ sizeof((alt_u8) C2X_MSGID_EMERGENCY_BRAKE)
+						+ payloadLength;
+				int offset = 4;
 
+				//Allocate memory for the answer char array
+				char* answer = (char*) malloc(answerLength);
+				answer[0] = 'C';
+				answer[1] = 'A';
+				answer[2] = 'R';
+				answer[3] = 'P';
+				//controlcore state counter
+				memcpy(answer + offset, &state.counterCarControl,
+						sizeof(state.counterCarControl));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.counterCarControl));
+				offset += sizeof(state.counterCarControl);
+				//commcore state counter
+				memcpy(answer + offset, &state.counterComm,
+						sizeof(state.counterComm));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.counterComm));
+				offset += sizeof(state.counterComm);
+				//payloadlength
+				memcpy(answer + offset, &payloadLength, sizeof(payloadLength));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(payloadLength));
+				offset += sizeof(payloadLength);
+				//type def
+				answer[offset++] = 'O';
+				answer[offset++] = (alt_u8) C2X_MSGID_EMERGENCY_BRAKE;
+				//packetID
+				memcpy(answer + offset, &cERA->msgID, sizeof(cERA->msgID));
+				swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(cERA->msgID));
+				offset += sizeof(cERA->msgID);
+
+				//send msg
+				LOG_DEBUG("answerLength: %d",answerLength);
+				send(cERA->fd, answer, answerLength, 0);
+				free(answer);
 			}
-			cERA->fd=conn->fd;
-			cERA->fd=state.counterComm;
+			cERA->fd = conn->fd;
+			cERA->stateVersion = state.counterComm;
+			cERA->msgID = receivedPacket->getUiPacketNumber();
 			LOG_DEBUG("Requested emergency brake");
 			break;
 		}
 		case C2X_MSGID_INFO_STATE: {
 			//calculate some lengths...
+			//TODO: add ip attributes
 			int payloadLength = sizeof(state.currMode) + sizeof(state.iMaxSpeed)
 					+ sizeof(state.motorEcus[0]) + sizeof(state.motorEcus[1])
 					+ sizeof(state.motorEcus[2]) + sizeof(state.motorEcus[3]);
@@ -361,7 +655,8 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn, currEmReqAns
 		case C2X_MSGID_INFO_SENSORS: {
 
 			//calculate some lengths...
-			int payloadLength =sizeof(state.usSensors[0]) + sizeof(state.usSensors[1]);
+			int payloadLength = sizeof(state.usSensors[0])
+					+ sizeof(state.usSensors[1]);
 			//'CARP'+ID{SVControl+SVComm}+payloadLength(length of both sensor structs)+Type{'A' for acknowledgement + C2X_MSGID_INFO_SENSOR}+payload{2xsensor struct}
 			int answerLength = 4 + sizeof(state.counterCarControl)
 					+ sizeof(state.counterComm) + sizeof(payloadLength) + 1
@@ -418,20 +713,12 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn, currEmReqAns
 			 printf("%02x ", answer[i]&0xFF);
 			 }
 			 printf("\n");
-			*/
+			 */
 
 			//send message:
 			send(conn->fd, answer, answerLength, 0);
 			LOG_DEBUG("Requested Sensor Info");
 			free(answer);
-			break;
-		}
-		case C2X_MSGID_VELOCITY: {
-			//TODO: decide if required
-			CEmergencyBrakeMessage * emergencyMessage =
-					(CEmergencyBrakeMessage *) currentMessage;
-			state.reqMode = OPMODE_EMERGENCYSTOP;
-			LOG_DEBUG("Requested velocity");
 			break;
 		}
 		default: {
@@ -477,7 +764,7 @@ int receive_bytes(SSSConn* conn) {
  * If a whole message has been received we parse it as a CCarProtocol object and execute the command.   
  * Then we need to clear the buffer to avoid overflow.
  */
-void sss_handle_receive_new(SSSConn* conn) {
+void sss_handle_receive_new(SSSConn* conn,currEmReqAnswer* cERA, currRemCtrlAnswer* cRCA, currCCtrlAnswer* cCCA) {
 
 	//we know some data can be received on the connection => reveive it to rx_buffer (will automatically increment rx_wr_pos
 	//note: bytes may only be received once in this function as we assert that there is data to be read, otherwise this function may block out other connections
@@ -551,7 +838,7 @@ void sss_handle_receive_new(SSSConn* conn) {
 	memset(conn->rx_wr_pos, 0, iPayloadLength + CAR_HEADER_LENGTH);
 
 	//execute the command
-	sss_exec_command(parsedPacket, conn);
+	sss_exec_command(parsedPacket, conn,cERA,cRCA,cCCA);
 	delete (parsedPacket);
 	LOG_DEBUG("msg executed!");
 }
@@ -588,9 +875,9 @@ void SSSSimpleSocketServerTask() {
 
 	//init currMsgStructs
 
-	struct currEmReqAnswer  cERA;
-	struct currRemCtrlAnswer  cRCA;
-	struct currCCtrlAnswer  cCCA;
+	struct currEmReqAnswer cERA;
+	struct currRemCtrlAnswer cRCA;
+	struct currCCtrlAnswer cCCA;
 	/*
 	 * Sockets primer...
 	 * The socket() call creates an endpoint for TCP of UDP communication. It
@@ -714,7 +1001,7 @@ void SSSSimpleSocketServerTask() {
 		else {
 			for (int i = 0; i < conns.size(); i++) {
 				if ((conns[i]->fd != -1) && FD_ISSET(conns[i]->fd, &readfds)) {
-					sss_handle_receive_new(conns[i]);
+					sss_handle_receive_new(conns[i],&cERA,&cRCA,&cCCA);
 				}
 			}
 		}

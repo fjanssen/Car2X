@@ -306,18 +306,18 @@ ALT_CPPFLAGS += -DALT_NO_INSTRUCTION_EMULATION
 
 # Slave descriptor of STDERR character-mode device. This setting is used by the 
 # ALT_STDERR family of defines in system.h. none 
-# setting hal.stderr is jtaguart_0
-ELF_PATCH_FLAG  += --stderr_dev jtaguart_0
+# setting hal.stderr is none
+ELF_PATCH_FLAG  += --stderr_dev none
 
 # Slave descriptor of STDIN character-mode device. This setting is used by the 
 # ALT_STDIN family of defines in system.h. none 
-# setting hal.stdin is jtaguart_0
-ELF_PATCH_FLAG  += --stdin_dev jtaguart_0
+# setting hal.stdin is none
+ELF_PATCH_FLAG  += --stdin_dev none
 
 # Slave descriptor of STDOUT character-mode device. This setting is used by the 
 # ALT_STDOUT family of defines in system.h. none 
-# setting hal.stdout is jtaguart_0
-ELF_PATCH_FLAG  += --stdout_dev jtaguart_0
+# setting hal.stdout is none
+ELF_PATCH_FLAG  += --stdout_dev none
 
 
 #------------------------------------------------------------------------------

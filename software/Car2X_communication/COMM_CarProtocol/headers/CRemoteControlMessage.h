@@ -20,6 +20,11 @@ public:
 	bool getBytes(alt_u8* pMessage);
 	alt_u32 getLength();
 
+	alt_u8 get_ipPart1()  { return m_ipPart1; }
+	alt_u8 get_ipPart2()  { return m_ipPart2; }
+	alt_u8 get_ipPart3()  { return m_ipPart3; }
+	alt_u8 get_ipPart4()  { return m_ipPart4; }
+
 //TODO: change to string representation of m_ip as return
 	alt_16 get_ip() {
 		return m_ip; //m_ip = "m_ipPart1"+"."+"alt_8 m_ipPart2"+...
@@ -27,10 +32,10 @@ public:
 
 private:
 	alt_32 m_ip;
-	alt_8 m_ipPart1;
-	alt_8 m_ipPart2;
-	alt_8 m_ipPart3;
-	alt_8 m_ipPart4;
+	alt_u8 m_ipPart1;
+	alt_u8 m_ipPart2;
+	alt_u8 m_ipPart3;
+	alt_u8 m_ipPart4;
 	alt_u8 m_uiReserved;
 
 	void parseMessage(alt_u8 *pMessage, int iLength);

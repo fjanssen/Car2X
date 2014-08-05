@@ -23,7 +23,6 @@
 #include "ADCInfoMessage.h"
 #include "ADCValuesMessage.h"
 //Car2X Message imports
-#include "CVelocityMessage.h"
 #include "CEmergencyBrakeMessage.h"
 #include "CControlMessage.h"
 #include "CRemoteControlMessage.h"
@@ -178,6 +177,7 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 
 // ADC-Sensor
 			case 0x0A:
+			{
 // If subtype is 0 then it's a InfoMessage otherwise a ValuesMessage
 				if (pPacket[uiStartIdx + uiPayloadOffset + 2] == 0)
 					m_pMessages[m_uiMessageCount] = new CADCInfoMessage(
@@ -190,15 +190,6 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 
 // Make sure you add the right length to the offset!
 				uiPayloadOffset += m_pMessages[m_uiMessageCount]->getLength();
-				m_uiMessageCount++;
-				break;
-
-// Velocity msg (incoming)-->other car tells us his velocity
-			case C2X_MSGID_VELOCITY: // TODO
-			{
-//TODO: add cpp files
-				m_pMessages[m_uiMessageCount] = new CVelocityMessage(pPacket+uiStartIdx+uiPayloadOffset, uiPayloadLength-uiPayloadOffset);
-				uiPayloadOffset += 12;
 				m_uiMessageCount++;
 				break;
 			}

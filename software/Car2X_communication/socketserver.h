@@ -74,6 +74,10 @@ typedef struct SSS_SOCKET
   enum { READY, COMPLETE, CLOSE } state;
   int       fd;
   int       close;
+  alt_u8 ip1;
+  alt_u8 ip2;
+  alt_u8 ip3;
+  alt_u8 ip4;
   
   enum {UNKNOWN,WHEEL_LF,WHEEL_LB,WHEEL_RF,WHEEL_RB,ULTRASOUND,CAMERA,WIPORT} client_type;
   
@@ -84,6 +88,7 @@ typedef struct SSS_SOCKET
 typedef struct currEmReqAnswer{
 	int stateVersion;
 	int fd;
+	alt_u16 msgID;
 };
 
 typedef struct currRemCtrlAnswer{
@@ -93,6 +98,7 @@ typedef struct currRemCtrlAnswer{
 	alt_u8 ip3;
 	alt_u8 ip4;
 	int fd;
+	alt_u16 msgID;
 };
 
 typedef struct currCCtrlAnswer{
@@ -102,6 +108,7 @@ typedef struct currCCtrlAnswer{
 	int v3;
 	int v4;
 	int fd;
+	alt_u16 msgID;
 };
 
 #endif /* SOCKETSERVER_H_ */

@@ -71,6 +71,14 @@ struct CarState {
 	alt_u32 counterCarControl;
 	alt_u32 counterComm;
 	alt_32 iMaxSpeed;
+	alt_u8 ip1;
+	alt_u8 ip2;
+	alt_u8 ip3;
+	alt_u8 ip4;
+	alt_u8 reqip1;
+	alt_u8 reqip2;
+	alt_u8 reqip3;
+	alt_u8 reqip4;
 	enum OpMode currMode;
 	enum OpMode reqMode;
 	struct MotorECU_State motorEcus[CAR_NUM_MOTORS];

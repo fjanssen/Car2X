@@ -2,11 +2,11 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>24.06.2014 23:20:17</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1403644817898</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>C:\Users\Florian\Documents\GitHub\Car2X\software\Car2X_carControl_bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>Aug 4, 2014 11:14:04 AM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1407143644793</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>C:\Users\HS\Documents\tortoise2x\trunk\trunk\software\Car2X_carControl_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
-        <SopcDesignFile>C:\Users\Florian\Documents\GitHub\Car2X\hardware\nios_system.sopcinfo</SopcDesignFile>
+        <SopcDesignFile>C:\Users\HS\Documents\tortoise2x\trunk\trunk\hardware\nios_system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>carControl_nios</Cpu>
         <SchemaVersion>1.9</SchemaVersion>
@@ -194,7 +194,7 @@
                 <SettingName>hal.stdin</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>jtaguart_1</Value>
+                <Value>none</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of STDIN character-mode device. This setting is used by the ALT_STDIN family of defines in system.h.</Description>
@@ -206,7 +206,7 @@
                 <SettingName>hal.stdout</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>jtaguart_1</Value>
+                <Value>none</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of STDOUT character-mode device. This setting is used by the ALT_STDOUT family of defines in system.h.</Description>
@@ -218,7 +218,7 @@
                 <SettingName>hal.stderr</SettingName>
                 <Identifier>NONE</Identifier>
                 <Type>UnquotedString</Type>
-                <Value>jtaguart_1</Value>
+                <Value>none</Value>
                 <DefaultValue>none</DefaultValue>
                 <DestinationFile>system_h_define</DestinationFile>
                 <Description>Slave descriptor of STDERR character-mode device. This setting is used by the ALT_STDERR family of defines in system.h.</Description>
@@ -857,22 +857,22 @@
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>jtaguart_1</slaveDescriptor>
-                <addressRange>0x00101000 - 0x00101007</addressRange>
-                <addressSpan>8</addressSpan>
-                <attributes>printable</attributes>
-        </MemoryMap>
-        <MemoryMap>
                 <slaveDescriptor>shared_memory</slaveDescriptor>
-                <addressRange>0x08000000 - 0x08000FFF</addressRange>
+                <addressRange>0x08002000 - 0x08002FFF</addressRange>
                 <addressSpan>4096</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
                 <slaveDescriptor>shared_memory_mutex</slaveDescriptor>
-                <addressRange>0x080034B0 - 0x080034B7</addressRange>
+                <addressRange>0x08006830 - 0x08006837</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>jtaguart_0</slaveDescriptor>
+                <addressRange>0x08006838 - 0x0800683F</addressRange>
+                <addressSpan>8</addressSpan>
+                <attributes>printable</attributes>
         </MemoryMap>
         <LinkerSection>
                 <sectionName>.text</sectionName>

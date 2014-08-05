@@ -174,7 +174,6 @@ CXX_SRCS += ../shared_files/MemSharedArea.cpp
 CXX_SRCS += COMM_CarProtocol/CRemoteControlMessage.cpp
 CXX_SRCS += COMM_CarProtocol/CInfoStateMessage.cpp
 CXX_SRCS += COMM_CarProtocol/CInfoSensorMessage.cpp
-CXX_SRCS += COMM_CarProtocol/CVelocityMessage.cpp
 ASM_SRCS :=
 
 
