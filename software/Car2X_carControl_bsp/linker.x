@@ -4,7 +4,7 @@
  * Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/nios_system.sopcinfo
  *
- * Generated: Wed Jul 30 12:34:21 CEST 2014
+ * Generated: Tue Aug 05 17:42:25 CEST 2014
  */
 
 /*
@@ -51,7 +51,7 @@
 MEMORY
 {
     reset : ORIGIN = 0x80000, LENGTH = 32
-    onchip_memory2_0 : ORIGIN = 0x80020, LENGTH = 307168
+    onchip_memory2_0 : ORIGIN = 0x80020, LENGTH = 204768
     shared_memory : ORIGIN = 0x8002000, LENGTH = 4096
 }
 
@@ -385,7 +385,7 @@ SECTIONS
 /*
  * Don't override this, override the __alt_stack_* symbols instead.
  */
-__alt_data_end = 0xcb000;
+__alt_data_end = 0xb2000;
 
 /*
  * The next two symbols define the location of the default stack.  You can
@@ -401,4 +401,4 @@ PROVIDE( __alt_stack_limit   = __alt_stack_base );
  * Override this symbol to put the heap in a different memory.
  */
 PROVIDE( __alt_heap_start    = end );
-PROVIDE( __alt_heap_limit    = 0xcb000 );
+PROVIDE( __alt_heap_limit    = 0xb2000 );

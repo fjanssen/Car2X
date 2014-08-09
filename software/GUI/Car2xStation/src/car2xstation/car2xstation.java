@@ -11,6 +11,8 @@ import java.io.*;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,6 +25,7 @@ public class car2xstation extends javax.swing.JFrame {
     private static int counter=0;
     private static boolean waitforconf=false;
     public Runnable form;
+    public Runnable running;
     private static boolean[] pressed={false,false,false,false};                 //WASD
     
     
@@ -40,8 +43,8 @@ public class car2xstation extends javax.swing.JFrame {
             = new Character((char) 0).toString();
 
     // Connection state info
-    public static String hostIP = "10.10.100.105";
-    //public static String hostIP = "127.0.0.1";
+    //public static String hostIP = "10.10.100.105";
+    public static String hostIP = "127.0.0.1";
     public static int port = 23;
     public static String myIP0x="7F000001";
     public static int connectionStatus = DISCONNECTED;
@@ -51,7 +54,7 @@ public class car2xstation extends javax.swing.JFrame {
 
     // TCP Components
     public static Socket socket = null;
-    public static BufferedReader in = null;
+    public static InputStream in = null;
     public static DataOutputStream out = null;
     public int messageID;
     public int packageNumber = 1;
@@ -157,8 +160,73 @@ public class car2xstation extends javax.swing.JFrame {
                 // with the internal states
 
             }
-
         };
+            running=new Runnable(){
+            public void run(){
+            String s="";
+            String msg="";
+            String finalMsg="";
+            int msgStart=-1;
+            int headerLength=18;
+            int payloadLength=0;
+             // Receive data
+            while(true){
+            try {
+                if(in!=null){         
+                int inp=in.read();
+                System.out.println("inp: "+inp);
+                if(inp<0){
+                    //inp=
+                }
+                s=Integer.toHexString(inp);
+                    while(s.length()<2){
+                    s="0"+s;
+                }
+                System.out.printf("s: 0x"+s+"\n");
+                msg+=s;
+                }else{
+                    try { // Poll every ~10 ms
+                Thread.sleep(40);
+                } catch (InterruptedException e) {
+                }
+                }
+                } catch (IOException ex) {
+                Logger.getLogger(car2xstation.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (msg!=null&&msg.length()>7&&msgStart==-1) {
+                            System.out.printf("CARP recieved\n");
+                            msgStart=msg.indexOf("43415250");
+                            
+                }
+                if(msg!=null&&msgStart>=0&&(msg.length()-msgStart)==32){
+                    payloadLength=Integer.parseInt(msg.substring(msgStart+24, msgStart+32), 16);
+                    System.out.printf("header recieved. pl: %d\n",payloadLength);
+                }
+                if(msg!=null&&msgStart>=0&&msg.length()-msgStart>35+payloadLength*2){
+                    System.out.printf("complete msg recieved\n");
+                    finalMsg=msg.substring(msgStart, msgStart+36+payloadLength*2);
+                    msgStart=-1;
+                    payloadLength=0;
+                    msg="";
+                }
+                if(finalMsg.length()>0){
+                    System.out.printf("msg printed\n");
+                    String out="";
+                    for(int i=0;i<finalMsg.length();i++){
+                    if(i%2==0){
+                        out+="x"+finalMsg.charAt(i);
+                    }    else{
+                        out+=finalMsg.charAt(i);
+                    }
+                    }
+                    appendToChatBox("MSG: \n" + out + "\n");
+                    finalMsg="";
+                }
+            }
+        }
+        };
+
+        new Thread(running).start();
 
         initComponents();
         jComboBox1.removeAllItems();
@@ -187,6 +255,7 @@ public class car2xstation extends javax.swing.JFrame {
         jToggleButton2 = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(960, 540));
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
@@ -208,6 +277,7 @@ public class car2xstation extends javax.swing.JFrame {
             }
         });
 
+        jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
@@ -234,46 +304,39 @@ public class car2xstation extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jToggleButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(54, 54, 54))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jToggleButton2)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(12, 12, 12))
+                                .addComponent(jTextField1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(132, 132, 132)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(jToggleButton2)
+                                .addGap(0, 7, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(6, 6, 6))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jToggleButton2)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jToggleButton1)
-                        .addGap(60, 60, 60))))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jToggleButton1)
+                    .addComponent(jToggleButton2))
+                .addGap(7, 7, 7))
         );
 
         pack();
@@ -398,6 +461,7 @@ public class car2xstation extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jToggleButton2ActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
@@ -426,7 +490,7 @@ public class car2xstation extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        car2xstation station = new car2xstation();
+        final car2xstation station = new car2xstation();
         Runnable form = station.form;
         
         //key listeer stuff
@@ -481,19 +545,22 @@ public class car2xstation extends javax.swing.JFrame {
         });   
 
         String s;
-
+        
         while (true) {
             try { // Poll every ~10 ms
                 Thread.sleep(10);
             } catch (InterruptedException e) {
             }
 
+            //update incoming message window
+            station.jTextArea1.setText(toAppend.toString());
+            
             switch (connectionStatus) {
                 case BEGINCONNECT:
                     try {
                         // Try to connect
                         socket = new Socket(hostIP, port);
-                        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        in = socket.getInputStream();
                         out = new DataOutputStream(socket.getOutputStream());
                         changeStatusTS(CONNECTED, true, form);
                     } // If error, clean up and output an error message
@@ -528,10 +595,11 @@ public class car2xstation extends javax.swing.JFrame {
                         if (station.packageNumber > 65535) {
                         station.packageNumber = 1;
                         }
-                        }                       
+                        }    
                         
                         // Send data
                         if (toSendb) {
+                            System.out.println("sending...\n");
                             out.write(toSend);
                             out.flush();
                             toSendb=false;
@@ -539,21 +607,7 @@ public class car2xstation extends javax.swing.JFrame {
                             changeStatusTS(NULL, true, form);
                         }
 
-                        // Receive data
-                        if (in.ready()) {
-                            s = in.readLine();
-                            if ((s != null) && (s.length() != 0)) {
-                                // Check if it is the end of a trasmission
-                                if (s.equals(END_CHAT_SESSION)) {
-                                    changeStatusTS(DISCONNECTING, true, form);
-                                } // Otherwise, receive what text
-                                else {
-                                    appendToChatBox("INCOMING: " + s + "\n");
-                                    changeStatusTS(NULL, true, form);
-                                }
-                            }
-                        }
-                         
+                       
                         if(waitforconf){
                             //TODO: integrate confirmation of rc
                             if(counter>500)remoteMode=true;

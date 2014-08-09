@@ -5,6 +5,7 @@
 #include "MemController.h"
 #include "ErrHandler.h"
 #include <cstdlib>
+#include <string.h>
 
 void switchState(CarState state);
 
@@ -19,26 +20,8 @@ int main()
 
 	//initial state:
 	state = ctrl.getLastElement();
-	state.counterCarControl=0;
-	state.counterComm=0;
-	state.currMode=OPMODE_IDLE;
-	state.iMaxSpeed=0;
-	state.ip1=0;
-	state.ip2=0;
-	state.ip3=0;
-	state.ip4=0;
-	state.reqMode=OPMODE_IDLE;
-	state.reqVelocity={0};
-	state.reqip1=0;
-	state.reqip2=0;
-	state.reqip3=0;
-	state.reqip4=0;
-	state.usSensors[0]={0};
-	state.usSensors[1]={0};
-	state.motorEcus[0]={0};
-	state.motorEcus[1]={0};
-	state.motorEcus[2]={0};
-	state.motorEcus[3]={0};
+	memset(&state,0,sizeof(state));
+
 	ctrl.pushElement(state);
 
 	while(1)
@@ -58,8 +41,21 @@ int main()
 			switchState(state);
 		}
 		state.counterCarControl=state.counterComm;
+
 		setMotorSpeeds(state);
 
+		if(state.currMode==OPMODE_MANUDRIVE){
+			state.ip1=state.reqip1;
+			state.ip2=state.reqip2;
+			state.ip3=state.reqip3;
+			state.ip4=state.reqip4;
+		}
+		else{
+			state.ip1=VCIPPart1;
+			state.ip2=VCIPPart2;
+			state.ip3=VCIPPart3;
+			state.ip4=VCIPPart4;
+		}
 		ctrl.pushElement(state);
 
 		// TODO: write a delay function w/ timer. Otherwise we might run into problems blocking the mutex from all the shared memory reads...

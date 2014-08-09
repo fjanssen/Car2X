@@ -86,7 +86,7 @@ typedef struct SSS_SOCKET
 } SSSConn;
 
 typedef struct currEmReqAnswer{
-	int stateVersion;
+	alt_u32 stateVersion;
 	int fd;
 	alt_u16 msgID;
 };

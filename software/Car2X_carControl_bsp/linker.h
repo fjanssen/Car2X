@@ -4,7 +4,7 @@
  * Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/nios_system.sopcinfo
  *
- * Generated: Wed Jul 30 12:34:21 CEST 2014
+ * Generated: Tue Aug 05 17:42:25 CEST 2014
  */
 
 /*
@@ -66,7 +66,7 @@
  */
 
 #define ONCHIP_MEMORY2_0_REGION_BASE 0x80020
-#define ONCHIP_MEMORY2_0_REGION_SPAN 307168
+#define ONCHIP_MEMORY2_0_REGION_SPAN 204768
 #define RESET_REGION_BASE 0x80000
 #define RESET_REGION_SPAN 32
 #define SHARED_MEMORY_REGION_BASE 0x8002000

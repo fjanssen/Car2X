@@ -4,9 +4,11 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/HS/Documents/NetBeansProjects/Car2xStation/src/car2xstation/sendingUnit.java</file>
+            <file>file:/C:/Users/HS/Documents/NetBeansProjects/Car2xStation/src/car2xstation/COMM_CarProtocol/headers/CarProtocol.h</file>
             <file>file:/C:/Users/HS/Documents/NetBeansProjects/Car2xStation/src/car2xstation/Messages.java</file>
             <file>file:/C:/Users/HS/Documents/NetBeansProjects/Car2xStation/src/car2xstation/car2xstation.java</file>
             <file>file:/C:/Users/HS/Documents/NetBeansProjects/Car2xStation/src/car2xstation/ubyte.java</file>
+            <file>file:/C:/Users/HS/Documents/NetBeansProjects/Car2xStation/src/car2xstation/COMM_CarProtocol/headers/CControlMessage.h</file>
         </group>
     </open-files>
 </project-private>

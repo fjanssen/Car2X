@@ -3,7 +3,7 @@
 # Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
 # SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/nios_system.sopcinfo
 #
-# Generated: Wed Jul 30 12:34:21 CEST 2014
+# Generated: Tue Aug 05 17:42:25 CEST 2014
 
 # DO NOT MODIFY THIS FILE
 #
@@ -47,7 +47,7 @@
 # by allowing GDB to cache memory contents on the host.
 
 # onchip_memory2_0
-memory 0x80000 0xcb000 cache
+memory 0x80000 0xb2000 cache
 
 # shared_memory
 memory 0x8002000 0x8003000 cache

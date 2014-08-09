@@ -175,7 +175,7 @@ public:
 		}
 
 
-		if(m_memArea_p->index_u32 - negIndex < 0)
+		if(m_memArea_p->index_u32 - negIndex >= 0)
 		{
 			index = m_memArea_p->index_u32 - negIndex;
 		}

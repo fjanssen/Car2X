@@ -197,7 +197,6 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 					(CMotorVelocityMessage *) currentMessage;
 			LOG_DEBUG("Setting motor ctrl [%d] velocity to %d",
 					motorVelocityMessage->getSubType(), motorVelocityMessage->getIDesiredSpeed());
-			// TODO: actually generate an answer
 			//char answer[] = {'C', 'A', 'R', 'R', 0x0, 0x0, 0x0, 0x0, 0x04, 0x0, 0x0, 0x0, motorVelocityMessage->getIDesiredSpeed()};
 			// send(conn->fd, answer, 14, 0);
 			break;
@@ -334,18 +333,11 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 					(CControlMessage *) currentMessage;
 			//check if control is allowed
 			state.counterComm++;
-			if(state.currMode!=OPMODE_MANUDRIVE||(state.ip1!=conn->ip1||state.ip2!=conn->ip2||state.ip3!=conn->ip3||state.ip4!=conn->ip4)){
+			if((state.ip1!=conn->ip1||state.ip2!=conn->ip2||state.ip3!=conn->ip3||state.ip4!=conn->ip4)){
 				LOG_DEBUG("Control Msg failed because control not allowed!");
-				if(state.currMode==OPMODE_MANUDRIVE){
 				LOG_DEBUG("locked IP is: %d, %d, %d, %d current IP is: %d, %d, %d, %d",
 									state.ip1, state.ip2, state.ip3, state.ip4,conn->ip1,conn->ip2,conn->ip3,conn->ip4);
-				}
-				else{
-				LOG_DEBUG("mode not MANUDRIVE");
-				LOG_DEBUG("locked IP is: %d, %d, %d, %d current IP is: %d, %d, %d, %d",
-													state.ip1, state.ip2, state.ip3, state.ip4,conn->ip1,conn->ip2,conn->ip3,conn->ip4);
 
-				}
 
 				//control not allowed-->send fail msg
 				int payloadLength = sizeof(alt_u16)+4*sizeof(alt_u8);
@@ -550,7 +542,6 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 				offset += sizeof(cERA->msgID);
 
 				//send msg
-				LOG_DEBUG("answerLength: %d",answerLength);
 				send(cERA->fd, answer, answerLength, 0);
 				free(answer);
 			}
@@ -565,7 +556,8 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 			//TODO: add ip attributes
 			int payloadLength = sizeof(state.currMode) + sizeof(state.iMaxSpeed)
 					+ sizeof(state.motorEcus[0]) + sizeof(state.motorEcus[1])
-					+ sizeof(state.motorEcus[2]) + sizeof(state.motorEcus[3]);
+					+ sizeof(state.motorEcus[2]) + sizeof(state.motorEcus[3])+8*sizeof(state.ip1);
+			LOG_DEBUG("pl: %i",payloadLength);
 			//'CARP'+ID{SVControl+SVComm}+payloadLenght(type+mode+velocities)+Type{'A' for acknowledgement + C2X_MSGID_INFO_STATE}+payload{currentMode+iMaxSpeed+4xmotorECUs}
 			int answerLength = 4 + sizeof(state.counterCarControl)
 					+ sizeof(state.counterComm) + sizeof(payloadLength) + 1
@@ -637,6 +629,54 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 			swapEndianess((alt_u8*) (answer + offset),
 					(alt_u32) sizeof(state.motorEcus[3]));
 			offset += sizeof(state.motorEcus[3]);
+			//1st ip
+			memcpy(answer + offset, &state.ip1,
+					sizeof(state.ip1));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.ip1));
+			offset += sizeof(state.ip1);
+			//2nd ip
+			memcpy(answer + offset, &state.ip2,
+					sizeof(state.ip2));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.ip2));
+			offset += sizeof(state.ip2);
+			//3rd ip
+			memcpy(answer + offset, &state.ip3,
+					sizeof(state.ip3));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.ip3));
+			offset += sizeof(state.ip3);
+			//4th ip
+			memcpy(answer + offset, &state.ip4,
+					sizeof(state.ip4));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.ip4));
+			offset += sizeof(state.ip4);
+			//1st reqip
+			memcpy(answer + offset, &state.reqip1,
+					sizeof(state.reqip1));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.reqip1));
+			offset += sizeof(state.reqip1);
+			//2nd reqip
+			memcpy(answer + offset, &state.reqip2,
+					sizeof(state.reqip2));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.reqip2));
+			offset += sizeof(state.reqip2);
+			//3rd reqip
+			memcpy(answer + offset, &state.reqip3,
+					sizeof(state.reqip3));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.reqip3));
+			offset += sizeof(state.reqip3);
+			//4th reqip
+			memcpy(answer + offset, &state.reqip4,
+					sizeof(state.reqip4));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.reqip4));
+			offset += sizeof(state.reqip4);
 
 			//test print:
 			/*printf("Info State answer %i: ",answerLength);
@@ -951,10 +991,234 @@ void SSSSimpleSocketServerTask() {
 		FD_ZERO(&readfds);
 		FD_SET(fd_listen, &readfds);
 		max_socket = fd_listen + 1;
-		//processAnswerMessages();
 
-//        LOG_DEBUG("conns: %i",conns.size());
+		//processAnswerMessages
+		MemController<CarState> sharedMem;
+		CarState state;
+		sharedMem = MemController<CarState>();
+		state = sharedMem.getLastElement(false);
 
+		//emergency
+		if(cERA.stateVersion>0&&cERA.stateVersion<=state.counterCarControl){
+			//answer msg
+			int payloadLength = sizeof(alt_u16);
+			int answerLength = 4 + sizeof(state.counterCarControl)
+					+ sizeof(state.counterComm) + sizeof(payloadLength) + 1
+					+ sizeof((alt_u8) C2X_MSGID_EMERGENCY_BRAKE)
+					+ payloadLength;
+			int offset = 4;
+
+			//Allocate memory for the answer char array
+			char* answer = (char*) malloc(answerLength);
+			answer[0] = 'C';
+			answer[1] = 'A';
+			answer[2] = 'R';
+			answer[3] = 'P';
+			//controlcore state counter
+			memcpy(answer + offset, &state.counterCarControl,
+					sizeof(state.counterCarControl));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.counterCarControl));
+			offset += sizeof(state.counterCarControl);
+			//commcore state counter
+			memcpy(answer + offset, &state.counterComm,
+					sizeof(state.counterComm));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.counterComm));
+			offset += sizeof(state.counterComm);
+			//payloadlength
+			memcpy(answer + offset, &payloadLength, sizeof(payloadLength));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(payloadLength));
+			offset += sizeof(payloadLength);
+			//type def
+			if(state.currMode==OPMODE_EMERGENCYSTOP){
+			answer[offset++] = 'A';						//success
+			LOG_DEBUG("EmergencyBraking successful!");
+			}
+			else{
+			answer[offset++] = 'F';						//fail
+			LOG_DEBUG("EmergencyBraking failed!");
+			}
+			answer[offset++] = (alt_u8) C2X_MSGID_EMERGENCY_BRAKE;
+			//packetID
+			memcpy(answer + offset, &cERA.msgID, sizeof(cERA.msgID));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(cERA.msgID));
+			offset += sizeof(cERA.msgID);
+
+			//send msg
+			send(cERA.fd, answer, answerLength, 0);
+			free(answer);
+			//set cERA back to zero
+			cERA.fd = 0;
+			cERA.stateVersion = 0;
+			cERA.msgID = 0;
+		}
+
+		//remoteControl
+		if(cRCA.stateVersion>0&&cRCA.stateVersion<=state.counterCarControl){
+			//answer msg
+			int payloadLength = sizeof(alt_u16)+4*sizeof(state.ip1);
+			int answerLength = 4 + sizeof(state.counterCarControl)
+					+ sizeof(state.counterComm) + sizeof(payloadLength) + 1
+					+ sizeof((alt_u8) C2X_MSGID_REMOTE_CONTROL)
+					+ payloadLength;
+			int offset = 4;
+
+			//Allocate memory for the answer char array
+			char* answer = (char*) malloc(answerLength);
+			answer[0] = 'C';
+			answer[1] = 'A';
+			answer[2] = 'R';
+			answer[3] = 'P';
+			//controlcore state counter
+			memcpy(answer + offset, &state.counterCarControl,
+					sizeof(state.counterCarControl));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.counterCarControl));
+			offset += sizeof(state.counterCarControl);
+			//commcore state counter
+			memcpy(answer + offset, &state.counterComm,
+					sizeof(state.counterComm));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.counterComm));
+			offset += sizeof(state.counterComm);
+			//payloadlength
+			memcpy(answer + offset, &payloadLength, sizeof(payloadLength));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(payloadLength));
+			offset += sizeof(payloadLength);
+			//type def
+			if((state.ip1==cRCA.ip1&&state.ip2==cRCA.ip2&&state.ip3==cRCA.ip3&&state.ip4==cRCA.ip4)||(cRCA.ip1==0&&cRCA.ip2==0&&cRCA.ip3==0&&cRCA.ip4==0&&state.ip1==VCIPPart1&&state.ip2==VCIPPart2&&state.ip3==VCIPPart3&&state.ip4==VCIPPart4)){
+				answer[offset++] = 'A';													//success
+				LOG_DEBUG("RemoteControlling successful!");
+			}else{
+				answer[offset++] = 'F';												//fail
+				LOG_DEBUG("RemoteControlling failed!");
+			}
+			answer[offset++] = (alt_u8) C2X_MSGID_REMOTE_CONTROL;
+			//packetID
+			memcpy(answer + offset, &cRCA.msgID, sizeof(cRCA.msgID));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(cRCA.msgID));
+			offset += sizeof(cRCA.msgID);
+			//ip1
+			memcpy(answer + offset, &state.ip1, sizeof(state.ip1));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.ip1));
+			offset += sizeof(state.ip1);
+			//ip2
+			memcpy(answer + offset, &state.ip2, sizeof(state.ip2));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.ip2));
+			offset += sizeof(state.ip2);
+			//ip3
+			memcpy(answer + offset, &state.ip3, sizeof(state.ip3));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.ip3));
+			offset += sizeof(state.ip3);
+			//ip4
+			memcpy(answer + offset, &state.ip4, sizeof(state.ip4));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.ip4));
+			offset += sizeof(state.ip4);
+
+			//send msg
+			send(cRCA.fd, answer, answerLength, 0);
+			free(answer);
+
+			//set cRCA back to zero
+			cRCA.fd = 0;
+			cRCA.stateVersion = 0;
+			cRCA.msgID = 0;
+			cRCA.ip1=0;
+			cRCA.ip2=0;
+			cRCA.ip3=0;
+			cRCA.ip4=0;
+		}
+
+		//control msg
+		if(cCCA.stateVersion>0&&cCCA.stateVersion<=state.counterCarControl){
+			//answer msg
+			int payloadLength = sizeof(alt_u16)+4*sizeof(alt_u8);
+			int answerLength = 4 + sizeof(state.counterCarControl)
+					+ sizeof(state.counterComm) + sizeof(payloadLength) + 1
+					+ sizeof((alt_u8) C2X_MSGID_CONTROL)
+					+ payloadLength;
+			int offset = 4;
+
+			//Allocate memory for the answer char array
+			char* answer = (char*) malloc(answerLength);
+			answer[0] = 'C';
+			answer[1] = 'A';
+			answer[2] = 'R';
+			answer[3] = 'P';
+			//controlcore state counter
+			memcpy(answer + offset, &state.counterCarControl,
+					sizeof(state.counterCarControl));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.counterCarControl));
+			offset += sizeof(state.counterCarControl);
+			//commcore state counter
+			memcpy(answer + offset, &state.counterComm,
+					sizeof(state.counterComm));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.counterComm));
+			offset += sizeof(state.counterComm);
+			//payloadlength
+			memcpy(answer + offset, &payloadLength, sizeof(payloadLength));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(payloadLength));
+			offset += sizeof(payloadLength);
+			//type def
+			if(cCCA.v1==state.motorEcus[0].iDesiredSpeed&&cCCA.v2==state.motorEcus[1].iDesiredSpeed&&cCCA.v3==state.motorEcus[2].iDesiredSpeed&&cCCA.v4==state.motorEcus[3].iDesiredSpeed){
+				answer[offset++] = 'A';													//success
+			}
+			else{
+				answer[offset++] = 'F';													//fail
+			}
+
+			answer[offset++] = (alt_u8) C2X_MSGID_CONTROL;
+			//packetID
+			memcpy(answer + offset, &cCCA.msgID, sizeof(cCCA.msgID));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(cCCA.msgID));
+			offset += sizeof(cCCA.msgID);
+			//v1
+			memcpy(answer + offset, &state.motorEcus[0].iCurrentSpeed, sizeof(state.motorEcus[0].iCurrentSpeed));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.motorEcus[0].iCurrentSpeed));
+			offset += sizeof(state.motorEcus[0].iCurrentSpeed);
+			//v2
+			memcpy(answer + offset, &state.motorEcus[1].iCurrentSpeed, sizeof(state.motorEcus[1].iCurrentSpeed));
+			swapEndianess((alt_u8*) (answer + offset),
+						(alt_u32) sizeof(state.motorEcus[1].iCurrentSpeed));
+			offset += sizeof(state.motorEcus[1].iCurrentSpeed);
+			//v3
+			memcpy(answer + offset, &state.motorEcus[2].iCurrentSpeed, sizeof(state.motorEcus[2].iCurrentSpeed));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.motorEcus[2].iCurrentSpeed));
+			offset += sizeof(state.motorEcus[2].iCurrentSpeed);
+			//v4
+			memcpy(answer + offset, &state.motorEcus[3].iCurrentSpeed, sizeof(state.motorEcus[3].iCurrentSpeed));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.motorEcus[3].iCurrentSpeed));
+			offset += sizeof(state.motorEcus[3].iCurrentSpeed);
+
+			//send msg
+			send(cCCA.fd, answer, answerLength, 0);
+			free(answer);
+
+			//set cCCA back to zero
+			cCCA.fd = 0;
+			cCCA.stateVersion = 0;
+			cCCA.msgID = 0;
+			cCCA.v1=0;
+			cCCA.v2=0;
+			cCCA.v3=0;
+			cCCA.v4=0;
+		}
 		//check for each connection if its valid => set it
 		for (unsigned int i = 0; i < conns.size(); i++) {
 			//check if a connection should be closed here, close it and delete it from vector
@@ -985,10 +1249,6 @@ void SSSSimpleSocketServerTask() {
 			sss_reset_connection(new_conn);
 			sss_handle_accept(fd_listen, new_conn);
 			conns.push_back(new_conn);
-			//(conns[0]).rx_wr_pos = (conns[0]).rx_buffer;			//#TODO needs fixing, changes rx_buffer
-			LOG_DEBUG("[PUSH] wr_pos = %i    rx_buffer = %i",
-					(conns[0])->rx_wr_pos, (conns[0])->rx_buffer);
-
 		}
 		/*
 		 * If sss_handle_accept() accepts the connection, it creates *another*

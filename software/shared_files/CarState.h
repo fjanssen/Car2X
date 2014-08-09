@@ -21,6 +21,12 @@
 #define OPMODE_MANUDRIVE_MAXSPEED     (400u)
 #define OPMODE_EMERGENCYSTOP_MAXSPEED (0u)
 
+//camera ip
+#define VCIPPart1 10
+#define VCIPPart2 10
+#define VCIPPart3 100
+#define VCIPPart4 110
+
 
 enum OpMode {
 	OPMODE_IDLE,
