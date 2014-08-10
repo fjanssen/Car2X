@@ -379,25 +379,25 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 						(alt_u32) sizeof(cCCA->msgID));
 				offset += sizeof(cCCA->msgID);
 				//v1
-				memcpy(answer + offset, &state.motorEcus[0].iCurrentSpeed, sizeof(state.motorEcus[0].iCurrentSpeed));
+				memcpy(answer + offset, &state.motorEcus[0].iDesiredSpeed, sizeof(state.motorEcus[0].iDesiredSpeed));
 				swapEndianess((alt_u8*) (answer + offset),
-						(alt_u32) sizeof(state.motorEcus[0].iCurrentSpeed));
-				offset += sizeof(state.motorEcus[0].iCurrentSpeed);
+						(alt_u32) sizeof(state.motorEcus[0].iDesiredSpeed));
+				offset += sizeof(state.motorEcus[0].iDesiredSpeed);
 				//v2
-				memcpy(answer + offset, &state.motorEcus[1].iCurrentSpeed, sizeof(state.motorEcus[1].iCurrentSpeed));
+				memcpy(answer + offset, &state.motorEcus[1].iDesiredSpeed, sizeof(state.motorEcus[1].iDesiredSpeed));
 				swapEndianess((alt_u8*) (answer + offset),
-							(alt_u32) sizeof(state.motorEcus[1].iCurrentSpeed));
-				offset += sizeof(state.motorEcus[1].iCurrentSpeed);
+							(alt_u32) sizeof(state.motorEcus[1].iDesiredSpeed));
+				offset += sizeof(state.motorEcus[1].iDesiredSpeed);
 				//v3
-				memcpy(answer + offset, &state.motorEcus[2].iCurrentSpeed, sizeof(state.motorEcus[2].iCurrentSpeed));
+				memcpy(answer + offset, &state.motorEcus[2].iDesiredSpeed, sizeof(state.motorEcus[2].iDesiredSpeed));
 				swapEndianess((alt_u8*) (answer + offset),
-						(alt_u32) sizeof(state.motorEcus[2].iCurrentSpeed));
-				offset += sizeof(state.motorEcus[2].iCurrentSpeed);
+						(alt_u32) sizeof(state.motorEcus[2].iDesiredSpeed));
+				offset += sizeof(state.motorEcus[2].iDesiredSpeed);
 				//v4
-				memcpy(answer + offset, &state.motorEcus[3].iCurrentSpeed, sizeof(state.motorEcus[3].iCurrentSpeed));
+				memcpy(answer + offset, &state.motorEcus[3].iDesiredSpeed, sizeof(state.motorEcus[3].iDesiredSpeed));
 				swapEndianess((alt_u8*) (answer + offset),
-						(alt_u32) sizeof(state.motorEcus[3].iCurrentSpeed));
-				offset += sizeof(state.motorEcus[3].iCurrentSpeed);
+						(alt_u32) sizeof(state.motorEcus[3].iDesiredSpeed));
+				offset += sizeof(state.motorEcus[3].iDesiredSpeed);
 
 				//send msg
 				send(cCCA->fd, answer, answerLength, 0);
@@ -459,25 +459,25 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 						(alt_u32) sizeof(cCCA->msgID));
 				offset += sizeof(cCCA->msgID);
 				//v1
-				memcpy(answer + offset, &state.motorEcus[0].iCurrentSpeed, sizeof(state.motorEcus[0].iCurrentSpeed));
+				memcpy(answer + offset, &state.motorEcus[0].iDesiredSpeed, sizeof(state.motorEcus[0].iDesiredSpeed));
 				swapEndianess((alt_u8*) (answer + offset),
-						(alt_u32) sizeof(state.motorEcus[0].iCurrentSpeed));
-				offset += sizeof(state.motorEcus[0].iCurrentSpeed);
+						(alt_u32) sizeof(state.motorEcus[0].iDesiredSpeed));
+				offset += sizeof(state.motorEcus[0].iDesiredSpeed);
 				//v2
-				memcpy(answer + offset, &state.motorEcus[1].iCurrentSpeed, sizeof(state.motorEcus[1].iCurrentSpeed));
+				memcpy(answer + offset, &state.motorEcus[1].iDesiredSpeed, sizeof(state.motorEcus[1].iDesiredSpeed));
 				swapEndianess((alt_u8*) (answer + offset),
-							(alt_u32) sizeof(state.motorEcus[1].iCurrentSpeed));
-				offset += sizeof(state.motorEcus[1].iCurrentSpeed);
+							(alt_u32) sizeof(state.motorEcus[1].iDesiredSpeed));
+				offset += sizeof(state.motorEcus[1].iDesiredSpeed);
 				//v3
-				memcpy(answer + offset, &state.motorEcus[2].iCurrentSpeed, sizeof(state.motorEcus[2].iCurrentSpeed));
+				memcpy(answer + offset, &state.motorEcus[2].iDesiredSpeed, sizeof(state.motorEcus[2].iDesiredSpeed));
 				swapEndianess((alt_u8*) (answer + offset),
-						(alt_u32) sizeof(state.motorEcus[2].iCurrentSpeed));
-				offset += sizeof(state.motorEcus[2].iCurrentSpeed);
+						(alt_u32) sizeof(state.motorEcus[2].iDesiredSpeed));
+				offset += sizeof(state.motorEcus[2].iDesiredSpeed);
 				//v4
-				memcpy(answer + offset, &state.motorEcus[3].iCurrentSpeed, sizeof(state.motorEcus[3].iCurrentSpeed));
+				memcpy(answer + offset, &state.motorEcus[3].iDesiredSpeed, sizeof(state.motorEcus[3].iDesiredSpeed));
 				swapEndianess((alt_u8*) (answer + offset),
-						(alt_u32) sizeof(state.motorEcus[3].iCurrentSpeed));
-				offset += sizeof(state.motorEcus[3].iCurrentSpeed);
+						(alt_u32) sizeof(state.motorEcus[3].iDesiredSpeed));
+				offset += sizeof(state.motorEcus[3].iDesiredSpeed);
 
 				//send msg
 				send(cCCA->fd, answer, answerLength, 0);
@@ -553,12 +553,13 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 		}
 		case C2X_MSGID_INFO_STATE: {
 			//calculate some lengths...
-			//TODO: add ip attributes
+			//TODO:Test it!!!!
 			int payloadLength = sizeof(state.currMode) + sizeof(state.iMaxSpeed)
 					+ sizeof(state.motorEcus[0]) + sizeof(state.motorEcus[1])
-					+ sizeof(state.motorEcus[2]) + sizeof(state.motorEcus[3])+8*sizeof(state.ip1);
+					+ sizeof(state.motorEcus[2]) + sizeof(state.motorEcus[3])
+					+8*sizeof(state.ip1)+sizeof(state.reqMode+sizeof(state.reqVelocity));
 			LOG_DEBUG("pl: %i",payloadLength);
-			//'CARP'+ID{SVControl+SVComm}+payloadLenght(type+mode+velocities)+Type{'A' for acknowledgement + C2X_MSGID_INFO_STATE}+payload{currentMode+iMaxSpeed+4xmotorECUs}
+			//'CARP'+ID{SVControl+SVComm}+payloadLenght(type+mode+velocities)+Type{'A' for acknowledgement + C2X_MSGID_INFO_STATE}+payload{iMaxSpeed+4xIPs+4xreqIPs+currentMode+reqMode+4xmotorECUs+reqVelocity}
 			int answerLength = 4 + sizeof(state.counterCarControl)
 					+ sizeof(state.counterComm) + sizeof(payloadLength) + 1
 					+ sizeof((alt_u8) C2X_MSGID_INFO_STATE) + payloadLength;
@@ -595,40 +596,11 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 			//type def
 			answer[offset++] = 'A';
 			answer[offset++] = (alt_u8) C2X_MSGID_INFO_STATE;
-			//current mode
-			memcpy(answer + offset, &state.currMode, sizeof(state.currMode));
-			swapEndianess((alt_u8*) (answer + offset),
-					(alt_u32) sizeof(state.currMode));
-			offset += sizeof(state.currMode);
 			//iMaxSpeed
 			memcpy(answer + offset, &state.iMaxSpeed, sizeof(state.iMaxSpeed));
 			swapEndianess((alt_u8*) (answer + offset),
 					(alt_u32) sizeof(state.iMaxSpeed));
 			offset += sizeof(state.iMaxSpeed);
-			//1st ECU state
-			memcpy(answer + offset, &state.motorEcus[0],
-					sizeof(state.motorEcus[0]));
-			swapEndianess((alt_u8*) (answer + offset),
-					(alt_u32) sizeof(state.motorEcus[0]));
-			offset += sizeof(state.motorEcus[0]);
-			//2nd ECU state
-			memcpy(answer + offset, &state.motorEcus[1],
-					sizeof(state.motorEcus[1]));
-			swapEndianess((alt_u8*) (answer + offset),
-					(alt_u32) sizeof(state.motorEcus[1]));
-			offset += sizeof(state.motorEcus[1]);
-			//3rd ECU state
-			memcpy(answer + offset, &state.motorEcus[2],
-					sizeof(state.motorEcus[2]));
-			swapEndianess((alt_u8*) (answer + offset),
-					(alt_u32) sizeof(state.motorEcus[2]));
-			offset += sizeof(state.motorEcus[2]);
-			//4th ECU state
-			memcpy(answer + offset, &state.motorEcus[3],
-					sizeof(state.motorEcus[3]));
-			swapEndianess((alt_u8*) (answer + offset),
-					(alt_u32) sizeof(state.motorEcus[3]));
-			offset += sizeof(state.motorEcus[3]);
 			//1st ip
 			memcpy(answer + offset, &state.ip1,
 					sizeof(state.ip1));
@@ -677,14 +649,45 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 			swapEndianess((alt_u8*) (answer + offset),
 					(alt_u32) sizeof(state.reqip4));
 			offset += sizeof(state.reqip4);
-
-			//test print:
-			/*printf("Info State answer %i: ",answerLength);
-			 for (int i = 0; i < answerLength; i++) {
-			 printf("%02x ", answer[i]&0xFF);
-			 }
-			 printf("\n");
-			 */
+			//current mode
+			memcpy(answer + offset, &state.currMode, sizeof(state.currMode));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.currMode));
+			offset += sizeof(state.currMode);
+			//req mode
+			memcpy(answer + offset, &state.reqMode, sizeof(state.reqMode));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.reqMode));
+			offset += sizeof(state.reqMode);
+			//1st ECU state
+			memcpy(answer + offset, &state.motorEcus[0],
+					sizeof(state.motorEcus[0]));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.motorEcus[0]));
+			offset += sizeof(state.motorEcus[0]);
+			//2nd ECU state
+			memcpy(answer + offset, &state.motorEcus[1],
+					sizeof(state.motorEcus[1]));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.motorEcus[1]));
+			offset += sizeof(state.motorEcus[1]);
+			//3rd ECU state
+			memcpy(answer + offset, &state.motorEcus[2],
+					sizeof(state.motorEcus[2]));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.motorEcus[2]));
+			offset += sizeof(state.motorEcus[2]);
+			//4th ECU state
+			memcpy(answer + offset, &state.motorEcus[3],
+					sizeof(state.motorEcus[3]));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.motorEcus[3]));
+			offset += sizeof(state.motorEcus[3]);
+			//req velocity
+			memcpy(answer + offset, &state.reqVelocity, sizeof(state.reqVelocity));
+			swapEndianess((alt_u8*) (answer + offset),
+					(alt_u32) sizeof(state.reqVelocity));
+			offset += sizeof(state.reqVelocity);
 
 			//send message:
 			send(conn->fd, answer, answerLength, 0);
@@ -1186,25 +1189,25 @@ void SSSSimpleSocketServerTask() {
 					(alt_u32) sizeof(cCCA.msgID));
 			offset += sizeof(cCCA.msgID);
 			//v1
-			memcpy(answer + offset, &state.motorEcus[0].iCurrentSpeed, sizeof(state.motorEcus[0].iCurrentSpeed));
+			memcpy(answer + offset, &state.motorEcus[0].iDesiredSpeed, sizeof(state.motorEcus[0].iDesiredSpeed));
 			swapEndianess((alt_u8*) (answer + offset),
-					(alt_u32) sizeof(state.motorEcus[0].iCurrentSpeed));
-			offset += sizeof(state.motorEcus[0].iCurrentSpeed);
+					(alt_u32) sizeof(state.motorEcus[0].iDesiredSpeed));
+			offset += sizeof(state.motorEcus[0].iDesiredSpeed);
 			//v2
-			memcpy(answer + offset, &state.motorEcus[1].iCurrentSpeed, sizeof(state.motorEcus[1].iCurrentSpeed));
+			memcpy(answer + offset, &state.motorEcus[1].iDesiredSpeed, sizeof(state.motorEcus[1].iDesiredSpeed));
 			swapEndianess((alt_u8*) (answer + offset),
-						(alt_u32) sizeof(state.motorEcus[1].iCurrentSpeed));
-			offset += sizeof(state.motorEcus[1].iCurrentSpeed);
+						(alt_u32) sizeof(state.motorEcus[1].iDesiredSpeed));
+			offset += sizeof(state.motorEcus[1].iDesiredSpeed);
 			//v3
-			memcpy(answer + offset, &state.motorEcus[2].iCurrentSpeed, sizeof(state.motorEcus[2].iCurrentSpeed));
+			memcpy(answer + offset, &state.motorEcus[2].iDesiredSpeed, sizeof(state.motorEcus[2].iDesiredSpeed));
 			swapEndianess((alt_u8*) (answer + offset),
-					(alt_u32) sizeof(state.motorEcus[2].iCurrentSpeed));
-			offset += sizeof(state.motorEcus[2].iCurrentSpeed);
+					(alt_u32) sizeof(state.motorEcus[2].iDesiredSpeed));
+			offset += sizeof(state.motorEcus[2].iDesiredSpeed);
 			//v4
-			memcpy(answer + offset, &state.motorEcus[3].iCurrentSpeed, sizeof(state.motorEcus[3].iCurrentSpeed));
+			memcpy(answer + offset, &state.motorEcus[3].iDesiredSpeed, sizeof(state.motorEcus[3].iDesiredSpeed));
 			swapEndianess((alt_u8*) (answer + offset),
-					(alt_u32) sizeof(state.motorEcus[3].iCurrentSpeed));
-			offset += sizeof(state.motorEcus[3].iCurrentSpeed);
+					(alt_u32) sizeof(state.motorEcus[3].iDesiredSpeed));
+			offset += sizeof(state.motorEcus[3].iDesiredSpeed);
 
 			//send msg
 			send(cCCA.fd, answer, answerLength, 0);
