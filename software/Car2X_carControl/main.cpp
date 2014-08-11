@@ -7,9 +7,9 @@
 #include <cstdlib>
 #include <string.h>
 
-void switchState(CarState state);
+void switchState(CarState * state);
 
-void setMotorSpeeds(CarState state);
+void setMotorSpeeds(CarState * state);
 
 
 int main()
@@ -38,11 +38,11 @@ int main()
 		// perform state switch if requested.
 		if(state.reqMode != state.currMode)
 		{
-			switchState(state);
+			switchState(&state);
 		}
 		state.counterCarControl=state.counterComm;
 
-		setMotorSpeeds(state);
+		setMotorSpeeds(&state);
 
 		if(state.currMode==OPMODE_MANUDRIVE){
 			state.ip1=state.reqip1;
@@ -66,78 +66,78 @@ int main()
 }
 
 
-void switchState(CarState state)
+void switchState(CarState * state)
 {
-	LOG_DEBUG("Switching operating mode: %d -> %d", state.currMode, state.reqMode);
+	LOG_DEBUG("Switching operating mode: %d -> %d", state->currMode, state->reqMode);
 
-	switch(state.reqMode)
+	switch(state->reqMode)
 	{
 	case OPMODE_IDLE:
 	{
-		state.iMaxSpeed = OPMODE_IDLE_MAXSPEED;
+		state->iMaxSpeed = OPMODE_IDLE_MAXSPEED;
 		break;
 	}
 	case OPMODE_EMERGENCYSTOP:
 	{
-		state.iMaxSpeed = OPMODE_EMERGENCYSTOP_MAXSPEED;
+		state->iMaxSpeed = OPMODE_EMERGENCYSTOP_MAXSPEED;
 		break;
 	}
 	case OPMODE_AUTODRIVE:
 	{
-		state.iMaxSpeed = OPMODE_AUTODRIVE_MAXSPEED;
+		state->iMaxSpeed = OPMODE_AUTODRIVE_MAXSPEED;
 		break;
 	}
 	case OPMODE_MANUDRIVE:
 	{
-		state.iMaxSpeed = OPMODE_MANUDRIVE_MAXSPEED;
+		state->iMaxSpeed = OPMODE_MANUDRIVE_MAXSPEED;
 		break;
 	}
 	default:
 	{
-		LOG_ERROR(ERR_CARCTRL_INVALID_MODE, "Requested opMode: %d", state.reqMode);
+		LOG_ERROR(ERR_CARCTRL_INVALID_MODE, "Requested opMode: %d", state->reqMode);
 		break;
 	}
 	}
 
-	state.currMode = state.reqMode;
+	state->currMode = state->reqMode;
 }
 
 
-void setMotorSpeeds(CarState state)
+void setMotorSpeeds(CarState * state)
 {
 	int iCurrVel, iReqVel;
 	float fVelFactor;
 
 	// Log current state:
-	iCurrVel = (state.motorEcus[0].iCurrentSpeed
-			+ state.motorEcus[1].iCurrentSpeed
-			+ state.motorEcus[2].iCurrentSpeed
-			+ state.motorEcus[3].iCurrentSpeed) / 4;
+	iCurrVel = (state.motorEcus[0]->iCurrentSpeed
+			+ state.motorEcus[1]->iCurrentSpeed
+			+ state.motorEcus[2]->iCurrentSpeed
+			+ state.motorEcus[3]->iCurrentSpeed) / 4;
 
 	LOG_DEBUG("Current velocity: %+5d, FL: %+3d, FR: %+3d, RL: %+3d, RR: %+3d",
-			iCurrVel, state.motorEcus[0].iCurrentSpeed, state.motorEcus[1].iCurrentSpeed,
-			state.motorEcus[2].iCurrentSpeed, state.motorEcus[3].iCurrentSpeed);
+			iCurrVel, state->motorEcus[0].iCurrentSpeed, state->motorEcus[1].iCurrentSpeed,
+			state->motorEcus[2].iCurrentSpeed, state->motorEcus[3].iCurrentSpeed);
 
 	// Calculate individual wheel speeds
-	iReqVel = (state.reqVelocity.iFrontLeft
-			+ state.reqVelocity.iFrontRight
-			+ state.reqVelocity.iRearLeft
-			+ state.reqVelocity.iRearRight) / 4;
+	iReqVel = (state->reqVelocity.iFrontLeft
+			+ state->reqVelocity.iFrontRight
+			+ state->reqVelocity.iRearLeft
+			+ state->reqVelocity.iRearRight) / 4;
 
 	LOG_DEBUG("Request velocity: %+5d, FL: %+3d, FR: %+3d, RL: %+3d, RR: %+3d",
-			iReqVel, state.reqVelocity.iFrontLeft, state.reqVelocity.iFrontRight,
-			state.reqVelocity.iRearLeft, state.reqVelocity.iRearLeft);
+			iReqVel, state->reqVelocity.iFrontLeft, state->reqVelocity.iFrontRight,
+			state->reqVelocity.iRearLeft, state->reqVelocity.iRearLeft);
 
-	fVelFactor = abs(iReqVel) > abs(state.iMaxSpeed) ? (float) (state.iMaxSpeed) / (float) iReqVel : 1.0f;
+	fVelFactor = abs(iReqVel) > abs(state->iMaxSpeed) ? (float) (state->iMaxSpeed) / (float) iReqVel : 1.0f;
 
 	LOG_DEBUG("Request velocity too high. OpMode: %d, MaxVel: %d, VelFactor: %f",
-			(int) state.currMode, (int) state.iMaxSpeed, fVelFactor);
+			(int) state->currMode, (int) state->iMaxSpeed, fVelFactor);
 
 	// Update state:
-	state.motorEcus[0].iDesiredSpeed = (alt_16) (state.reqVelocity.iFrontLeft  * fVelFactor);
-	state.motorEcus[1].iDesiredSpeed = (alt_16) (state.reqVelocity.iFrontRight * fVelFactor);
-	state.motorEcus[2].iDesiredSpeed = (alt_16) (state.reqVelocity.iRearLeft   * fVelFactor);
-	state.motorEcus[3].iDesiredSpeed = (alt_16) (state.reqVelocity.iRearLeft   * fVelFactor);
+	state->motorEcus[0].iDesiredSpeed = (alt_16) (state->reqVelocity.iFrontLeft  * fVelFactor);
+	state->motorEcus[1].iDesiredSpeed = (alt_16) (state->reqVelocity.iFrontRight * fVelFactor);
+	state->motorEcus[2].iDesiredSpeed = (alt_16) (state->reqVelocity.iRearLeft   * fVelFactor);
+	state->motorEcus[3].iDesiredSpeed = (alt_16) (state->reqVelocity.iRearLeft   * fVelFactor);
 
 	// TODO: disregarding ultrasound sensor for now... sort out the many inclusions of comm stuff in CUltrasoundSensorState
 
