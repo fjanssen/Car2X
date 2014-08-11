@@ -106,7 +106,7 @@ void switchState(CarState * state)
 void setMotorSpeeds(CarState * state)
 {
 	int iCurrVel, iReqVel;
-	float fVelFactor;
+	alt_u16 fVelFactor; // fixed comma integer, with resolution of 0.01
 
 	// Log current state:
 	iCurrVel = (state.motorEcus[0]->iCurrentSpeed
@@ -126,18 +126,24 @@ void setMotorSpeeds(CarState * state)
 
 	LOG_DEBUG("Request velocity: %+5d, FL: %+3d, FR: %+3d, RL: %+3d, RR: %+3d",
 			iReqVel, state->reqVelocity.iFrontLeft, state->reqVelocity.iFrontRight,
-			state->reqVelocity.iRearLeft, state->reqVelocity.iRearLeft);
+			state->reqVelocity.iRearLeft, state->reqVelocity.iRearRight);
 
-	fVelFactor = abs(iReqVel) > abs(state->iMaxSpeed) ? (float) (state->iMaxSpeed) / (float) iReqVel : 1.0f;
-
-	LOG_DEBUG("Request velocity too high. OpMode: %d, MaxVel: %d, VelFactor: %f",
+	if(abs(iReqVel) > abs(state->iMaxSpeed))
+	{
+		fVelFactor = state->iMaxSpeed * 100 / iReqVel;
+		LOG_DEBUG("Request velocity too high. OpMode: %d, MaxVel: %d, VelFactor: %f",
 			(int) state->currMode, (int) state->iMaxSpeed, fVelFactor);
+	}
+	else
+	{
+		fVelFactor = 100;
+	}
 
 	// Update state:
-	state->motorEcus[0].iDesiredSpeed = (alt_16) (state->reqVelocity.iFrontLeft  * fVelFactor);
-	state->motorEcus[1].iDesiredSpeed = (alt_16) (state->reqVelocity.iFrontRight * fVelFactor);
-	state->motorEcus[2].iDesiredSpeed = (alt_16) (state->reqVelocity.iRearLeft   * fVelFactor);
-	state->motorEcus[3].iDesiredSpeed = (alt_16) (state->reqVelocity.iRearLeft   * fVelFactor);
+	state->motorEcus[0].iDesiredSpeed = (alt_16) (state->reqVelocity.iFrontLeft  * fVelFactor / 100);
+	state->motorEcus[1].iDesiredSpeed = (alt_16) (state->reqVelocity.iFrontRight * fVelFactor / 100);
+	state->motorEcus[2].iDesiredSpeed = (alt_16) (state->reqVelocity.iRearLeft   * fVelFactor / 100);
+	state->motorEcus[3].iDesiredSpeed = (alt_16) (state->reqVelocity.iRearRight  * fVelFactor / 100);
 
 	// TODO: disregarding ultrasound sensor for now... sort out the many inclusions of comm stuff in CUltrasoundSensorState
 
