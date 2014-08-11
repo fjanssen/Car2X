@@ -123,15 +123,15 @@ void sss_handle_accept(int listen_socket, SSSConn* conn) {
 
 			if (strcmp(str_ip_addr, IP_WHEEL_LF))
 				conn->client_type = SSSConn::WHEEL_LF;
-			else if (strcmp(str_ip_addr, IP_WHEEL_LF))
+			else if (strcmp(str_ip_addr, IP_WHEEL_LB))
 				conn->client_type = SSSConn::WHEEL_LB;
-			else if (strcmp(str_ip_addr, IP_WHEEL_LF))
+			else if (strcmp(str_ip_addr, IP_WHEEL_RF))
 				conn->client_type = SSSConn::WHEEL_RF;
-			else if (strcmp(str_ip_addr, IP_WHEEL_LF))
+			else if (strcmp(str_ip_addr, IP_WHEEL_RB))
 				conn->client_type = SSSConn::WHEEL_RB;
-			else if (strcmp(str_ip_addr, IP_WHEEL_LF))
+			else if (strcmp(str_ip_addr, IP_ULTRASOUND))
 				conn->client_type = SSSConn::ULTRASOUND;
-			else if (strcmp(str_ip_addr, IP_WHEEL_LF))
+			else if (strcmp(str_ip_addr, IP_CAMERA))
 				conn->client_type = SSSConn::CAMERA;
 			else
 				conn->client_type = SSSConn::WIPORT;
