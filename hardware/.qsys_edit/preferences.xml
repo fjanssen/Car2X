@@ -11,14 +11,14 @@
  </systemtable>
  <clocktable>
   <columns>
-   <clockname preferredWidth="544" />
-   <clocksource preferredWidth="542" />
-   <frequency preferredWidth="538" />
+   <clockname preferredWidth="358" />
+   <clocksource preferredWidth="357" />
+   <frequency preferredWidth="355" />
   </columns>
  </clocktable>
  <library
-   expandedCategories="Project,Library,Library/Interface Protocols/Ethernet,Library/Interface Protocols" />
- <window width="1366" height="728" x="-8" y="-8" />
+   expandedCategories="Library,Library/Bridges,Library/Interface Protocols,Library/Bridges/Memory-Mapped,Project,Library/Interface Protocols/Serial" />
+ <window width="1382" height="744" x="-8" y="-8" />
  <generation
    block_symbol_file="0"
    simulation="NONE"

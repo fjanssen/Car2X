@@ -1,5 +1,5 @@
 Assembler report for Car2X
-Mon Aug 04 15:06:33 2014
+Mon Aug 11 09:50:00 2014
 Quartus II 32-bit Version 12.1 Build 177 11/07/2012 SJ Web Edition
 
 
@@ -38,7 +38,7 @@ applicable agreement for further details.
 +---------------------------------------------------------------+
 ; Assembler Summary                                             ;
 +-----------------------+---------------------------------------+
-; Assembler Status      ; Successful - Mon Aug 04 15:06:33 2014 ;
+; Assembler Status      ; Successful - Mon Aug 11 09:50:00 2014 ;
 ; Revision Name         ; Car2X                                 ;
 ; Top-level Entity Name ; Car2X                                 ;
 ; Family                ; Cyclone IV E                          ;
@@ -106,7 +106,7 @@ applicable agreement for further details.
 +----------------+-----------------------------------------------------------------------------------------------+
 ; Device         ; EP4CE115F29C7                                                                                 ;
 ; JTAG usercode  ; 0xFFFFFFFF                                                                                    ;
-; Checksum       ; 0x010E56E2                                                                                    ;
+; Checksum       ; 0x01081392                                                                                    ;
 +----------------+-----------------------------------------------------------------------------------------------+
 
 
@@ -116,16 +116,16 @@ applicable agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus II 32-bit Assembler
     Info: Version 12.1 Build 177 11/07/2012 SJ Web Edition
-    Info: Processing started: Mon Aug 04 15:06:24 2014
+    Info: Processing started: Mon Aug 11 09:49:52 2014
 Info: Command: quartus_asm --read_settings_files=off --write_settings_files=off Car2X -c Car2X
 Info (115031): Writing out detailed assembly data for power analysis
 Info (115030): Assembler is generating device programming files
 Info (115017): Design contains a time-limited core -- only a single, time-limited programming file can be generated
 Warning (210042): Can't convert time-limited SOF into POF, HEX File, TTF, or RBF
 Info: Quartus II 32-bit Assembler was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 425 megabytes
-    Info: Processing ended: Mon Aug 04 15:06:33 2014
-    Info: Elapsed time: 00:00:09
+    Info: Peak virtual memory: 413 megabytes
+    Info: Processing ended: Mon Aug 11 09:50:00 2014
+    Info: Elapsed time: 00:00:08
     Info: Total CPU time (on all processors): 00:00:09
 
 

@@ -12,6 +12,14 @@
    element $${FILENAME}
    {
    }
+   element jtaguart_1.avalon_jtag_slave
+   {
+      datum _tags
+      {
+         value = "";
+         type = "String";
+      }
+   }
    element jtaguart_0.avalon_jtag_slave
    {
       datum baseAddress
@@ -86,19 +94,19 @@
          type = "int";
       }
    }
-   element carControl_nios.jtag_debug_module
-   {
-      datum baseAddress
-      {
-         value = "1050624";
-         type = "String";
-      }
-   }
    element com_nios.jtag_debug_module
    {
       datum baseAddress
       {
          value = "134242304";
+         type = "String";
+      }
+   }
+   element carControl_nios.jtag_debug_module
+   {
+      datum baseAddress
+      {
+         value = "1050624";
          type = "String";
       }
    }
@@ -110,20 +118,20 @@
          type = "int";
       }
    }
+   element jtaguart_1
+   {
+      datum _sortIndex
+      {
+         value = "10";
+         type = "int";
+      }
+   }
    element onchip_memory2_0
    {
       datum _sortIndex
       {
          value = "9";
          type = "int";
-      }
-   }
-   element shared_memory_mutex.s1
-   {
-      datum baseAddress
-      {
-         value = "134244400";
-         type = "String";
       }
    }
    element com_memory.s1
@@ -134,11 +142,11 @@
          type = "String";
       }
    }
-   element onchip_memory2_0.s1
+   element shared_memory.s1
    {
       datum baseAddress
       {
-         value = "524288";
+         value = "134225920";
          type = "String";
       }
    }
@@ -150,11 +158,19 @@
          type = "String";
       }
    }
-   element shared_memory.s1
+   element onchip_memory2_0.s1
    {
       datum baseAddress
       {
-         value = "134225920";
+         value = "524288";
+         type = "String";
+      }
+   }
+   element shared_memory_mutex.s1
+   {
+      datum baseAddress
+      {
+         value = "134244400";
          type = "String";
       }
    }
@@ -205,7 +221,7 @@
  <parameter name="projectName" value="Car2X.qpf" />
  <parameter name="sopcBorderPoints" value="false" />
  <parameter name="systemHash" value="1" />
- <parameter name="timeStamp" value="1407155777427" />
+ <parameter name="timeStamp" value="1407742836476" />
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
  <interface name="clk" internal="sys_clk.clk_in" type="clock" dir="end" />
@@ -448,8 +464,8 @@
   <parameter name="tightlyCoupledInstructionMaster1AddrWidth" value="1" />
   <parameter name="tightlyCoupledInstructionMaster2AddrWidth" value="1" />
   <parameter name="tightlyCoupledInstructionMaster3AddrWidth" value="1" />
-  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x80000' end='0xCB000' /><slave name='carControl_nios.jtag_debug_module' start='0x100800' end='0x101000' /></address-map>]]></parameter>
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x80000' end='0xCB000' /><slave name='carControl_nios.jtag_debug_module' start='0x100800' end='0x101000' /><slave name='shared_memory.s2' start='0x8002000' end='0x8003000' /><slave name='shared_memory_mutex.s1' start='0x8006830' end='0x8006838' /><slave name='jtaguart_0.avalon_jtag_slave' start='0x8006838' end='0x8006840' /></address-map>]]></parameter>
+  <parameter name="instSlaveMapParam"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x80000' end='0xB2000' /><slave name='carControl_nios.jtag_debug_module' start='0x100800' end='0x101000' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='jtaguart_1.avalon_jtag_slave' start='0x0' end='0x8' /><slave name='onchip_memory2_0.s1' start='0x80000' end='0xB2000' /><slave name='carControl_nios.jtag_debug_module' start='0x100800' end='0x101000' /><slave name='shared_memory.s2' start='0x8002000' end='0x8003000' /><slave name='shared_memory_mutex.s1' start='0x8006830' end='0x8006838' /></address-map>]]></parameter>
   <parameter name="clockFrequency" value="100000000" />
   <parameter name="deviceFamilyName" value="Cyclone IV E" />
   <parameter name="internalIrqMaskSystemInfo" value="1" />
@@ -555,7 +571,7 @@
   <parameter name="initMemContent" value="true" />
   <parameter name="initializationFileName" value="onchip_memory2_0" />
   <parameter name="instanceID" value="NONE" />
-  <parameter name="memorySize" value="307200" />
+  <parameter name="memorySize" value="204800" />
   <parameter name="readDuringWriteMode" value="DONT_CARE" />
   <parameter name="simAllowMRAMContentsFile" value="false" />
   <parameter name="simMemInitOnlyFilename" value="0" />
@@ -578,6 +594,24 @@
   <parameter name="AUTO_ETHERNET_SUBSYS_CLK_IN_CLOCK_RATE" value="100000000" />
   <parameter name="AUTO_ETHERNET_SUBSYS_CLK_IN_CLOCK_DOMAIN" value="1" />
   <parameter name="AUTO_ETHERNET_SUBSYS_CLK_IN_RESET_DOMAIN" value="1" />
+ </module>
+ <module
+   kind="altera_avalon_jtag_uart"
+   version="12.1"
+   enabled="1"
+   name="jtaguart_1">
+  <parameter name="allowMultipleConnections" value="false" />
+  <parameter name="avalonSpec" value="2.0" />
+  <parameter name="hubInstanceID" value="0" />
+  <parameter name="readBufferDepth" value="64" />
+  <parameter name="readIRQThreshold" value="8" />
+  <parameter name="simInputCharacterStream" value="" />
+  <parameter name="simInteractiveOptions">INTERACTIVE_ASCII_OUTPUT</parameter>
+  <parameter name="useRegistersForReadBuffer" value="false" />
+  <parameter name="useRegistersForWriteBuffer" value="false" />
+  <parameter name="useRelativePathForSimFile" value="false" />
+  <parameter name="writeBufferDepth" value="64" />
+  <parameter name="writeIRQThreshold" value="8" />
  </module>
  <connection
    kind="avalon"
@@ -900,19 +934,25 @@
    version="12.1"
    start="sys_clk.clk"
    end="ethernet_subsystem.ethernet_subsys_clk_in" />
+ <connection kind="clock" version="12.1" start="sys_clk.clk" end="jtaguart_1.clk" />
+ <connection
+   kind="reset"
+   version="12.1"
+   start="sys_clk.clk_reset"
+   end="jtaguart_1.reset" />
  <connection
    kind="avalon"
    version="12.1"
    start="carControl_nios.data_master"
-   end="jtaguart_0.avalon_jtag_slave">
+   end="jtaguart_1.avalon_jtag_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x08006838" />
+  <parameter name="baseAddress" value="0x0000" />
  </connection>
  <connection
    kind="interrupt"
    version="12.1"
    start="carControl_nios.d_irq"
-   end="jtaguart_0.irq">
+   end="jtaguart_1.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
 </system>
