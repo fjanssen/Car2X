@@ -109,10 +109,10 @@ void setMotorSpeeds(CarState * state)
 	alt_u16 fVelFactor; // fixed comma integer, with resolution of 0.01
 
 	// Log current state:
-	iCurrVel = (state.motorEcus[0]->iCurrentSpeed
-			+ state.motorEcus[1]->iCurrentSpeed
-			+ state.motorEcus[2]->iCurrentSpeed
-			+ state.motorEcus[3]->iCurrentSpeed) / 4;
+	iCurrVel = (state->motorEcus[0].iCurrentSpeed
+			+ state->motorEcus[1].iCurrentSpeed
+			+ state->motorEcus[2].iCurrentSpeed
+			+ state->motorEcus[3].iCurrentSpeed) / 4;
 
 	LOG_DEBUG("Current velocity: %+5d, FL: %+3d, FR: %+3d, RL: %+3d, RR: %+3d",
 			iCurrVel, state->motorEcus[0].iCurrentSpeed, state->motorEcus[1].iCurrentSpeed,

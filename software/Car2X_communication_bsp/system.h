@@ -2,9 +2,9 @@
  * system.h - SOPC Builder system and BSP software package information
  *
  * Machine generated for CPU 'com_nios' in SOPC Builder design 'nios_system'
- * SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/nios_system.sopcinfo
+ * SOPC Builder design path: ../../hardware/nios_system.sopcinfo
  *
- * Generated: Mon Aug 04 11:14:22 CEST 2014
+ * Generated: Mon Aug 18 16:05:19 CEST 2014
  */
 
 /*

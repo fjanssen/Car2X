@@ -2,9 +2,9 @@
  * linker.h - Linker script mapping information
  *
  * Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
- * SOPC Builder design path: C:/Users/HS/Documents/tortoise2x/trunk/trunk/hardware/nios_system.sopcinfo
+ * SOPC Builder design path: ../../hardware/nios_system.sopcinfo
  *
- * Generated: Tue Aug 05 17:42:25 CEST 2014
+ * Generated: Mon Aug 18 16:00:31 CEST 2014
  */
 
 /*

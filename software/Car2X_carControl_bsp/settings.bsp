@@ -2,11 +2,11 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Aug 4, 2014 11:14:04 AM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1407143644793</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>C:\Users\HS\Documents\tortoise2x\trunk\trunk\software\Car2X_carControl_bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>18.08.2014 17:09:04</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1408374544601</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>C:\Users\HS\Documents\tortoise2x\Car2X.git\trunk\software\Car2X_carControl_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
-        <SopcDesignFile>C:\Users\HS\Documents\tortoise2x\trunk\trunk\hardware\nios_system.sopcinfo</SopcDesignFile>
+        <SopcDesignFile>..\..\hardware\nios_system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>carControl_nios</Cpu>
         <SchemaVersion>1.9</SchemaVersion>
@@ -851,9 +851,15 @@
                 <Group xsi:nil="true" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
         </Setting>
         <MemoryMap>
+                <slaveDescriptor>jtaguart_1</slaveDescriptor>
+                <addressRange>0x00000000 - 0x00000007</addressRange>
+                <addressSpan>8</addressSpan>
+                <attributes>printable</attributes>
+        </MemoryMap>
+        <MemoryMap>
                 <slaveDescriptor>onchip_memory2_0</slaveDescriptor>
-                <addressRange>0x00080000 - 0x000CAFFF</addressRange>
-                <addressSpan>307200</addressSpan>
+                <addressRange>0x00080000 - 0x000B1FFF</addressRange>
+                <addressSpan>204800</addressSpan>
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
@@ -867,12 +873,6 @@
                 <addressRange>0x08006830 - 0x08006837</addressRange>
                 <addressSpan>8</addressSpan>
                 <attributes/>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>jtaguart_0</slaveDescriptor>
-                <addressRange>0x08006838 - 0x0800683F</addressRange>
-                <addressSpan>8</addressSpan>
-                <attributes>printable</attributes>
         </MemoryMap>
         <LinkerSection>
                 <sectionName>.text</sectionName>
