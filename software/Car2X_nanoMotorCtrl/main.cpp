@@ -113,12 +113,11 @@ bool waitForWelcome()
 
 	CCarMessage * pmsg = &wMsg; // needed for the CCarProtocol constructor.
 
-	while (true) {
-		if (uiTries > 5)
-		{
-			break;
-		}
+	// set led on
+	*pLED |= 0x01;
 
+	while(true)
+	{
 		// Is there a current protocol, delete it and generate a new one out of received data
 		if(pProtocol) {
 			delete(pProtocol);
@@ -144,17 +143,13 @@ bool waitForWelcome()
 		// Check if the first message was a WelcomeMessage then break
 		pMessage = pProtocol->getNthMessage(0);
 		if(pMessage->isValid() && pMessage->getType() == 0x01)
-			break;
+		{
+			*pLED &= 0xFE;
+			return true;
+		}
 	}
 
-	if(uiTries > 5) {
-		*pLED |= 0x01;
-		return false;
-	}
-	else {
-		*pLED &= 0xFE;
-		return true;
-	}
+	return false;
 }
 
 bool controlSpeed()
