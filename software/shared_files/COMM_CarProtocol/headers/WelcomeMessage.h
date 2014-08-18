@@ -49,14 +49,14 @@ public:
 	 * Basic Constructor which initialize the member fields and sets the FW version field
 	 * to the given value.
 	 */
-	CWelcomeMessage(alt_u8 uiVersionCentral);
+	CWelcomeMessage(alt_u8 uiVersionComponent, alt_u8 uiComponentType, alt_u8 uiComponentID, alt_u8 *uiOperations);
 
 	/*
 	 * Destructor. (Empty implementation)
 	 */
 	virtual ~CWelcomeMessage();
 
-	void answerMessage(alt_u8 uiVersionComponent, alt_u8 uiComponentType, alt_u8 uiComponentID, alt_u8 *uiOperations);
+	void answerMessage(alt_u8 uiVersionCentral);
 	void doAction();
 	bool getBytes(alt_u8 *pMessage);
 	alt_u32 getLength();

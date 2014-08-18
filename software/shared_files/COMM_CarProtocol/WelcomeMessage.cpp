@@ -18,17 +18,17 @@ CWelcomeMessage::CWelcomeMessage(alt_u8 *pMessage, int iLength)
 	}
 }
 
-CWelcomeMessage::CWelcomeMessage(alt_u8 uiVersionCentral)
+CWelcomeMessage::CWelcomeMessage(alt_u8 uiVersionComponent, alt_u8 uiComponentType, alt_u8 uiComponentID, alt_u8 *uiOperations)
 {
+
 	setHeader(1, getLength(), 0);
 
-	m_uiVersionCentral = uiVersionCentral;
-	m_uiVersionComponent = 0;
-	m_uiComponentType = 0;
-	m_uiComponentID = 0;
+	m_uiVersionComponent = uiVersionComponent;
+	m_uiComponentType = uiComponentType;
+	m_uiComponentID = uiComponentID;
 
 	for(alt_u32 i = 0; i < 4; i++)
-		m_uiOperations[i] = 0;
+		m_uiOperations[i] = uiOperations[i];
 
 	m_bValid = true;
 }
@@ -80,17 +80,18 @@ void CWelcomeMessage::parseMessage(alt_u8 *pMessage, int iLength)
 	m_bValid = true;
 }
 
-void CWelcomeMessage::answerMessage(alt_u8 uiVersionComponent, alt_u8 uiComponentType, alt_u8 uiComponentID, alt_u8 *uiOperations)
+void CWelcomeMessage::answerMessage(alt_u8 uiVersionCentral)
 {
 	if(!m_bValid)
 		return;
 
-	m_uiVersionComponent = uiVersionComponent;
-	m_uiComponentType = uiComponentType;
-	m_uiComponentID = uiComponentID;
+	m_uiVersionCentral = uiVersionCentral;
+	m_uiVersionComponent = 0;
+	m_uiComponentType = 0;
+	m_uiComponentID = 0;
 
 	for(alt_u32 i = 0; i < 4; i++)
-		m_uiOperations[i] = uiOperations[i];
+		m_uiOperations[i] = 0;
 
 	m_uiFlags = m_uiFlags | 0x01; // Set Response-Flag
 }

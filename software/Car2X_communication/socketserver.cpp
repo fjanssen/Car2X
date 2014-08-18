@@ -189,6 +189,8 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 		//WelcomeMessage
 		case 0x01: {
 			CWelcomeMessage *welcomeMessage = (CWelcomeMessage *) currentMessage;
+			welcomeMessage->answerMessage(0x0);
+			send(cRCA->fd, (char *) welcomeMessage, 1, 0); // TODO: sends gibberish out.
 			break;
 		}
 			// MotorVelocity
