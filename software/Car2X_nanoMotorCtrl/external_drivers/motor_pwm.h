@@ -5,7 +5,7 @@
 #include <alt_types.h>
 
 #include "..\etc\utility.h"
-#include "..\motor_control\properties.h"
+#include "..\properties.h"
 
 // Define Address for PWM-generator
 #define PWM_EN (0x80000000 | A_2_CHANNEL_PWM_0_BASE)

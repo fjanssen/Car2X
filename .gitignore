@@ -23,7 +23,7 @@ local.properties
 *.flock
 
 ## C2X generated BSP
-*_bsp/
+# *_bsp/
 
 
 # External tool builders
@@ -39,7 +39,7 @@ local.properties
 .buildpath
 
 # BSP
-settings.bsp
+# settings.bsp
 
 #################
 ## Visual Studio
@@ -225,3 +225,4 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+software/Car2X_carControl_bsp/libhal_bsp.a

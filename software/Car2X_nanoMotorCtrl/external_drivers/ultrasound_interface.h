@@ -11,7 +11,7 @@
 #include <io.h>
 #include <alt_types.h>
 
-#include "..\motor_control\properties.h"
+#include "..\properties.h"
 
 //write_operation
 #define trigger_sensor(base_addr)	 IOWR(base_addr+(0<<2), 0, 1)

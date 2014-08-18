@@ -18,15 +18,15 @@
 #include <sys/alt_alarm.h>
 
 
-#include "..\external_drivers\motor_pwm.h"
-#include "..\external_drivers\eth_uart.h"
+#include "external_drivers\motor_pwm.h"
+#include "external_drivers\eth_uart.h"
 
-#include "..\networking\CarProtocol.h"
-#include "../networking/MotorMeasurementMessage.h"
-#include "../networking/MotorVelocityMessage.h"
-#include "..\networking\WelcomeMessage.h"
+#include "CarProtocol.h"
+#include "MotorMeasurementMessage.h"
+#include "MotorVelocityMessage.h"
+#include "WelcomeMessage.h"
 
-#include "..\etc\utility.h"
+#include "etc\utility.h"
 
 #include "pidcontroller.h"
 #include "properties.h"
