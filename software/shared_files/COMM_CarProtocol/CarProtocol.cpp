@@ -131,7 +131,7 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 // TODO: Add new message classes here!!!!!
 
 // WelcomeMessage
-			case 0x01:
+			case CARP_MSGID_WELCOME:
 				m_pMessages[m_uiMessageCount] = new CWelcomeMessage(
 						pPacket + uiStartIdx + uiPayloadOffset,
 						uiPayloadLength - uiPayloadOffset);
@@ -140,7 +140,7 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 				break;
 
 // MotorVelocity
-			case 0x04:
+			case CARP_MSGID_MOTORVELOCITY:
 				m_pMessages[m_uiMessageCount] = new CMotorVelocityMessage(
 						pPacket + uiStartIdx + uiPayloadOffset,
 						uiPayloadLength - uiPayloadOffset);
@@ -149,7 +149,7 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 				break;
 
 // MotorMeasurement
-			case 0x05:
+			case CARP_MSGID_MOTORMEASUREMENT:
 				m_pMessages[m_uiMessageCount] = new CMotorMeasurementMessage(
 						pPacket + uiStartIdx + uiPayloadOffset,
 						uiPayloadLength - uiPayloadOffset);
@@ -158,7 +158,7 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 				break;
 
 // Ultrasound-Sensor
-			case 0x08:
+			case CARP_MSGID_ULTRASOUNDSENSOR:
 				m_pMessages[m_uiMessageCount] = new CUltrasoundDistanceMessage(
 						pPacket + uiStartIdx + uiPayloadOffset,
 						uiPayloadLength - uiPayloadOffset);
@@ -167,7 +167,7 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 				break;
 
 // Acceleration-Sensor
-			case 0x09:
+			case CARP_MSGID_ACCELERATIONSENSOR:
 				m_pMessages[m_uiMessageCount] = new CAccelerationValuesMessage(
 						pPacket + uiStartIdx + uiPayloadOffset,
 						uiPayloadLength - uiPayloadOffset);
@@ -176,7 +176,7 @@ void CCarProtocol::parsePacket(alt_u8 *pPacket, int iLength) {
 				break;
 
 // ADC-Sensor
-			case 0x0A:
+			case CARP_MSGID_ADCSENSOR:
 			{
 // If subtype is 0 then it's a InfoMessage otherwise a ValuesMessage
 				if (pPacket[uiStartIdx + uiPayloadOffset + 2] == 0)

@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'DE0_Nano_SOPC'
  * SOPC Builder design path: ../../hardware/DE0_Nano_SOPC_20131216.sopcinfo
  *
- * Generated: Mon Aug 18 15:18:09 CEST 2014
+ * Generated: Mon Aug 18 17:43:13 CEST 2014
  */
 
 /*
@@ -63,6 +63,7 @@
 #include "altera_avalon_jtag_uart.h"
 #include "altera_avalon_sysid.h"
 #include "altera_avalon_timer.h"
+#include "altera_up_avalon_rs232.h"
 
 /*
  * Allocate the device storage
@@ -73,6 +74,7 @@ ALTERA_AVALON_EPCS_FLASH_CONTROLLER_INSTANCE ( EPCS, epcs);
 ALTERA_AVALON_JTAG_UART_INSTANCE ( JTAG_UART, jtag_uart);
 ALTERA_AVALON_SYSID_INSTANCE ( SYSID, sysid);
 ALTERA_AVALON_TIMER_INSTANCE ( TIMER, timer);
+ALTERA_UP_AVALON_RS232_INSTANCE ( UART_0, uart_0);
 
 /*
  * Initialize the interrupt controller devices
@@ -99,4 +101,5 @@ void alt_sys_init( void )
     ALTERA_AVALON_EPCS_FLASH_CONTROLLER_INIT ( EPCS, epcs);
     ALTERA_AVALON_JTAG_UART_INIT ( JTAG_UART, jtag_uart);
     ALTERA_AVALON_SYSID_INIT ( SYSID, sysid);
+    ALTERA_UP_AVALON_RS232_INIT ( UART_0, uart_0);
 }

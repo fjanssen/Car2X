@@ -2,10 +2,10 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Aug 18, 2014 3:18:07 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1408367887966</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Aug 18, 2014 5:43:12 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1408376592157</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\wji\car2x\Car2X\software\Car2X_nanoMotorCtrl_bsp</BspGeneratedLocation>
-        <BspSettingsFile>.\settings.bsp</BspSettingsFile>
+        <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\hardware\DE0_Nano_SOPC_20131216.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>cpu</Cpu>
