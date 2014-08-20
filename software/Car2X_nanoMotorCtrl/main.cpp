@@ -25,7 +25,7 @@ int main (void)
 	*pLED = 0xAA;
 
 	LOG_DEBUG("wait");
-	ret = waitForWelcome();
+	ret = sendWelcome();
 	if(!ret) {
 		goto fail;
 	}
@@ -116,7 +116,7 @@ bool init()
 	return true;
 }
 
-bool waitForWelcome()
+bool sendWelcome()
 {
 	LOG_DEBUG("wait entry");
 	delay(200);
@@ -311,7 +311,7 @@ bool setUpPIController()
 	// Reset the controller
 	if(pController)
 		delete(pController);
-	pController = new CPIController(uiMaxSpeed, uiT, -1*uiMaxSpeed, uiMaxSpeed);
+	pController = new CPIDController(uiMaxSpeed, uiT, -1*uiMaxSpeed, uiMaxSpeed);
 
 	// Get the MeasurementRequestMessage
 	while(true)
