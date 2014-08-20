@@ -1,0 +1,82 @@
+\documentclass[11pt,a4paper]{report}
+
+%\usepackage{blindtext,expdlist}
+\usepackage{styles/tumlogo}
+%\usepackage[dvips]{graphicx}
+\usepackage[pdftex]{graphicx}
+ \DeclareGraphicsExtensions{.jpg,.JPG,.png,.pdf,.eps}
+ \graphicspath{{figures/}} 
+\usepackage[english]{babel}
+
+\input{components/info}
+
+%\input{components/settings}
+
+%\input{components/commands}
+
+%\addtolength{\evensidemargin}{-12mm}
+
+%\newboolean{makeAll}
+%\setboolean{makeAll}{true}
+
+\begin{document}
+
+	%\frontmatter
+	
+	%\ifmakeAll
+
+		\input{Sonstiges/Cover}
+		
+		%\clearemptydoublepage
+		
+	%\fi	
+		
+		\tableofcontents
+		%\clearemptydoublepage
+	
+	%\mainmatter
+	
+	
+
+	%\ifthenelse{\boolean{makeAll}}{
+	
+		\input{chapters/1_Intro}
+		
+%		\clearemptydoublepage
+			
+		\input{chapters/2_Concept}
+		
+%		\clearemptydoublepage
+			
+		\input{chapters/3_Hardware}
+		
+%		\clearemptydoublepage
+		
+		\input{chapters/4_Software}
+		
+%		\clearemptydoublepage
+		
+		\input{chapters/5_Conclusion}
+		
+%		\clearemptydoublepage
+	
+		
+		%\part*{Anhang}		
+		\appendix
+		
+		%\input{components/glossary}
+		
+		\input{Sonstiges/Anhang}
+		
+		%\thispagestyle{empty}
+
+		%\bibliography{Literatur/Referenzen}
+		
+	%}
+	%{
+	%}
+		
+		\raggedbottom
+	
+ 
+\end{document}

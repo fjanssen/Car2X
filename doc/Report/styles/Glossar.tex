@@ -1,0 +1,33 @@
+\chapter{Glossar}
+
+\begin{description}[\breaklabel \setleftmargin{10pt}]
+
+\item[Debuggen] Auffinden und Beseitigen von Softwarefehlern.
+
+\item[\ac{ECU}] Elektronische Komponente die vor Allem in Eingebetteten Systemen eingesetzt werden, um Regelungs- und/oder Steuerungsaufgaben zu übernehmen. 
+
+\item[Debugger] Software zum Debuggen von ECUs(z.B. GDB).
+
+\item[Flasher] Software zum Programmieren von ECUs, vornehmlich benötigt für das
+Roll-Out (z.B. Nexus, Trace32, LuminaryMicro-Programmer, etc.).
+
+\item[Flashen] Programmiern einer ECU.
+
+\item[Proxy] Software die eine Verbindung zwischen Debugger/Flasher und dem
+Programmer herstellt, sorgt gewöhnlich für die Umsetzung von TCP/IP nach
+USB (z.B. OpenOCD).
+
+\item[Target] Bezeichnung für die Zielplattform auf der die Anwendung laufen soll. 
+
+\item[Host] Bezeichnung für die Entwicklungsplattform der Anwendung.
+
+\item[\ac{JTAG}] IEEE-Standard 1149.1 zum Testen und Debuggen von ECUs direkt in der Schaltung. Dieses Verfahren ist auch als Boundary Scan Test bekannt.
+
+\item[Programer] Hardware das JTAG-Interface zur Verfügung stellt, sorgt für
+die Umsetzung von USB nach JTAG (z.B. Lauterbach, ARM-USB-OCD). Ein Programer wird dazu genutzt die Software die in Binär-Dateien vorliegt auf die Zielplatform zu programmieren.
+
+\item[On-Target Debugger] Hardware, die über eine Schnittstelle die CPU des Targets ansteuern kann. Ein On-Target Debugger bietet häugig die folgenden Funktionaliäten an: Starten und Anhalten der CPU, Auslesen und Schreiben von Registern. Häufig sind die Funktionalitäten eines Programers in einem On-Target Debugger integriert.
+
+\item[In-Circuit Debugger] Hardware, die sich auf dem Target befindet und die gleiche Funktionalität anbietet wie ein On-Target Debugger.
+
+\end{description}
