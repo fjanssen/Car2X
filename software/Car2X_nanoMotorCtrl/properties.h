@@ -28,7 +28,7 @@
 
 
 // Lists the available operations/sensors
-#define AVAILABLE_OPERATIONS 0x09, 0x00, 0x00, 0x00
+#define AVAILABLE_OPERATIONS 0x00, 0x00, 0x00, 0x00
 
 
 #endif /* PROPERTIES_H_ */

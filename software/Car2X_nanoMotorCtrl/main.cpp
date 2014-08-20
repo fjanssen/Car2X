@@ -8,22 +8,34 @@
 
 // Export interface
 #include "main.h"
+#include "ErrHandler.h"
 
 int main (void)
 {
+	bool ret;
 	alt_u16 state = 0; // State to distinguish between the small cycles
 	CCarMessage *pCurrentMessage = 0; // The current message
 
+	LOG_DEBUG("init");
 	if(!init())
+	{
 		goto fail;
+	}
 
 	*pLED = 0xAA;
-	if(!waitForWelcome())
+
+	LOG_DEBUG("wait");
+	ret = waitForWelcome();
+	if(!ret) {
 		goto fail;
+	}
 	*pLED = 0;
 
+	LOG_DEBUG("setuppid");
 	if(!setUpPIController())
+	{
 		goto fail;
+	}
 
 	// Restore speed = 0
 	iDesiredSpeed = 0;
@@ -42,6 +54,8 @@ int main (void)
 	// Small cycle:
 	while(true)
 	{
+		LOG_DEBUG("main loop");
+
 		if(!waitForEndOfCycle())
 			goto fail;
 
@@ -72,6 +86,7 @@ int main (void)
 
 // Label for failure
 fail:
+	LOG_DEBUG("fail");
 	setSpeed(0);
 	*pLED = 0x80;
 	delay(10000);
@@ -103,39 +118,61 @@ bool init()
 
 bool waitForWelcome()
 {
-	CCarMessage *pMessage = 0;   // Help reference
+	LOG_DEBUG("wait entry");
+	delay(200);
+
+	CCarMessage * pMessage = 0;
 	alt_u32 uiTries = 0;         // Counts the tries, if >= 5 return
 	alt_u8 cBuffer[128];         // Standard byte buffer
 	alt_u32 uiReceivedCount = 0; // Count of received bytes (further: iLength)
 
 	// Prepare welcome message
-	CWelcomeMessage wMsg = CWelcomeMessage(FIRMWARE_VERSION, COMPONENT_TYPE, COMPONENT_ID, uiAvailableOperations);
+	LOG_DEBUG("allocate msg");
+	delay(200);
+	CWelcomeMessage * wMsg = new CWelcomeMessage(FIRMWARE_VERSION, COMPONENT_TYPE, COMPONENT_ID, uiAvailableOperations);
 
-	CCarMessage * pmsg = &wMsg; // needed for the CCarProtocol constructor.
+	pProtocol = new CCarProtocol(0, (CCarMessage **) &wMsg, 1);
 
 	// set led on
 	*pLED |= 0x01;
 
+	LOG_DEBUG("pre while");
+	delay(200);
+
 	while(true)
 	{
-		// Is there a current protocol, delete it and generate a new one out of received data
-		if(pProtocol) {
-			delete(pProtocol);
-		}
+		LOG_DEBUG("loop %d",  (int) uiTries);
+
+		LOG_DEBUG("Gen proto");
+		delay(200);
 		// Put the WelcomeMessage into the protocol wrapper.
-		pProtocol = new CCarProtocol(0, &pmsg, 1);
+
 		pProtocol->getBytes(cBuffer);
+
+		LOG_DEBUG("cBuffer: %c %c", cBuffer[0], cBuffer[1]);
+		delay(200);
+
 		// Send out the packet.
-		pSocket->Send(cBuffer, pProtocol->getLength());
+		bool success = pSocket->Send(cBuffer, pProtocol->getLength());
+
+		LOG_DEBUG("sent? %x", success);
+		delay(200);
 
 		// Receive bytes from socket (timed blocking)
 		uiReceivedCount = pSocket->Receive(cBuffer, 128, 10);
 		if(uiReceivedCount <= 0)
+		{
+			LOG_DEBUG("incomplete packet");
+			delay(200);
+			uiTries++;
 			continue; // If nothing was received
+		}
 
 		// Was the protocol generation unsuccessful then count one more try and continue
 		if(pProtocol == 0 || !pProtocol->isValid() || pProtocol->getMessageCount() < 1)
 		{
+			printf("invalid packet\n");
+			delay(200);
 			uiTries++;
 			continue;
 		}
@@ -144,9 +181,18 @@ bool waitForWelcome()
 		pMessage = pProtocol->getNthMessage(0);
 		if(pMessage->isValid() && pMessage->getType() == 0x01)
 		{
+			LOG_DEBUG("valid message");
+			delay(200);
 			*pLED &= 0xFE;
 			return true;
 		}
+		uiTries++;
+
+	}
+
+	// Is there a current protocol, delete it and generate a new one out of received data
+	if(pProtocol) {
+		delete(pProtocol);
 	}
 
 	return false;

@@ -177,7 +177,7 @@ alt_u32 alarm_callback(void* context)
 bool init();
 
 // See WAIT
-bool waitForWelcome();
+bool sendWelcome();
 
 // See CONTROL SPEED
 bool controlSpeed();
