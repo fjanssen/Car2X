@@ -70,6 +70,7 @@ public:
 			m_memArea_p->content_a = AreaCarStateBuffer;
 			m_memArea_p->index_u32 = 0;
 			m_memArea_p->maxNumElements_u32 = BUFFERSIZE_CARSTATE;
+			memset(&(m_memArea_p->content_a[0]), 0, sizeof(T)*BUFFERSIZE_CARSTATE);
 			releaseSharedMemArea();
 		}
 
@@ -80,8 +81,7 @@ public:
 					"carMsgRx@%#x", (unsigned int) m_mutexArea_p);
 		}
 
-		LOG_DEBUG("Memcontroller constructed. m_memArea_p: %#x, size: %d, index %d",
-				m_memArea_p, m_memArea_p->maxNumElements_u32, m_memArea_p->index_u32);
+		LOG_DEBUG("Memcontroller constructed. m_memArea_p: %#x, size: %d, index %d",m_memArea_p, m_memArea_p->maxNumElements_u32, m_memArea_p->index_u32);
 	}
 
 	~MemController() {
@@ -191,7 +191,7 @@ public:
 			releaseSharedMemArea();
 		}
 
-		LOG_DEBUG("get last element.");
+		//LOG_DEBUG("get last element.");
 
 		return element;
 	}
@@ -233,12 +233,12 @@ private:
 
 		if(!isMine)
 		{
-			LOG_DEBUG("locking mutex");
+			//LOG_DEBUG("locking mutex");
 			altera_avalon_mutex_lock(m_mutexArea_p, 1);
 		}
 		else
 		{
-			LOG_DEBUG("mutex already mine.");
+			//LOG_DEBUG("mutex already mine.");
 		}
 		return ERR_NONE;
 	}
@@ -252,12 +252,12 @@ private:
 
 		if(isMine)
 		{
-			LOG_DEBUG("unlocking mutex");
+			//LOG_DEBUG("unlocking mutex");
 			altera_avalon_mutex_unlock(m_mutexArea_p);
 		}
 		else
 		{
-			LOG_DEBUG("unlocking mutex failed, is not mine.");
+			//LOG_DEBUG("unlocking mutex failed, is not mine.");
 		}
 
 		return 0;

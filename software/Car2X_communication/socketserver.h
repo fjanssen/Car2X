@@ -36,10 +36,10 @@ void SSSSimpleSocketServerTask();
  *      Gateway: 192.168.1.1
  *  Subnet Mask: 255.255.255.0
  */
-#define IPADDR0   10
-#define IPADDR1   10
-#define IPADDR2   100
-#define IPADDR3   105
+#define IPADDR0   192
+#define IPADDR1   168
+#define IPADDR2   0
+#define IPADDR3   200
 
 #define GWADDR0   0
 #define GWADDR1   0
@@ -79,7 +79,7 @@ typedef struct SSS_SOCKET
   alt_u8 ip3;
   alt_u8 ip4;
   
-  enum {UNKNOWN,WHEEL_LF,WHEEL_LB,WHEEL_RF,WHEEL_RB,ULTRASOUND,CAMERA,WIPORT} client_type;
+  enum {UNKNOWN,WHEEL_LF,WHEEL_LR,WHEEL_RF,WHEEL_RR,ULTRASOUND,CAMERA,WIPORT} client_type;
   
   INT8U     rx_buffer[SSS_RX_BUF_SIZE];
   INT8U     *rx_wr_pos; // position we've written up to

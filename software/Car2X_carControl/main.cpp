@@ -27,7 +27,7 @@ int main()
 	while(1)
 	{
 		// get the lastest car state from the shared memory
-		state = ctrl.getLastElement();
+		state = ctrl.getLastElement(true);
 
 		// print some diagnostics information
 		int speed = state.motorEcus[0].iCurrentSpeed + state.motorEcus[1].iCurrentSpeed + state.motorEcus[2].iCurrentSpeed + state.motorEcus[3].iCurrentSpeed;
@@ -60,6 +60,7 @@ int main()
 
 		// TODO: write a delay function w/ timer. Otherwise we might run into problems blocking the mutex from all the shared memory reads...
 		//delay(10);
+		for (int i = 0; i < 10000; i++) {;}
 	}
 
 	return -1;
@@ -72,6 +73,11 @@ void switchState(CarState * state)
 
 	switch(state->reqMode)
 	{
+	case OPMODE_PREOPERATIONAL:
+		{
+			state->iMaxSpeed = OPMODE_IDLE_MAXSPEED;
+			break;
+		}
 	case OPMODE_IDLE:
 	{
 		state->iMaxSpeed = OPMODE_IDLE_MAXSPEED;
