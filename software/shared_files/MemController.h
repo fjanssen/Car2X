@@ -81,7 +81,7 @@ public:
 					"carMsgRx@%#x", (unsigned int) m_mutexArea_p);
 		}
 
-		LOG_DEBUG("Memcontroller constructed. m_memArea_p: %#x, size: %d, index %d",m_memArea_p, m_memArea_p->maxNumElements_u32, m_memArea_p->index_u32);
+		//LOG_DEBUG("Memcontroller constructed. m_memArea_p: %#x, size: %d, index %d",m_memArea_p, m_memArea_p->maxNumElements_u32, m_memArea_p->index_u32);
 	}
 
 	~MemController() {
@@ -150,7 +150,7 @@ public:
 		}
 
 		// circular buffer
-		LOG_DEBUG("push element to index %d", m_memArea_p->index_u32);
+		//LOG_DEBUG("push element to index %d", m_memArea_p->index_u32);
 
 		m_memArea_p->index_u32 = (m_memArea_p->index_u32 < (m_memArea_p->maxNumElements_u32 - 1)) ? m_memArea_p->index_u32 + 1 : 0;
 		m_memArea_p->content_a[m_memArea_p->index_u32] = element;

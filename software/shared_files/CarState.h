@@ -39,8 +39,8 @@ enum OpMode {
 struct Velocity
 {
 	alt_16 iFrontLeft;
-	alt_16 iFrontRight;
 	alt_16 iRearLeft;
+	alt_16 iFrontRight;
 	alt_16 iRearRight;
 };
 
