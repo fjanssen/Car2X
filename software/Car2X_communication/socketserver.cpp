@@ -79,9 +79,9 @@ void sss_reset_connection(SSSConn* conn) {
 
 	conn->fd = -1;
 	conn->state = SSS_SOCKET::READY;
-	LOG_DEBUG("[RESET] wr_pos = %i    rx_buffer = %i",	conn->rx_wr_pos, conn->rx_buffer);
+	//LOG_DEBUG("[RESET] wr_pos = %i    rx_buffer = %i",	conn->rx_wr_pos, conn->rx_buffer);
 	conn->rx_wr_pos = conn->rx_buffer;
-	LOG_DEBUG("[RESET] after set::: wr_pos = %i rx_buffer = %i",conn->rx_wr_pos, conn->rx_buffer);
+	//LOG_DEBUG("[RESET] after set::: wr_pos = %i rx_buffer = %i",conn->rx_wr_pos, conn->rx_buffer);
 	conn->client_type = SSS_SOCKET::UNKNOWN;
 	return;
 }
@@ -143,15 +143,15 @@ void sss_handle_accept(int listen_socket, SSSConn* conn) {
 			else
 				conn->client_type = SSSConn::WIPORT;
 
-			LOG_DEBUG("ip: %s %d", str_ip_addr, conn->client_type);
+			//LOG_DEBUG("ip: %s %d", str_ip_addr, conn->client_type);
 
 		}
 	} else {
 		LOG_DEBUG("[sss_handle_accept] rejected connection request from %s",
 				inet_ntoa(incoming_addr.sin_addr));
 	}
-	LOG_DEBUG("[ACCEPT] wr_pos = %i    rx_buffer = %i",
-			conn->rx_wr_pos, conn->rx_buffer);
+	//LOG_DEBUG("[ACCEPT] wr_pos = %i    rx_buffer = %i",
+	//		conn->rx_wr_pos, conn->rx_buffer);
 	return;
 }
 
@@ -178,8 +178,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 	sharedMem = MemController<CarState>();
 
 	if (!receivedPacket->isValid()) {
-		LOG_DEBUG(
-				"the received packet was not generated successfully and cant be handled by sss_exec_command!");
+		LOG_DEBUG("the received packet was not generated successfully and cant be handled by sss_exec_command!");
 		return;
 	}
 
@@ -194,38 +193,105 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 		alt_u8 messageType = currentMessage->getType();
 
 		if (state.currMode != OPMODE_PREOPERATIONAL) {
+			LOG_DEBUG("message Type: %d",messageType);
 			switch (messageType) {
+
 			// MotorVelocity
 			case CARP_MSGID_MOTORVELOCITY: {
 				CMotorVelocityMessage *motorVelocityMessage =
 						(CMotorVelocityMessage *) currentMessage;
-				LOG_DEBUG("Setting motor ctrl [%d] velocity to %d",
-						motorVelocityMessage->getSubType(), motorVelocityMessage->getIDesiredSpeed());
-				//char answer[] = {'C', 'A', 'R', 'R', 0x0, 0x0, 0x0, 0x0, 0x04, 0x0, 0x0, 0x0, motorVelocityMessage->getIDesiredSpeed()};
-				// send(conn->fd, answer, 14, 0);
+				LOG_DEBUG("MotorVelMsg: Setting motor ctrl [%d] velocity to %d",	motorVelocityMessage->getSubType(), motorVelocityMessage->getIDesiredSpeed());
+				switch(conn->client_type){
+				case SSSConn::WHEEL_LF:{
+					state.motorEcus[0].iCurrentSpeed=motorVelocityMessage->getICurrentSpeed();
+					break;
+				}
+				case SSSConn::WHEEL_LR:{
+					state.motorEcus[1].iCurrentSpeed=motorVelocityMessage->getICurrentSpeed();
+					break;
+				}
+				case SSSConn::WHEEL_RF:{
+					state.motorEcus[2].iCurrentSpeed=motorVelocityMessage->getICurrentSpeed();
+					break;
+				}
+				case SSSConn::WHEEL_RR:{
+					state.motorEcus[3].iCurrentSpeed=motorVelocityMessage->getICurrentSpeed();
+					break;
+				}
+				default:{
+					LOG_ERROR(ERR_COMM_INVALID_MSG,	"Received unsupported CMotorVelocityMessage with ID %d.",	conn->client_type);
+					break;
+				}
+				}
 				break;
 			}
+
 				// MotorMeasurement
 			case CARP_MSGID_MOTORMEASUREMENT: {
 				CMotorMeasurementMessage *motorMeasurememtMessage =
 						(CMotorMeasurementMessage *) currentMessage;
+				LOG_DEBUG("received MotorMeasurementMsg for clinetType: %d",conn->client_type);
+				switch(conn->client_type){
+				case SSSConn::WHEEL_LF:{
+					state.motorEcus[0].iMaxSpeed=motorMeasurememtMessage->getIMaxSpeed();
+					state.motorEcus[0].iDType=motorMeasurememtMessage->getIDType();
+					state.motorEcus[0].iIType=motorMeasurememtMessage->getIIType();
+					state.motorEcus[0].iPType=motorMeasurememtMessage->getIPType();
+					state.motorEcus[0].uiWheelCircumference=motorMeasurememtMessage->getUiWheelCircumference();
+					break;
+				}
+				case SSSConn::WHEEL_LR:{
+					state.motorEcus[1].iMaxSpeed=motorMeasurememtMessage->getIMaxSpeed();
+					state.motorEcus[1].iDType=motorMeasurememtMessage->getIDType();
+					state.motorEcus[1].iIType=motorMeasurememtMessage->getIIType();
+					state.motorEcus[1].iPType=motorMeasurememtMessage->getIPType();
+					state.motorEcus[1].uiWheelCircumference=motorMeasurememtMessage->getUiWheelCircumference();
+					break;
+				}
+				case SSSConn::WHEEL_RF:{
+					state.motorEcus[2].iMaxSpeed=motorMeasurememtMessage->getIMaxSpeed();
+					state.motorEcus[2].iDType=motorMeasurememtMessage->getIDType();
+					state.motorEcus[2].iIType=motorMeasurememtMessage->getIIType();
+					state.motorEcus[2].iPType=motorMeasurememtMessage->getIPType();
+					state.motorEcus[2].uiWheelCircumference=motorMeasurememtMessage->getUiWheelCircumference();
+					break;
+				}
+				case SSSConn::WHEEL_RR:{
+					state.motorEcus[3].iMaxSpeed=motorMeasurememtMessage->getIMaxSpeed();
+					state.motorEcus[3].iDType=motorMeasurememtMessage->getIDType();
+					state.motorEcus[3].iIType=motorMeasurememtMessage->getIIType();
+					state.motorEcus[3].iPType=motorMeasurememtMessage->getIPType();
+					state.motorEcus[3].uiWheelCircumference=motorMeasurememtMessage->getUiWheelCircumference();
+					break;
+				}
+				default:{
+					LOG_ERROR(ERR_COMM_INVALID_MSG,	"Received unsupported CMotorMeasurementMsgmessage with ID %d.",	conn->client_type);
+					break;
+				}
+				}
 				break;
 			}
-				// Ultrasound-Sensor
+
+			// Ultrasound-Sensor
 			case CARP_MSGID_ULTRASOUNDSENSOR: {
 				CUltrasoundDistanceMessage *ultrasoundDistanceMessage =
 						(CUltrasoundDistanceMessage *) currentMessage;
+				//TODO: not supported because Hardware missing-->get Hardware
 				break;
 			}
-				// Acceleration-Sensor
+
+			// Acceleration-Sensor
 			case CARP_MSGID_ACCELERATIONSENSOR: {
 				CAccelerationValuesMessage *accelerationValuesMessage =
 						(CAccelerationValuesMessage*) currentMessage;
+				//TODO: not supported by nano boards-->modify nano boards
 				break;
 			}
-				//ADC-Sensor
+
+			//ADC-Sensor
 			case CARP_MSGID_ADCSENSOR: {
 				// If subtype is 0 then it's a InfoMessage otherwise a ValuesMessage
+				//TODO: not supported by nano boards-->modify nano boards
 				if (currentMessage->getSubType() == 0)
 					CADCInfoMessage *adcInfoMessage =
 							(CADCInfoMessage *) currentMessage;
@@ -234,10 +300,13 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 							(CADCValuesMessage *) currentMessage;
 				break;
 			}
-				// Remote control message
+
+			//*******************************************CAR2X MESSAGES:*******************************************
+			// Remote control message
 			case C2X_MSGID_REMOTE_CONTROL: {
 				CRemoteControlMessage * remoteControlMessage =
 						(CRemoteControlMessage *) currentMessage;
+				LOG_DEBUG("RemoteControlMsg");
 				if (remoteControlMessage->get_ipPart1() == 0
 						&& remoteControlMessage->get_ipPart2() == 0
 						&& remoteControlMessage->get_ipPart3() == 0
@@ -338,6 +407,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 			case C2X_MSGID_CONTROL: {
 				CControlMessage * carControlMessage =
 						(CControlMessage *) currentMessage;
+				LOG_DEBUG("CControlMsg");
 				//check if control is allowed
 				state.counterComm++;
 				if ((state.ip1 != conn->ip1 || state.ip2 != conn->ip2
@@ -515,6 +585,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 			case C2X_MSGID_EMERGENCY_BRAKE: {
 				CEmergencyBrakeMessage * emergencyMessage =
 						(CEmergencyBrakeMessage *) currentMessage;
+				LOG_DEBUG("EmergencyBrakeMsg");
 				//update state
 				state.reqMode = OPMODE_EMERGENCYSTOP;
 				state.counterComm++;
@@ -568,12 +639,12 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 				cERA->fd = conn->fd;
 				cERA->stateVersion = state.counterComm;
 				cERA->msgID = receivedPacket->getUiPacketNumber();
-				LOG_DEBUG("Requested emergency brake");
 				break;
 			}
 			case C2X_MSGID_INFO_STATE: {
 				//calculate some lengths...
 				//TODO:Test it!!!!
+				LOG_DEBUG("InfoStateMsg");
 				int payloadLength = sizeof(state.currMode)
 						+ sizeof(state.iMaxSpeed) + sizeof(state.motorEcus[0])
 						+ sizeof(state.motorEcus[1])
@@ -708,12 +779,12 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 
 				//send message:
 				send(conn->fd, answer, answerLength, 0);
-				LOG_DEBUG("Requested State Info");
 				free(answer);
 				break;
 			}
 			case C2X_MSGID_INFO_SENSORS: {
 
+				LOG_DEBUG("InfoSensorMsg");
 				//calculate some lengths...
 				int payloadLength = sizeof(state.usSensors[0])
 						+ sizeof(state.usSensors[1]);
@@ -778,7 +849,6 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 
 				//send message:
 				send(conn->fd, answer, answerLength, 0);
-				LOG_DEBUG("Requested Sensor Info");
 				free(answer);
 				break;
 			}
@@ -790,12 +860,57 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 			}
 			}
 		} else {
+			LOG_DEBUG("PREOPERATIONAL");
+			if(state.reqMode != OPMODE_PREOPERATIONAL){
+
+				CMotorMeasurementMessage *motorMeasurememtMessage =(CMotorMeasurementMessage *) currentMessage;
+				LOG_DEBUG("received MotorMeasurementMsg for clientType: %d",conn->client_type);
+				switch(conn->client_type){
+				case SSSConn::WHEEL_LF:{
+					state.motorEcus[0].iMaxSpeed=motorMeasurememtMessage->getIMaxSpeed();
+					state.motorEcus[0].iDType=motorMeasurememtMessage->getIDType();
+					state.motorEcus[0].iIType=motorMeasurememtMessage->getIIType();
+					state.motorEcus[0].iPType=motorMeasurememtMessage->getIPType();
+					state.motorEcus[0].uiWheelCircumference=motorMeasurememtMessage->getUiWheelCircumference();
+					break;
+				}
+				case SSSConn::WHEEL_LR:{
+					state.motorEcus[1].iMaxSpeed=motorMeasurememtMessage->getIMaxSpeed();
+					state.motorEcus[1].iDType=motorMeasurememtMessage->getIDType();
+					state.motorEcus[1].iIType=motorMeasurememtMessage->getIIType();
+					state.motorEcus[1].iPType=motorMeasurememtMessage->getIPType();
+					state.motorEcus[1].uiWheelCircumference=motorMeasurememtMessage->getUiWheelCircumference();
+					break;
+				}
+				case SSSConn::WHEEL_RF:{
+					state.motorEcus[2].iMaxSpeed=motorMeasurememtMessage->getIMaxSpeed();
+					state.motorEcus[2].iDType=motorMeasurememtMessage->getIDType();
+					state.motorEcus[2].iIType=motorMeasurememtMessage->getIIType();
+					state.motorEcus[2].iPType=motorMeasurememtMessage->getIPType();
+					state.motorEcus[2].uiWheelCircumference=motorMeasurememtMessage->getUiWheelCircumference();
+					break;
+				}
+				case SSSConn::WHEEL_RR:{
+					state.motorEcus[3].iMaxSpeed=motorMeasurememtMessage->getIMaxSpeed();
+					state.motorEcus[3].iDType=motorMeasurememtMessage->getIDType();
+					state.motorEcus[3].iIType=motorMeasurememtMessage->getIIType();
+					state.motorEcus[3].iPType=motorMeasurememtMessage->getIPType();
+					state.motorEcus[3].uiWheelCircumference=motorMeasurememtMessage->getUiWheelCircumference();
+					break;
+				}
+				default:{
+					LOG_ERROR(ERR_COMM_INVALID_MSG,	"Received unsupported CMotorMeasurementMsgmessage with ID %d.",	conn->client_type);
+					break;
+				}
+				}
+
+			}else{
+
 			//WelcomeMessage
 			if (messageType == CARP_MSGID_WELCOME) {
-				LOG_DEBUG("WelcomeMsg");
 				switch (conn->client_type) {
 				case SSSConn::WHEEL_RF:{
-					LOG_DEBUG("RF");
+					LOG_DEBUG("WelcomeMsg RF");
 					if(wheel_RF)delete(wheel_RF);
 					wheel_RF = new CWelcomeMessage(* ((CWelcomeMessage *) currentMessage));
 					wheel_RF->answerMessage(0x0);
@@ -804,7 +919,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 					break;
 				}
 				case SSSConn::WHEEL_LF:{
-					LOG_DEBUG("LF");
+					LOG_DEBUG("WelcomeMsg LF");
 					if(wheel_LF)delete(wheel_LF);
 					wheel_LF = new CWelcomeMessage(* ((CWelcomeMessage *) currentMessage));
 					wheel_LF->answerMessage(0x0);
@@ -813,7 +928,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 					break;
 				}
 				case SSSConn::WHEEL_LR:{
-					LOG_DEBUG("LR");
+					LOG_DEBUG("WelcomeMsg LR");
 					if(wheel_LR)delete(wheel_LR);
 					wheel_LR = new CWelcomeMessage(* ((CWelcomeMessage *) currentMessage));
 					wheel_LR->answerMessage(0x0);
@@ -822,7 +937,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 					break;
 				}
 				case SSSConn::WHEEL_RR:{
-					LOG_DEBUG("RR");
+					LOG_DEBUG("WelcomeMsg RR");
 					if(wheel_RR)delete(wheel_RR);
 					wheel_RR = new CWelcomeMessage(* ((CWelcomeMessage *) currentMessage));
 					wheel_RR->answerMessage(0x0);
@@ -831,7 +946,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 					break;
 				}
 				case SSSConn::CAMERA:{
-					LOG_DEBUG("CAM");
+					LOG_DEBUG("WelcomeMsg CAM");
 					if(camera)delete(camera);
 					camera = new CWelcomeMessage(* ((CWelcomeMessage *) currentMessage));
 					camera->answerMessage(0x0);
@@ -840,7 +955,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 					break;
 				}
 				case SSSConn::ULTRASOUND:{
-					LOG_DEBUG("US");
+					LOG_DEBUG("WelcomeMsg US");
 					if(ultrasound)delete(ultrasound);
 					ultrasound = new CWelcomeMessage(* ((CWelcomeMessage *) currentMessage));
 					ultrasound->answerMessage(0x0);
@@ -853,6 +968,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 					break;
 				}
 				}
+			}
 			}
 
 		}
@@ -870,7 +986,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 int receive_bytes(SSSConn* conn) {
 	int rx_code = recv(conn->fd, (char *) conn->rx_wr_pos,
 			SSS_RX_BUF_SIZE - (conn->rx_wr_pos - conn->rx_buffer) -1, 0);
-	LOG_DEBUG("rxcode = %i", rx_code);
+	//LOG_DEBUG("rxcode = %i", rx_code);
 
 //	int rx_code = recv(conn->fd,(char*) conn->rx_wr_pos,1024, 0);
 
@@ -909,10 +1025,10 @@ void sss_handle_receive_new(SSSConn* conn, currEmReqAnswer* cERA,
 
 	//check if CARP is somewhere in the buffer and throw everything away until CARP is there
 	int bytesInBuffer = conn->rx_wr_pos - conn->rx_buffer;
-	LOG_DEBUG("bytesInbuffer = %i", bytesInBuffer);
-	LOG_DEBUG("wr_pos = %i    rx_buffer = %i",
-			conn->rx_wr_pos, conn->rx_buffer);
-	LOG_DEBUG("buffer[0] = %02x", conn->rx_buffer[bytesInBuffer]);
+	LOG_DEBUG("new Msg with bytesInbuffer = %i", bytesInBuffer);
+	//LOG_DEBUG("wr_pos = %i    rx_buffer = %i",
+	//		conn->rx_wr_pos, conn->rx_buffer);
+	//LOG_DEBUG("buffer[0] = %02x", conn->rx_buffer[bytesInBuffer]);
 	//output
 	//LOG_DEBUG("msg: ");
 	//for (int i = 0; i < bytesInBuffer; i++) {
@@ -922,7 +1038,7 @@ void sss_handle_receive_new(SSSConn* conn, currEmReqAnswer* cERA,
 
 	if (bytesInBuffer < 4)
 		return;
-	LOG_DEBUG("header >= 4");
+	//LOG_DEBUG("header >= 4");
 
 	while (bytesInBuffer >= 4) {
 
@@ -945,7 +1061,7 @@ void sss_handle_receive_new(SSSConn* conn, currEmReqAnswer* cERA,
 	//now CARP has been received: check if payload len has been received yet
 	if (bytesInBuffer < 8)
 		return;
-	LOG_DEBUG("header msg");
+	//LOG_DEBUG("header msg");
 
 	//full header arrived, now parse payload length
 	int iPayloadLength = conn->rx_buffer[6] << 8;
@@ -954,7 +1070,7 @@ void sss_handle_receive_new(SSSConn* conn, currEmReqAnswer* cERA,
 	//check if the whole payload has been received
 	if (bytesInBuffer - CAR_HEADER_LENGTH < iPayloadLength)
 		return;
-	LOG_DEBUG("payload msg");
+	//LOG_DEBUG("payload msg");
 
 	//parse the found CCarProtocol object
 	CCarProtocol * parsedPacket = new CCarProtocol((alt_u8 *) conn->rx_buffer,
@@ -970,7 +1086,7 @@ void sss_handle_receive_new(SSSConn* conn, currEmReqAnswer* cERA,
 	//execute the command
 	sss_exec_command(parsedPacket, conn, cERA, cRCA, cCCA);
 	delete (parsedPacket);
-	LOG_DEBUG("msg executed!");
+	LOG_DEBUG("Msg executed!");
 }
 
 void swapEndianess(alt_u8 *pArray, alt_u32 iLength) {
@@ -1058,6 +1174,7 @@ void SSSSimpleSocketServerTask() {
 	 * on SSS_PORT for connection requests from any remote address.
 	 */
 	LOG_DEBUG("[sss_task] Simple Socket Server listening on port %d", SSS_PORT);
+	unsigned long test=0;
 
 	while (1) {
 		/*
@@ -1081,6 +1198,11 @@ void SSSSimpleSocketServerTask() {
 		FD_ZERO(&readfds);
 		FD_SET(fd_listen, &readfds);
 		max_socket = fd_listen + 1;
+
+		test=cticks;
+		select(max_socket, &readfds, NULL, NULL, &((timeval){0,500000}));  //!!!This is timing out after a while...0.5s is minimum for tcp_sleep()...if shorter timeout required, modify tcp_sleep()
+		//LOG_DEBUG("leave SELECT started= %d, cticks= %d", test,cticks);
+		//select(max_socket, &readfds, NULL, NULL, NULL);  	//!!!This is blocking as long as no TCP action!!!
 
 		//processAnswerMessages
 		MemController<CarState> sharedMem;
@@ -1311,6 +1433,59 @@ void SSSSimpleSocketServerTask() {
 			send(cCCA.fd, answer, answerLength, 0);
 			free(answer);
 
+			//if state update successful: send motor values to the nano boards
+			if (cCCA.v1 == state.motorEcus[0].iDesiredSpeed	&& cCCA.v2 == state.motorEcus[1].iDesiredSpeed	&& cCCA.v3 == state.motorEcus[2].iDesiredSpeed && cCCA.v4 == state.motorEcus[3].iDesiredSpeed) {
+			//build messages for all4 wheels:
+				//lfwheel
+				CMotorVelocityMessage* tmpMsg1 = new CMotorVelocityMessage(state.motorEcus[0].iDesiredSpeed);
+				CCarProtocol* tmpProtocol1=new CCarProtocol(0,(CCarMessage **) &tmpMsg1,1);
+				alt_u8 * buf1 = (alt_u8 *) malloc(tmpProtocol1->getLength());
+				tmpProtocol1->getBytes(buf1);
+				LOG_DEBUG("lf built");
+				//lrwheel
+				CMotorVelocityMessage* tmpMsg2 = new CMotorVelocityMessage(state.motorEcus[1].iDesiredSpeed);
+				CCarProtocol* tmpProtocol2=new CCarProtocol(0,(CCarMessage **) &tmpMsg2,1);
+				alt_u8 * buf2 = (alt_u8 *) malloc(tmpProtocol2->getLength());
+				tmpProtocol2->getBytes(buf2);
+				LOG_DEBUG("lr built");
+				//rfwheel
+				CMotorVelocityMessage* tmpMsg3 = new CMotorVelocityMessage(state.motorEcus[2].iDesiredSpeed);
+				CCarProtocol* tmpProtocol3=new CCarProtocol(0,(CCarMessage **) &tmpMsg3,1);
+				alt_u8 * buf3 = (alt_u8 *) malloc(tmpProtocol3->getLength());
+				tmpProtocol3->getBytes(buf3);
+				LOG_DEBUG("rf built");
+				//rrwheel
+//				CMotorVelocityMessage* tmpMsg4 = new CMotorVelocityMessage(state.motorEcus[3].iDesiredSpeed);
+//				CCarProtocol* tmpProtocol4=new CCarProtocol(0,(CCarMessage **) &tmpMsg4,1);
+//				alt_u8 * buf4 = (alt_u8 *) malloc(tmpProtocol4->getLength());
+//				tmpProtocol4->getBytes(buf4);
+//				LOG_DEBUG("rr built");
+
+				LOG_DEBUG("CMotorVelMsgs built");
+
+				//send CMVelMessages
+				send(fd_LF, (char*) buf1, tmpProtocol1->getLength(), 0);
+				//send(fd_RF, (char*) buf2, tmpProtocol2->getLength(), 0);
+				//send(fd_LR, (char*) buf3, tmpProtocol3->getLength(), 0);
+				//send(fd_RR, (char*) buf4, tmpProtocol4->getLength(), 0);
+
+				//free & delete
+				free (buf1);
+				free (buf2);
+				free (buf3);
+				//free (buf4);
+				delete tmpMsg1;
+				delete tmpMsg2;
+				delete tmpMsg3;
+				//delete tmpMsg4;
+				delete tmpProtocol1;
+				delete tmpProtocol2;
+				delete tmpProtocol3;
+				//delete tmpProtocol3;
+
+
+			}
+
 			//set cCCA back to zero
 			cCCA.fd = 0;
 			cCCA.stateVersion = 0;
@@ -1319,85 +1494,10 @@ void SSSSimpleSocketServerTask() {
 			cCCA.v2 = 0;
 			cCCA.v3 = 0;
 			cCCA.v4 = 0;
-		}
-
-		//check in PREOPERATIONAL mode if all WelcomeMessages are received
-		//if(state.currMode==OPMODE_PREOPERATIONAL&&wheel_LF!=NULL&&wheel_LR!=NULL&&wheel_RF!=NULL&&wheel_RR!=NULL){  ...because RR nano board missing
-		LOG_DEBUG("wheels: %d, %d. %d",wheel_LF,wheel_RF,wheel_LR);
-		LOG_DEBUG("modes: %d, %d.",state.currMode,state.reqMode);
-		if(state.currMode==OPMODE_PREOPERATIONAL && state.reqMode!=OPMODE_IDLE && wheel_LF!=NULL && wheel_LR!=NULL && wheel_RF!=NULL){
 
 
-			//build welcome Messages
-			LOG_DEBUG("start building");
-			//lfwheel
-			CCarProtocol* tmpProtocol1=new CCarProtocol(0,(CCarMessage **) &wheel_LF,1);
-			LOG_DEBUG("lf %d");
-			for(int i = 0 ; i < 10000; i++) {;}
-			alt_u8 * buf1 = (alt_u8 *) malloc(tmpProtocol1->getLength());
-			//alt_u8 buf1[256];
-			tmpProtocol1->getBytes(buf1);
-			LOG_DEBUG("lf built");
-			for(int i = 0 ; i < 10000; i++) {;}
-			//rfwheel
-			CCarProtocol* tmpProtocol2=new CCarProtocol(0,(CCarMessage **) &wheel_RF,1);
-			alt_u8 * buf2 = (alt_u8 *) malloc(tmpProtocol2->getLength());
-			//alt_u8 buf2[256];
-			tmpProtocol1->getBytes(buf2);
-			LOG_DEBUG("rf built");
-			for(int i = 0 ; i < 10000; i++) {;}
-
-			//lrwheel
-			CCarProtocol* tmpProtocol3=new CCarProtocol(0,(CCarMessage **) &wheel_LR,1);
-			alt_u8 * buf3 = (alt_u8 *) malloc(tmpProtocol3->getLength());
-			//alt_u8 buf3[256];
-			tmpProtocol3->getBytes(buf3);
-			LOG_DEBUG("lr built");
-			for(int i = 0 ; i < 10000; i++) {;}
-
-			//rrwheel
-			//CCarProtocol* tmpProtocol4=new CCarProtocol(0,(CCarMessage **) &wheel_RR,1);
-			//alt_u8 * buf4 = (alt_u8 *) malloc(tmpProtocol4->getLength());
-			//tmpProtocol1->getBytes(buf4);
-			//LOG_DEBUG("rr built");
-			LOG_DEBUG("Welcomes built");
-
-			//send Welcome MEssages
-			send(fd_LF, (char*) buf1, tmpProtocol1->getLength(), 0);
-			send(fd_RF, (char*) buf2, tmpProtocol2->getLength(), 0);
-			send(fd_LR, (char*) buf3, tmpProtocol3->getLength(), 0);
-			//send(fd_RR, (char*) buf4, tmpProtocol4->getLength(), 0);
-
-			LOG_DEBUG("Welcomes sent\n");
-
-			free (buf1);
-			free (buf2);
-			free (buf3);
-			//free (buf4);
-			//set state to IDLE
-			state = sharedMem.getLastElement(true);
-			state.reqMode=OPMODE_IDLE;
-			sharedMem.pushElement(state);
 
 		}
-
-		//check for each connection if its valid => set it
-		for (unsigned int i = 0; i < conns.size(); i++) {
-			//check if a connection should be closed here, close it and delete it from vector
-			if (conns[i]->state == SSSConn::CLOSE) {
-				close(conns[i]->fd);
-				delete conns[i];
-				conns.erase(conns.begin() + i);
-			}
-
-			if (conns[i]->fd != -1) {
-				FD_SET(conns[i]->fd, &readfds);
-				max_socket++;
-			}
-
-		}
-
-		select(max_socket, &readfds, NULL, NULL, NULL);
 
 		/*
 		 * If fd_listen (the listening socket we originally created in this thread
@@ -1427,5 +1527,120 @@ void SSSSimpleSocketServerTask() {
 				}
 			}
 		}
+
+		//check in PREOPERATIONAL mode if all WelcomeMessages are received
+		//if(state.currMode==OPMODE_PREOPERATIONAL&&wheel_LF!=NULL&&wheel_LR!=NULL&&wheel_RF!=NULL&&wheel_RR!=NULL){  ...because RR nano board missing
+		LOG_DEBUG("Wheels: %d, %d, %d, %d",wheel_LF,wheel_LR, wheel_RF,wheel_RR);
+		LOG_DEBUG("Modes(currrent, req): %d, %d",state.currMode,state.reqMode);
+		//if(state.currMode==OPMODE_PREOPERATIONAL && state.reqMode!=OPMODE_IDLE && wheel_LF!=NULL && wheel_LR!=NULL && wheel_RF!=NULL && wheel_RR != NULL){
+		if(state.currMode==OPMODE_PREOPERATIONAL && state.reqMode!=OPMODE_IDLE && wheel_LF!=NULL){
+
+
+			//build welcome Messages
+			//LOG_DEBUG("start building");
+			//lfwheel
+			CCarProtocol* tmpProtocol1=new CCarProtocol(0,(CCarMessage **) &wheel_LF,1);
+			LOG_DEBUG("lf %d");
+			for(int i = 0 ; i < 10000; i++) {;}
+			alt_u8 * buf1 = (alt_u8 *) malloc(tmpProtocol1->getLength());
+			//alt_u8 buf1[256];
+			tmpProtocol1->getBytes(buf1);
+			//LOG_DEBUG("lf built");
+			for(int i = 0 ; i < 10000; i++) {;}
+//			//rfwheel
+//			CCarProtocol* tmpProtocol2=new CCarProtocol(0,(CCarMessage **) &wheel_RF,1);
+//			alt_u8 * buf2 = (alt_u8 *) malloc(tmpProtocol2->getLength());
+//			//alt_u8 buf2[256];
+//			tmpProtocol1->getBytes(buf2);
+//			LOG_DEBUG("rf built");
+//			for(int i = 0 ; i < 10000; i++) {;}
+//
+//			//lrwheel
+//			CCarProtocol* tmpProtocol3=new CCarProtocol(0,(CCarMessage **) &wheel_LR,1);
+//			alt_u8 * buf3 = (alt_u8 *) malloc(tmpProtocol3->getLength());
+//			//alt_u8 buf3[256];
+//			tmpProtocol3->getBytes(buf3);
+//			LOG_DEBUG("lr built");
+//			for(int i = 0 ; i < 10000; i++) {;}
+
+			//rrwheel
+			//CCarProtocol* tmpProtocol4=new CCarProtocol(0,(CCarMessage **) &wheel_RR,1);
+			//alt_u8 * buf4 = (alt_u8 *) malloc(tmpProtocol4->getLength());
+			//tmpProtocol1->getBytes(buf4);
+			//LOG_DEBUG("rr built");
+			//LOG_DEBUG("Welcomes built");
+
+			//send Welcome MEssages
+			send(fd_LF, (char*) buf1, tmpProtocol1->getLength(), 0);
+			//send(fd_RF, (char*) buf2, tmpProtocol2->getLength(), 0);
+			//send(fd_LR, (char*) buf3, tmpProtocol3->getLength(), 0);
+			//send(fd_RR, (char*) buf4, tmpProtocol4->getLength(), 0);
+
+			LOG_DEBUG("Welcomes sent");
+
+
+
+			//let the nanoboard process the messages
+			for(int i=0;i<10000000;i++){;}
+
+			//create empty msg+protocol
+			CMotorMeasurementMessage* tmpMsg= new CMotorMeasurementMessage();
+			tmpProtocol1=new CCarProtocol(0,(CCarMessage **) &tmpMsg,1);
+			free (buf1);
+			buf1 = (alt_u8 *) malloc(tmpProtocol1->getLength());
+			tmpProtocol1->getBytes(buf1);
+
+			//LOG_DEBUG("CMeasurements built");
+
+			//send empty msgs
+			send(fd_LF, (char*) buf1, tmpProtocol1->getLength(), 0);
+			//send(fd_RF, (char*) buf1, tmpProtocol1->getLength(), 0);
+			//send(fd_LR, (char*) buf1, tmpProtocol1->getLength(), 0);
+			//send(fd_RR, (char*) buf1, tmpProtocol1->getLength(), 0);
+
+			LOG_DEBUG("CMeasurements sent");
+			for(int i=0;i<10000000;i++){;}
+			//free & delete
+			free (buf1);
+			//free (buf2);
+			//free (buf3);
+			//free (buf4);
+			delete tmpProtocol1;
+			//delete tmpProtocol2;
+			//delete tmpProtocol3;
+			//delete tmpProtocol4;
+
+
+			//LOG_DEBUG("delete & free");
+
+			//set state to IDLE
+			state = sharedMem.getLastElement(true);
+			state.reqMode=OPMODE_IDLE;
+			sharedMem.pushElement(state);
+
+			LOG_DEBUG("Enter state IDLE");
+
+		}
+
+		//check for each connection if its valid => set it
+		for (unsigned int i = 0; i < conns.size(); i++) {
+			//check if a connection should be closed here, close it and delete it from vector
+			if (conns[i]->state == SSSConn::CLOSE) {
+				close(conns[i]->fd);
+				delete conns[i];
+				conns.erase(conns.begin() + i);
+			}
+
+			if (conns[i]->fd != -1) {
+				FD_SET(conns[i]->fd, &readfds);
+				max_socket++;
+			}
+
+		}
+
+
+
+
+
 	} /* while(1) */
 }

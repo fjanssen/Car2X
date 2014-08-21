@@ -27,10 +27,10 @@ public:
 	alt_16 get_siVelRearLeft()   { return m_siVelRearLeft; }
 
 private:
-	alt_16 m_siVelFrontRight;
 	alt_16 m_siVelFrontLeft;
-	alt_16 m_siVelRearRight;
+	alt_16 m_siVelFrontRight;
 	alt_16 m_siVelRearLeft;
+	alt_16 m_siVelRearRight;
 
 	void parseMessage(alt_u8 *pMessage, int iLength);
 };
