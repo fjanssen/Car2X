@@ -32,7 +32,8 @@ int main (void)
 	*pLED = 0;
 
 	LOG_DEBUG("setuppid");
-	if(!setUpPIController())
+	ret = setUpPIController();
+	if(!ret)
 	{
 		goto fail;
 	}
@@ -311,7 +312,7 @@ bool setUpPIController()
 	// Reset the controller
 	if(pController)
 		delete(pController);
-	pController = new CPIDController(uiMaxSpeed, uiT, -1*uiMaxSpeed, uiMaxSpeed);
+	pController = new CPIController(uiMaxSpeed, uiT, -1*uiMaxSpeed, uiMaxSpeed);
 
 	// Get the MeasurementRequestMessage
 	while(true)
@@ -342,6 +343,11 @@ bool setUpPIController()
 
 	*pLED = *pLED & 0xFE;
 	((CMotorMeasurementMessage*) pMessage)->answerMessage((alt_16) uiMaxSpeed, WHEEL_SCALE, (alt_16) uiMaxSpeed, (alt_16) uiT, 0);
+
+	pProtocol->getBytes(cBuffer);
+	pSocket->Send(cBuffer, pProtocol->getLength());
+
+	if(pProtocol) delete(pProtocol);
 
 	return true;
 }

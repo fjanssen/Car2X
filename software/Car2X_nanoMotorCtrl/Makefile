@@ -202,7 +202,7 @@ CRT0 :=
 SYS_LIB :=
 
 # Define path to the root of the BSP.
-BSP_ROOT_DIR := C:/Users/wji/car2x/Car2X/software/Car2X_nanoMotorCtrl_bsp/
+BSP_ROOT_DIR := ../Car2X_nanoMotorCtrl_bsp
 
 # List of application specific include directories, library directories and library names
 APP_INCLUDE_DIRS += ../shared_files/COMM_CarProtocol
