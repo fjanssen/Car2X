@@ -132,8 +132,6 @@ bool sendWelcome()
 	delay(200);
 	CWelcomeMessage * wMsg = new CWelcomeMessage(FIRMWARE_VERSION, COMPONENT_TYPE, COMPONENT_ID, uiAvailableOperations);
 
-	pProtocol = new CCarProtocol(0, (CCarMessage **) &wMsg, 1);
-
 	// set led on
 	*pLED |= 0x01;
 
@@ -145,21 +143,18 @@ bool sendWelcome()
 		LOG_DEBUG("loop %d",  (int) uiTries);
 
 		LOG_DEBUG("Gen proto");
-		delay(200);
 		// Put the WelcomeMessage into the protocol wrapper.
-
+		pProtocol = new CCarProtocol(0, (CCarMessage **) &wMsg, 1);
 		pProtocol->getBytes(cBuffer);
 
 		LOG_DEBUG("cBuffer: '%c%c%c%c' 0x%02X%02X%02X%02X 0x%02X%02X%02X%02X", cBuffer[0], cBuffer[1],
 				cBuffer[2], cBuffer[3], cBuffer[4], cBuffer[5], cBuffer[6], cBuffer[7],
 				cBuffer[8], cBuffer[9], cBuffer[10], cBuffer[11]);
-		delay(200);
 
 		// Send out the packet.
 		bool success = pSocket->Send(cBuffer, pProtocol->getLength());
 
 		LOG_DEBUG("sent? %x", success);
-		delay(200);
 
 		// Receive bytes from socket (timed blocking)
 		uiReceivedCount = pSocket->Receive(cBuffer, 128, 10);
@@ -170,6 +165,13 @@ bool sendWelcome()
 			uiTries++;
 			continue; // If nothing was received
 		}
+		
+		// Is there a current protocol, delete it and generate a new one out of received data
+		if(pProtocol) {
+			delete(pProtocol);
+		}
+		
+		pProtocol = new CCarProtocol(cBuffer, uiReceivedCount);
 
 		// Was the protocol generation unsuccessful then count one more try and continue
 		if(pProtocol == 0 || !pProtocol->isValid() || pProtocol->getMessageCount() < 1)
@@ -193,10 +195,6 @@ bool sendWelcome()
 
 	}
 
-	// Is there a current protocol, delete it and generate a new one out of received data
-	if(pProtocol) {
-		delete(pProtocol);
-	}
 
 	return false;
 }
