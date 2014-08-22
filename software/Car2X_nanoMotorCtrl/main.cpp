@@ -32,19 +32,21 @@ int main (void)
 	*pLED = 0;
 
 	LOG_DEBUG("setuppid");
-//	ret = setUpPIController();
-//	if(!ret)
-//	{
-//		goto fail;
-//	}
-
-	pController = new CPIController(500, 1, -1*500, 500);
+//	delay(200);
+	ret = setUpPIController();
+	if(!ret)
+	{
+		goto fail;
+	}
+	LOG_DEBUG("after setuppid");
+//		delay(200);
+//	pController = new CPIController(500, 0.01, -1*500, 500);
 
 	// Restore speed = 0
 	iDesiredSpeed = 0;
 	iCurrentSpeed = 0;
 	setSpeed(0);
-	delay(1000);
+//	delay(1000);
 
 	// Set timer and start it
 	alt_u32 (*callback) (void*);
@@ -53,24 +55,29 @@ int main (void)
 
 	// Start first Speed Measurement
 	LOG_DEBUG("measure");
+//	delay(200);
 	measureSpeedUnblocking();
 	LOG_DEBUG("afterSpeedUnblock");
-	delay(10000);
+//	delay(200);
 	// Small cycle:
 	while(true)
 	{
 		printf(".");
 		if(!waitForEndOfCycle())
 			goto fail;
-
+		LOG_DEBUG("EndofCycle");
+//		delay(200);
 		if(!controlSpeed())
 			goto fail;
-
+		LOG_DEBUG("controlSpeed");
+//		delay(200);
 		if(state >= 9)
 		{
 			if(!waitForNextPacket())
 				goto fail;
 			state = 0;
+			LOG_DEBUG("NextPacket");
+//			delay(200);
 		}
 		else
 		{
@@ -81,8 +88,12 @@ int main (void)
 				count = count - state - 1;
 				pCurrentMessage = 0;
 				pCurrentMessage = pProtocol->getNthMessage(count);
+				LOG_DEBUG("getNthMessage");
+//					delay(200);
 				if(pCurrentMessage != 0 && pCurrentMessage->isValid())
 					pCurrentMessage->doAction();
+				LOG_DEBUG("doAction");
+//					delay(200);
 			}
 			state++;
 		}
@@ -148,7 +159,10 @@ bool sendWelcome()
 		LOG_DEBUG("Gen proto");
 		
 		// Put the WelcomeMessage into the protocol wrapper.
-		if(pProtocol) delete(pProtocol);
+		if(pProtocol) {
+			delete(pProtocol);
+			pProtocol = 0;
+		}
 		wMsg = new CWelcomeMessage(FIRMWARE_VERSION, COMPONENT_TYPE, COMPONENT_ID, uiAvailableOperations);
 		pProtocol = new CCarProtocol(0, (CCarMessage **) &wMsg, 1);
 		pProtocol->getBytes(cBuffer);
@@ -175,7 +189,10 @@ bool sendWelcome()
 		}
 		
 		// Is there a current protocol, delete it and generate a new one out of received data
-		if(pProtocol) delete(pProtocol);
+		if(pProtocol){
+			delete(pProtocol);
+			pProtocol = 0;
+		}
 		pProtocol = new CCarProtocol(cBuffer, uiReceivedCount);
 
 		// Was the protocol generation unsuccessful then count one more try and continue
@@ -194,7 +211,10 @@ bool sendWelcome()
 			LOG_DEBUG("valid message");
 //			delay(200);
 			*pLED &= 0xFE;
-			if(pProtocol) delete(pProtocol);
+			if(pProtocol) {
+				delete(pProtocol);
+				pProtocol = 0;
+			}
 			return true;
 		}
 		uiTries++;
@@ -215,6 +235,8 @@ bool controlSpeed()
 	iNextSpeed = pController->control(iDesiredSpeed - iCurrentSpeed);
 	// Set new speed
 	setSpeed(iNextSpeed);
+	LOG_DEBUG("iNextSpeed: %hd iCurrentSpeed: %hd",iNextSpeed,iCurrentSpeed);
+//		delay(200);
 
 	// Is there a VelocityMessage then set the current speed as an answer
 	if(pProtocol != 0 && pProtocol->isValid() && pProtocol->getMessageCount() > 0)
@@ -247,7 +269,7 @@ bool waitForNextPacket()
 		LOG_DEBUG("cBuffer: '%c%c%c%c' 0x%0X%0X%0X%0X 0x%0X%0X%0X%0X", cBuffer[0], cBuffer[1],
 				cBuffer[2], cBuffer[3], cBuffer[4], cBuffer[5], cBuffer[6], cBuffer[7],
 				cBuffer[8], cBuffer[9], cBuffer[10], cBuffer[11]);
-
+//delay(200);
 		// Is there a VelocityMessage then set the desired speed along with the message
 		if(pNewProtocol != 0 && pNewProtocol->isValid() && pNewProtocol->getMessageCount() > 0)
 		{
@@ -262,7 +284,8 @@ bool waitForNextPacket()
 	{
 		*pLED = *pLED | 0x10;
 	}
-
+	LOG_DEBUG("send answer of last packet");
+//				delay(200);
 	// Send answer of the last packet
 	if(pProtocol != 0 && pProtocol->isValid())
 	{
@@ -271,11 +294,13 @@ bool waitForNextPacket()
 			*pLED = *pLED | 0x02;
 			return false;
 		}
-		pSocket->Send(cBuffer, pProtocol->getLength());
 	}
-
+	LOG_DEBUG("delete old protokol");
+//				delay(200);
 	if(pNewProtocol != 0 && pNewProtocol->isValid() && pNewProtocol->getMessageCount() > 0)
 	{
+		pNewProtocol->getBytes(cBuffer);
+		pSocket->Send(cBuffer, pNewProtocol->getLength());
 		// Delete old Packet
 		if(pProtocol)
 		{
@@ -303,14 +328,14 @@ bool setUpPIController()
 	iCurrentSpeed = 0;
 
 	setSpeed(0);
-	delay (1000);
+	delay (500);
 
 	// Full speed
 	setSpeed(100000);
 	// Measure speed at T1 (=10ns)
 	uiT = measureSpeed();
 
-	delay (10000);
+	delay (500);
 
 	// Measure speed at Tk (=10020ns) which should be the VMax
 	uiMaxSpeed = measureSpeed();
@@ -320,8 +345,11 @@ bool setUpPIController()
 	uiT = (uiT * 100) / (uiMaxSpeed+1);
 
 	// Reset the controller
-	if(pController)
+	if(pController){
 		delete(pController);
+	}
+	uiMaxSpeed=500;
+	uiT=3;
 	pController = new CPIController(uiMaxSpeed, uiT, -1*uiMaxSpeed, uiMaxSpeed);
 
 	// Get the MeasurementRequestMessage
@@ -338,7 +366,10 @@ bool setUpPIController()
 			continue;
 
 		if(pProtocol)
-			delete(pProtocol);
+		{
+		delete(pProtocol);
+		pProtocol = 0;
+		}
 		pProtocol = new CCarProtocol(cBuffer, uiReceivedCount);
 		if(pProtocol == 0 || !pProtocol->isValid() || pProtocol->getMessageCount() != 1)
 		{
@@ -357,7 +388,10 @@ bool setUpPIController()
 	pProtocol->getBytes(cBuffer);
 	pSocket->Send(cBuffer, pProtocol->getLength());
 
-	if(pProtocol) delete(pProtocol);
+	if(pProtocol){
+		delete(pProtocol);
+		pProtocol = 0;
+	}
 
 	return true;
 }
