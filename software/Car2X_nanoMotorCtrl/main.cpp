@@ -126,11 +126,12 @@ bool sendWelcome()
 	alt_u32 uiTries = 0;         // Counts the tries, if >= 5 return
 	alt_u8 cBuffer[128];         // Standard byte buffer
 	alt_u32 uiReceivedCount = 0; // Count of received bytes (further: iLength)
+	CWelcomeMessage * wMsg;
+	bool success;
 
 	// Prepare welcome message
 	LOG_DEBUG("allocate msg");
 	delay(200);
-	CWelcomeMessage * wMsg = new CWelcomeMessage(FIRMWARE_VERSION, COMPONENT_TYPE, COMPONENT_ID, uiAvailableOperations);
 
 	// set led on
 	*pLED |= 0x01;
@@ -145,6 +146,7 @@ bool sendWelcome()
 		
 		// Put the WelcomeMessage into the protocol wrapper.
 		if(pProtocol) delete(pProtocol);
+		wMsg = new CWelcomeMessage(FIRMWARE_VERSION, COMPONENT_TYPE, COMPONENT_ID, uiAvailableOperations);
 		pProtocol = new CCarProtocol(0, (CCarMessage **) &wMsg, 1);
 		pProtocol->getBytes(cBuffer);
 
@@ -153,8 +155,10 @@ bool sendWelcome()
 				cBuffer[8], cBuffer[9], cBuffer[10], cBuffer[11]);
 
 		// Send out the packet.
-		bool success = pSocket->Send(cBuffer, pProtocol->getLength());
-
+		if(uiTries % 100 == 0)
+		{
+			success = pSocket->Send(cBuffer, pProtocol->getLength());
+		}
 		LOG_DEBUG("sent? %x", success);
 
 		// Receive bytes from socket (timed blocking)
