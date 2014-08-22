@@ -32,11 +32,13 @@ int main (void)
 	*pLED = 0;
 
 	LOG_DEBUG("setuppid");
-	ret = setUpPIController();
-	if(!ret)
-	{
-		goto fail;
-	}
+//	ret = setUpPIController();
+//	if(!ret)
+//	{
+//		goto fail;
+//	}
+
+	pController = new CPIController(500, 1, -1*500, 500);
 
 	// Restore speed = 0
 	iDesiredSpeed = 0;
@@ -52,7 +54,8 @@ int main (void)
 	// Start first Speed Measurement
 	LOG_DEBUG("measure");
 	measureSpeedUnblocking();
-
+	LOG_DEBUG("afterSpeedUnblock");
+	delay(10000);
 	// Small cycle:
 	while(true)
 	{
@@ -120,7 +123,7 @@ bool init()
 bool sendWelcome()
 {
 	LOG_DEBUG("wait entry");
-	delay(200);
+//	delay(200);
 
 	CCarMessage * pMessage = 0;
 	alt_u32 uiTries = 0;         // Counts the tries, if >= 5 return
@@ -131,13 +134,13 @@ bool sendWelcome()
 
 	// Prepare welcome message
 	LOG_DEBUG("allocate msg");
-	delay(200);
+//	delay(200);
 
 	// set led on
 	*pLED |= 0x01;
 
 	LOG_DEBUG("pre while");
-	delay(200);
+//	delay(200);
 
 	while(true)
 	{
@@ -166,7 +169,7 @@ bool sendWelcome()
 		if(uiReceivedCount <= 0)
 		{
 			LOG_DEBUG("incomplete packet");
-			delay(200);
+//			delay(200);
 			uiTries++;
 			continue; // If nothing was received
 		}
@@ -179,7 +182,7 @@ bool sendWelcome()
 		if(pProtocol == 0 || !pProtocol->isValid() || pProtocol->getMessageCount() < 1)
 		{
 			printf("invalid packet\n");
-			delay(200);
+//			delay(200);
 			uiTries++;
 			continue;
 		}
@@ -189,7 +192,7 @@ bool sendWelcome()
 		if(pMessage->isValid() && pMessage->getType() == 0x01)
 		{
 			LOG_DEBUG("valid message");
-			delay(200);
+//			delay(200);
 			*pLED &= 0xFE;
 			if(pProtocol) delete(pProtocol);
 			return true;
