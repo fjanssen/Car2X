@@ -50,13 +50,13 @@ int main (void)
 	alt_alarm_start(&alarm, 10, callback, 0);
 
 	// Start first Speed Measurement
+	LOG_DEBUG("measure");
 	measureSpeedUnblocking();
 
 	// Small cycle:
 	while(true)
 	{
-		LOG_DEBUG("main loop");
-
+		printf(".");
 		if(!waitForEndOfCycle())
 			goto fail;
 
@@ -150,7 +150,9 @@ bool sendWelcome()
 
 		pProtocol->getBytes(cBuffer);
 
-		LOG_DEBUG("cBuffer: %c %c", cBuffer[0], cBuffer[1]);
+		LOG_DEBUG("cBuffer: '%c%c%c%c' 0x%02X%02X%02X%02X 0x%02X%02X%02X%02X", cBuffer[0], cBuffer[1],
+				cBuffer[2], cBuffer[3], cBuffer[4], cBuffer[5], cBuffer[6], cBuffer[7],
+				cBuffer[8], cBuffer[9], cBuffer[10], cBuffer[11]);
 		delay(200);
 
 		// Send out the packet.
@@ -237,6 +239,10 @@ bool waitForNextPacket()
 		*pLED = *pLED & 0xEF;
 
 		pNewProtocol = new CCarProtocol(cBuffer, uiReceivedCount);
+
+		LOG_DEBUG("cBuffer: '%c%c%c%c' 0x%0X%0X%0X%0X 0x%0X%0X%0X%0X", cBuffer[0], cBuffer[1],
+				cBuffer[2], cBuffer[3], cBuffer[4], cBuffer[5], cBuffer[6], cBuffer[7],
+				cBuffer[8], cBuffer[9], cBuffer[10], cBuffer[11]);
 
 		// Is there a VelocityMessage then set the desired speed along with the message
 		if(pNewProtocol != 0 && pNewProtocol->isValid() && pNewProtocol->getMessageCount() > 0)
