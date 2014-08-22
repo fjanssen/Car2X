@@ -141,9 +141,10 @@ bool sendWelcome()
 	while(true)
 	{
 		LOG_DEBUG("loop %d",  (int) uiTries);
-
 		LOG_DEBUG("Gen proto");
+		
 		// Put the WelcomeMessage into the protocol wrapper.
+		if(pProtocol) delete(pProtocol);
 		pProtocol = new CCarProtocol(0, (CCarMessage **) &wMsg, 1);
 		pProtocol->getBytes(cBuffer);
 
@@ -167,10 +168,7 @@ bool sendWelcome()
 		}
 		
 		// Is there a current protocol, delete it and generate a new one out of received data
-		if(pProtocol) {
-			delete(pProtocol);
-		}
-		
+		if(pProtocol) delete(pProtocol);
 		pProtocol = new CCarProtocol(cBuffer, uiReceivedCount);
 
 		// Was the protocol generation unsuccessful then count one more try and continue
@@ -189,6 +187,7 @@ bool sendWelcome()
 			LOG_DEBUG("valid message");
 			delay(200);
 			*pLED &= 0xFE;
+			if(pProtocol) delete(pProtocol);
 			return true;
 		}
 		uiTries++;
