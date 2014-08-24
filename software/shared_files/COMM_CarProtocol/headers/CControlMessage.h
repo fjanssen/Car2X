@@ -7,7 +7,7 @@
 
 #ifndef CCONTROLMESSAGE_H_
 #define CCONTROLMESSAGE_H_
-//struct for GUI:0x30080000XXXXXXXX
+//struct for GUI:0x30120000XXXXXXXX
 #include "CarMessage.h"
 #include <alt_types.h>
 

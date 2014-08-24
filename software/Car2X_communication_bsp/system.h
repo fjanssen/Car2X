@@ -4,7 +4,7 @@
  * Machine generated for CPU 'com_nios' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: ../../hardware/nios_system.sopcinfo
  *
- * Generated: Mon Aug 18 16:05:19 CEST 2014
+ * Generated: Thu Aug 21 18:58:57 CEST 2014
  */
 
 /*
@@ -65,7 +65,7 @@
 #define ALT_CPU_BREAK_ADDR 0x8006020
 #define ALT_CPU_CPU_FREQ 100000000u
 #define ALT_CPU_CPU_ID_SIZE 1
-#define ALT_CPU_CPU_ID_VALUE 0x00000000
+#define ALT_CPU_CPU_ID_VALUE 0x00000001
 #define ALT_CPU_CPU_IMPLEMENTATION "fast"
 #define ALT_CPU_DATA_ADDR_WIDTH 0x1c
 #define ALT_CPU_DCACHE_LINE_SIZE 32
@@ -99,7 +99,7 @@
 #define NIOS2_BREAK_ADDR 0x8006020
 #define NIOS2_CPU_FREQ 100000000u
 #define NIOS2_CPU_ID_SIZE 1
-#define NIOS2_CPU_ID_VALUE 0x00000000
+#define NIOS2_CPU_ID_VALUE 0x00000001
 #define NIOS2_CPU_IMPLEMENTATION "fast"
 #define NIOS2_DATA_ADDR_WIDTH 0x1c
 #define NIOS2_DCACHE_LINE_SIZE 32

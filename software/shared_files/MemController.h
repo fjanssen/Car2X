@@ -167,6 +167,7 @@ public:
 		T element; // TODO: should return some sort of error instaed of uninitialised element
 		alt_u32 index;
 
+		//LOG_DEBUG("getElement, %d",blocking);
 		/* --- validation ---*/
 		if(retVal = getSharedMemArea(), retVal != ERR_NONE)
 		{
@@ -229,17 +230,22 @@ private:
 	 * \details */
 	ErrCode getSharedMemArea()
 	{
-		bool isMine = altera_avalon_mutex_is_mine(m_mutexArea_p);
+		volatile bool isMine = altera_avalon_mutex_is_mine(m_mutexArea_p);
+		//LOG_DEBUG("m_mutexArea: %d",m_mutexArea_p->mutex_base);
 
 		if(!isMine)
 		{
 			//LOG_DEBUG("locking mutex");
 			altera_avalon_mutex_lock(m_mutexArea_p, 1);
+			//LOG_DEBUG("Mutex locked!");
 		}
 		else
 		{
 			//LOG_DEBUG("mutex already mine.");
 		}
+		isMine = altera_avalon_mutex_is_mine(m_mutexArea_p);
+		//LOG_DEBUG("isMine: %d",isMine);
+
 		return ERR_NONE;
 	}
 
@@ -248,7 +254,7 @@ private:
 	 * \details */
 	bool releaseSharedMemArea()
 	{
-		bool isMine = altera_avalon_mutex_is_mine(m_mutexArea_p);
+		volatile bool isMine = altera_avalon_mutex_is_mine(m_mutexArea_p);
 
 		if(isMine)
 		{

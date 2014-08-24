@@ -2,9 +2,9 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>ucosii</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Aug 17, 2014 2:59:57 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1408280397283</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>C:\Users\wji\car2x\repo\software\Car2X_communication_bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>21.08.2014 18:58:56</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1408640336310</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>C:\Users\HS\Documents\tortoise2x\Car2X.git\trunk\software\Car2X_communication_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\hardware\nios_system.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
