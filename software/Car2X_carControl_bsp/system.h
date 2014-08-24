@@ -4,7 +4,7 @@
  * Machine generated for CPU 'carControl_nios' in SOPC Builder design 'nios_system'
  * SOPC Builder design path: ../../hardware/nios_system.sopcinfo
  *
- * Generated: Mon Aug 18 16:00:31 CEST 2014
+ * Generated: Thu Aug 21 19:00:54 CEST 2014
  */
 
 /*
@@ -64,8 +64,8 @@
 #define ALT_CPU_BIG_ENDIAN 0
 #define ALT_CPU_BREAK_ADDR 0x100820
 #define ALT_CPU_CPU_FREQ 100000000u
-#define ALT_CPU_CPU_ID_SIZE 16
-#define ALT_CPU_CPU_ID_VALUE 0x00010000
+#define ALT_CPU_CPU_ID_SIZE 1
+#define ALT_CPU_CPU_ID_VALUE 0x00000002
 #define ALT_CPU_CPU_IMPLEMENTATION "small"
 #define ALT_CPU_DATA_ADDR_WIDTH 0x1c
 #define ALT_CPU_DCACHE_LINE_SIZE 0
@@ -96,8 +96,8 @@
 #define NIOS2_BIG_ENDIAN 0
 #define NIOS2_BREAK_ADDR 0x100820
 #define NIOS2_CPU_FREQ 100000000u
-#define NIOS2_CPU_ID_SIZE 16
-#define NIOS2_CPU_ID_VALUE 0x00010000
+#define NIOS2_CPU_ID_SIZE 1
+#define NIOS2_CPU_ID_VALUE 0x00000002
 #define NIOS2_CPU_IMPLEMENTATION "small"
 #define NIOS2_DATA_ADDR_WIDTH 0x1c
 #define NIOS2_DCACHE_LINE_SIZE 0
@@ -144,18 +144,24 @@
 #define ALT_NUM_EXTERNAL_INTERRUPT_CONTROLLERS 0
 #define ALT_NUM_INTERNAL_INTERRUPT_CONTROLLERS 1
 #define ALT_NUM_INTERRUPT_CONTROLLERS 1
-#define ALT_STDERR "/dev/null"
+#define ALT_STDERR "/dev/jtaguart_1"
 #define ALT_STDERR_BASE 0x0
-#define ALT_STDERR_DEV null
-#define ALT_STDERR_TYPE ""
-#define ALT_STDIN "/dev/null"
+#define ALT_STDERR_DEV jtaguart_1
+#define ALT_STDERR_IS_JTAG_UART
+#define ALT_STDERR_PRESENT
+#define ALT_STDERR_TYPE "altera_avalon_jtag_uart"
+#define ALT_STDIN "/dev/jtaguart_1"
 #define ALT_STDIN_BASE 0x0
-#define ALT_STDIN_DEV null
-#define ALT_STDIN_TYPE ""
-#define ALT_STDOUT "/dev/null"
+#define ALT_STDIN_DEV jtaguart_1
+#define ALT_STDIN_IS_JTAG_UART
+#define ALT_STDIN_PRESENT
+#define ALT_STDIN_TYPE "altera_avalon_jtag_uart"
+#define ALT_STDOUT "/dev/jtaguart_1"
 #define ALT_STDOUT_BASE 0x0
-#define ALT_STDOUT_DEV null
-#define ALT_STDOUT_TYPE ""
+#define ALT_STDOUT_DEV jtaguart_1
+#define ALT_STDOUT_IS_JTAG_UART
+#define ALT_STDOUT_PRESENT
+#define ALT_STDOUT_TYPE "altera_avalon_jtag_uart"
 #define ALT_SYSTEM_NAME "nios_system"
 
 

@@ -92,7 +92,7 @@ typedef struct currEmReqAnswer{
 };
 
 typedef struct currRemCtrlAnswer{
-	int stateVersion;
+	alt_u32 stateVersion;
 	alt_u8 ip1;
 	alt_u8 ip2;
 	alt_u8 ip3;
@@ -102,7 +102,7 @@ typedef struct currRemCtrlAnswer{
 };
 
 typedef struct currCCtrlAnswer{
-	int stateVersion;
+	alt_u32 stateVersion;
 	int v1;
 	int v2;
 	int v3;

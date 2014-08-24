@@ -6,6 +6,7 @@
 #include "ErrHandler.h"
 #include <cstdlib>
 #include <string.h>
+#include "nios2.h";
 
 void switchState(CarState * state);
 
@@ -26,6 +27,10 @@ int main()
 
 	while(1)
 	{
+		for(int i=0;i<5000000;i++){;}
+		int nios;
+		NIOS2_READ_CPUID(nios);
+		//LOG_DEBUG("NiosCPUID: %d",nios);
 		// get the lastest car state from the shared memory
 		state = ctrl.getLastElement(true);
 
@@ -33,7 +38,7 @@ int main()
 		int speed = state.motorEcus[0].iCurrentSpeed + state.motorEcus[1].iCurrentSpeed + state.motorEcus[2].iCurrentSpeed + state.motorEcus[3].iCurrentSpeed;
 
 		LOG_DEBUG("\rSpeed: %+5d mm/s, OpMode: %#x ", speed, state.currMode);
-		LOG_DEBUG("yippee!");
+		//LOG_DEBUG("yippee!");
 
 		// perform state switch if requested.
 		if(state.reqMode != state.currMode)
@@ -120,9 +125,11 @@ void setMotorSpeeds(CarState * state)
 			+ state->motorEcus[2].iCurrentSpeed
 			+ state->motorEcus[3].iCurrentSpeed) / 4;
 
-	LOG_DEBUG("Current velocity: %+5d, FL: %+3d, FR: %+3d, RL: %+3d, RR: %+3d",
+	LOG_DEBUG("Current velocity: %+5d, LF: %+3hd, LR: %+3hd, RF: %+3hd, RR: %+3hd",
 			iCurrVel, state->motorEcus[0].iCurrentSpeed, state->motorEcus[1].iCurrentSpeed,
 			state->motorEcus[2].iCurrentSpeed, state->motorEcus[3].iCurrentSpeed);
+	//LOG current PIController values
+	LOG_DEBUG("LF: %hd, %hd, %hd LR: %hd, %hd, %hd RF: %hd, %hd, %hd RR: %hd, %hd, %hd",state->motorEcus[0].iIType,state->motorEcus[0].iPType,state->motorEcus[0].iMaxSpeed,state->motorEcus[1].iIType,state->motorEcus[1].iPType,state->motorEcus[1].iMaxSpeed,state->motorEcus[2].iIType,state->motorEcus[2].iPType,state->motorEcus[2].iMaxSpeed,state->motorEcus[3].iIType,state->motorEcus[3].iPType,state->motorEcus[3].iMaxSpeed);
 
 	// Calculate individual wheel speeds
 	iReqVel = (state->reqVelocity.iFrontLeft
@@ -130,9 +137,9 @@ void setMotorSpeeds(CarState * state)
 			+ state->reqVelocity.iRearLeft
 			+ state->reqVelocity.iRearRight) / 4;
 
-	LOG_DEBUG("Request velocity: %+5d, FL: %+3d, FR: %+3d, RL: %+3d, RR: %+3d",
-			iReqVel, state->reqVelocity.iFrontLeft, state->reqVelocity.iFrontRight,
-			state->reqVelocity.iRearLeft, state->reqVelocity.iRearRight);
+	LOG_DEBUG("Request velocity: %+5hd, LF: %+3hd, LR: %+3hd, RF: %+3hd, RR: %+3hd",
+			iReqVel, state->reqVelocity.iFrontLeft, state->reqVelocity.iRearLeft,
+			state->reqVelocity.iFrontRight, state->reqVelocity.iRearRight);
 
 	if(abs(iReqVel) > abs(state->iMaxSpeed))
 	{
@@ -147,8 +154,8 @@ void setMotorSpeeds(CarState * state)
 
 	// Update state:
 	state->motorEcus[0].iDesiredSpeed = (alt_16) (state->reqVelocity.iFrontLeft  * fVelFactor / 100);
-	state->motorEcus[1].iDesiredSpeed = (alt_16) (state->reqVelocity.iFrontRight * fVelFactor / 100);
-	state->motorEcus[2].iDesiredSpeed = (alt_16) (state->reqVelocity.iRearLeft   * fVelFactor / 100);
+	state->motorEcus[1].iDesiredSpeed = (alt_16) (state->reqVelocity.iRearLeft * fVelFactor / 100);
+	state->motorEcus[2].iDesiredSpeed = (alt_16) (state->reqVelocity.iFrontRight   * fVelFactor / 100);
 	state->motorEcus[3].iDesiredSpeed = (alt_16) (state->reqVelocity.iRearRight  * fVelFactor / 100);
 
 	// TODO: disregarding ultrasound sensor for now... sort out the many inclusions of comm stuff in CUltrasoundSensorState
