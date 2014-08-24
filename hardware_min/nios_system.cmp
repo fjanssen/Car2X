@@ -1,0 +1,30 @@
+	component nios_system is
+		port (
+			clk_clk                           : in    std_logic                     := 'X';             -- clk
+			reset_reset_n                     : in    std_logic                     := 'X';             -- reset_n
+			com_sdram_wire_addr               : out   std_logic_vector(11 downto 0);                    -- addr
+			com_sdram_wire_ba                 : out   std_logic_vector(1 downto 0);                     -- ba
+			com_sdram_wire_cas_n              : out   std_logic;                                        -- cas_n
+			com_sdram_wire_cke                : out   std_logic;                                        -- cke
+			com_sdram_wire_cs_n               : out   std_logic;                                        -- cs_n
+			com_sdram_wire_dq                 : inout std_logic_vector(31 downto 0) := (others => 'X'); -- dq
+			com_sdram_wire_dqm                : out   std_logic_vector(3 downto 0);                     -- dqm
+			com_sdram_wire_ras_n              : out   std_logic;                                        -- ras_n
+			com_sdram_wire_we_n               : out   std_logic;                                        -- we_n
+			tse_conduit_connection_rgmii_in   : in    std_logic_vector(3 downto 0)  := (others => 'X'); -- rgmii_in
+			tse_conduit_connection_rgmii_out  : out   std_logic_vector(3 downto 0);                     -- rgmii_out
+			tse_conduit_connection_rx_control : in    std_logic                     := 'X';             -- rx_control
+			tse_conduit_connection_tx_control : out   std_logic;                                        -- tx_control
+			tse_conduit_connection_tx_clk     : in    std_logic                     := 'X';             -- tx_clk
+			tse_conduit_connection_rx_clk     : in    std_logic                     := 'X';             -- rx_clk
+			tse_conduit_connection_set_10     : in    std_logic                     := 'X';             -- set_10
+			tse_conduit_connection_set_1000   : in    std_logic                     := 'X';             -- set_1000
+			tse_conduit_connection_ena_10     : out   std_logic;                                        -- ena_10
+			tse_conduit_connection_eth_mode   : out   std_logic;                                        -- eth_mode
+			tse_conduit_connection_mdio_out   : out   std_logic;                                        -- mdio_out
+			tse_conduit_connection_mdio_oen   : out   std_logic;                                        -- mdio_oen
+			tse_conduit_connection_mdio_in    : in    std_logic                     := 'X';             -- mdio_in
+			tse_conduit_connection_mdc        : out   std_logic                                         -- mdc
+		);
+	end component nios_system;
+
