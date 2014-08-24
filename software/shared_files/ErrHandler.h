@@ -11,10 +11,10 @@
 #include "assert.h"
 #include "stdio.h"
 
-#define DEBUG
+#define DEBUG 0
 
 // Logging Macros
-#ifdef DEBUG
+#if DEBUG
 // if the Debug flag is set, send out logging messages over stdout via printf.
 #define LOG(fmt, ...)                printf(fmt "\n", ##__VA_ARGS__)
 #define LOG_DEBUG(fmt, ...) \
@@ -27,9 +27,9 @@
 	do {LOG_ERROR(errcode, fmt, ##__VA_ARGS__); return errcode; } while(0)
 #else
 // otherwise, do nothing.
-#define LOG_DEBUG(fmt, ...)          (;)
-#define LOG_INFO(fmt, ...)           (;)
-#define LOG_ERROR(errcode, fmt, ...) (;)
+#define LOG_DEBUG		             (void)sizeof
+#define LOG_INFO		             (void)sizeof
+#define LOG_ERROR					 (void)sizeof
 #define LOG_ERROR_RETURN(errcode, fmt, ...) (return errcode;)
 #endif
 

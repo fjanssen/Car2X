@@ -62,7 +62,7 @@ int main (void)
 	// Small cycle:
 	while(true)
 	{
-		printf(".");
+//		printf(".");
 		if(!waitForEndOfCycle())
 			goto fail;
 		LOG_DEBUG("EndofCycle");
@@ -269,7 +269,7 @@ bool waitForNextPacket()
 		LOG_DEBUG("cBuffer: '%c%c%c%c' 0x%0X%0X%0X%0X 0x%0X%0X%0X%0X", cBuffer[0], cBuffer[1],
 				cBuffer[2], cBuffer[3], cBuffer[4], cBuffer[5], cBuffer[6], cBuffer[7],
 				cBuffer[8], cBuffer[9], cBuffer[10], cBuffer[11]);
-//delay(200);
+
 		// Is there a VelocityMessage then set the desired speed along with the message
 		if(pNewProtocol != 0 && pNewProtocol->isValid() && pNewProtocol->getMessageCount() > 0)
 		{
@@ -285,7 +285,7 @@ bool waitForNextPacket()
 		*pLED = *pLED | 0x10;
 	}
 	LOG_DEBUG("send answer of last packet");
-//				delay(200);
+
 	// Send answer of the last packet
 	if(pProtocol != 0 && pProtocol->isValid())
 	{
@@ -296,7 +296,7 @@ bool waitForNextPacket()
 		}
 	}
 	LOG_DEBUG("delete old protokol");
-//				delay(200);
+
 	if(pNewProtocol != 0 && pNewProtocol->isValid() && pNewProtocol->getMessageCount() > 0)
 	{
 		pNewProtocol->getBytes(cBuffer);
@@ -328,26 +328,28 @@ bool setUpPIController()
 	iCurrentSpeed = 0;
 
 	setSpeed(0);
+	delay (250);
+
+	// Full speed forward
+	setSpeed(30000);
+	delay (500);
+	// reset speed to 0
+	setSpeed(0);
+	delay(250);
+	// Full speed backwards
+	setSpeed(-30000);
 	delay (500);
 
-	// Full speed
-	setSpeed(100000);
-	// Measure speed at T1 (=10ns)
-	uiT = measureSpeed();
-
-	delay (500);
-
-	// Measure speed at Tk (=10020ns) which should be the VMax
-	uiMaxSpeed = measureSpeed();
 	setSpeed(0);
 
 	// Calculate I Value, I = (100*T1) / (Tk+1), K = Tk
-	uiT = (uiT * 100) / (uiMaxSpeed+1);
+//	uiT = (uiT * 100) / (uiMaxSpeed+1);
 
 	// Reset the controller
 	if(pController){
 		delete(pController);
 	}
+	//preset values for PI Controller, to allow skipping of control init
 	uiMaxSpeed=500;
 	uiT=3;
 	pController = new CPIController(uiMaxSpeed, uiT, -1*uiMaxSpeed, uiMaxSpeed);
