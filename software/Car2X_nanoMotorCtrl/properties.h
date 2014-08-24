@@ -15,7 +15,7 @@
 
 // Defines for Motor/Wheel
 #define WHEEL_SCALE 371 // in mm
-#define INVERTED 1 // 1: Not inverted, 2: inverted
+#define INVERTED 2 // 1: Not inverted, 2: inverted -- 1:right wheels, 2:left wheels
 
 // Defines for Ultrasound-Sensor
 #define ULTRASOUND_AVAILABLE    0x08

@@ -11,7 +11,7 @@ CPIController::CPIController(alt_32 iPValue, alt_32 iIValue, alt_32 iMinimum, al
 
 	m_iErrorSum = 0;
 	m_iLastError = 0;
-//	LOG_DEBUG("P=%d, I=%d",m_iPValue,m_iIValue);
+	LOG_DEBUG("Controller set up with P=%d, I=%d",m_iPValue,m_iIValue);
 }
 
 
@@ -40,7 +40,7 @@ alt_32 CPIController::control(alt_32 iError)
 
 	iResult  *= 100000;
 	iResult  /= (m_iMaximum + 1);
-LOG_DEBUG("iresult: %d",iResult);
+	LOG_DEBUG("iresult: %d",iResult);
 	if(iResult < 10000 && iResult > -10000)
 		iResult = 0;
 
