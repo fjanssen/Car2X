@@ -32,52 +32,39 @@ int main (void)
 	*pLED = 0;
 
 	LOG_DEBUG("setuppid");
-//	delay(200);
 	ret = setUpPIController();
 	if(!ret)
 	{
 		goto fail;
 	}
 	LOG_DEBUG("after setuppid");
-//		delay(200);
-//	pController = new CPIController(500, 0.01, -1*500, 500);
+
 
 	// Restore speed = 0
 	iDesiredSpeed = 0;
 	iCurrentSpeed = 0;
 	setSpeed(0);
-//	delay(1000);
 
 	// Set timer and start it
 	alt_u32 (*callback) (void*);
 	callback = alarm_callback;
 	alt_alarm_start(&alarm, 10, callback, 0);
 
-	// Start first Speed Measurement
-	LOG_DEBUG("measure");
-//	delay(200);
-	measureSpeedUnblocking();
-	LOG_DEBUG("afterSpeedUnblock");
-//	delay(200);
 	// Small cycle:
 	while(true)
 	{
-//		printf(".");
 		if(!waitForEndOfCycle())
 			goto fail;
 		LOG_DEBUG("EndofCycle");
-//		delay(200);
 		if(!controlSpeed())
 			goto fail;
 		LOG_DEBUG("controlSpeed");
-//		delay(200);
 		if(state >= 9)
 		{
 			if(!waitForNextPacket())
 				goto fail;
 			state = 0;
 			LOG_DEBUG("NextPacket");
-//			delay(200);
 		}
 		else
 		{
@@ -89,11 +76,9 @@ int main (void)
 				pCurrentMessage = 0;
 				pCurrentMessage = pProtocol->getNthMessage(count);
 				LOG_DEBUG("getNthMessage");
-//					delay(200);
 				if(pCurrentMessage != 0 && pCurrentMessage->isValid())
 					pCurrentMessage->doAction();
 				LOG_DEBUG("doAction");
-//					delay(200);
 			}
 			state++;
 		}
@@ -134,7 +119,6 @@ bool init()
 bool sendWelcome()
 {
 	LOG_DEBUG("wait entry");
-//	delay(200);
 
 	CCarMessage * pMessage = 0;
 	alt_u32 uiTries = 0;         // Counts the tries, if >= 5 return
@@ -145,19 +129,16 @@ bool sendWelcome()
 
 	// Prepare welcome message
 	LOG_DEBUG("allocate msg");
-//	delay(200);
 
 	// set led on
 	*pLED |= 0x01;
 
 	LOG_DEBUG("pre while");
-//	delay(200);
 
 	while(true)
 	{
 		LOG_DEBUG("loop %d",  (int) uiTries);
-		LOG_DEBUG("Gen proto");
-		
+
 		// Put the WelcomeMessage into the protocol wrapper.
 		if(pProtocol) {
 			delete(pProtocol);
@@ -172,7 +153,7 @@ bool sendWelcome()
 				cBuffer[8], cBuffer[9], cBuffer[10], cBuffer[11]);
 
 		// Send out the packet.
-		if(uiTries % 100 == 0)
+		if(uiTries % 50 == 0)
 		{
 			success = pSocket->Send(cBuffer, pProtocol->getLength());
 		}
@@ -183,7 +164,6 @@ bool sendWelcome()
 		if(uiReceivedCount <= 0)
 		{
 			LOG_DEBUG("incomplete packet");
-//			delay(200);
 			uiTries++;
 			continue; // If nothing was received
 		}
@@ -199,7 +179,6 @@ bool sendWelcome()
 		if(pProtocol == 0 || !pProtocol->isValid() || pProtocol->getMessageCount() < 1)
 		{
 			printf("invalid packet\n");
-//			delay(200);
 			uiTries++;
 			continue;
 		}
@@ -209,7 +188,6 @@ bool sendWelcome()
 		if(pMessage->isValid() && pMessage->getType() == 0x01)
 		{
 			LOG_DEBUG("valid message");
-//			delay(200);
 			*pLED &= 0xFE;
 			if(pProtocol) {
 				delete(pProtocol);
@@ -236,7 +214,6 @@ bool controlSpeed()
 	// Set new speed
 	setSpeed(iNextSpeed);
 	LOG_DEBUG("iNextSpeed: %hd iCurrentSpeed: %hd",iNextSpeed,iCurrentSpeed);
-//		delay(200);
 
 	// Is there a VelocityMessage then set the current speed as an answer
 	if(pProtocol != 0 && pProtocol->isValid() && pProtocol->getMessageCount() > 0)
@@ -301,6 +278,7 @@ bool waitForNextPacket()
 	{
 		pNewProtocol->getBytes(cBuffer);
 		pSocket->Send(cBuffer, pNewProtocol->getLength());
+		printf("send NewProtocol\n");
 		// Delete old Packet
 		if(pProtocol)
 		{
@@ -327,12 +305,15 @@ bool setUpPIController()
 	iDesiredSpeed = 0;
 	iCurrentSpeed = 0;
 
+	// set speed to 0
 	setSpeed(0);
 	delay (250);
 
 	// Full speed forward
 	setSpeed(30000);
 	delay (500);
+	// Measure speed at T1 (=10ns)
+	uiT = measureSpeed();
 	// reset speed to 0
 	setSpeed(0);
 	delay(250);
@@ -340,12 +321,12 @@ bool setUpPIController()
 	setSpeed(-30000);
 	delay (500);
 
+	// Measure speed at Tk (=10020ns) which should be the VMax
+	uiMaxSpeed = measureSpeed();
+
 	setSpeed(0);
-
-	// Calculate I Value, I = (100*T1) / (Tk+1), K = Tk
-//	uiT = (uiT * 100) / (uiMaxSpeed+1);
-
-	// Reset the controller
+	delay(250);
+	// Reset the controller if exists
 	if(pController){
 		delete(pController);
 	}
@@ -369,8 +350,8 @@ bool setUpPIController()
 
 		if(pProtocol)
 		{
-		delete(pProtocol);
-		pProtocol = 0;
+			delete(pProtocol);
+			pProtocol = 0;
 		}
 		pProtocol = new CCarProtocol(cBuffer, uiReceivedCount);
 		if(pProtocol == 0 || !pProtocol->isValid() || pProtocol->getMessageCount() != 1)
