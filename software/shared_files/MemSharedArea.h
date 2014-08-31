@@ -1,24 +1,42 @@
-/*
- * MemSharedArea.h
+/*********************************************************************
  *
- *  Created on: Jun 9, 2014
- *      Author: wji
- */
+ * Shared Memory Areas
+ * 
+ * \brief this is the definition for the "shared memory areas" that
+ *     reside in the shared memory.
+ *
+ * \details
+ *     please do not use these direcly, instead access them through
+ *     a MemController instance pointing to the correct shared memory
+ *     area.
+ *
+ * \author Johannes <jwindelen@gmail.com>
+ * 
+ *********************************************************************/
 
 #ifndef MEMSHAREDAREA_H_
 #define MEMSHAREDAREA_H_
-
+/* ===================================================================
+ * Includes
+ * ==================================================================*/
 #include <stdint.h>
 #include "CarState.h"
 
-
+/* ===================================================================
+ * Configuration defines
+ * ==================================================================*/
 #define BUFFERSIZE_CARSTATE (10u)
 
+/* ===================================================================
+ * Enums
+ * ==================================================================*/
 enum Bufferflags {
 	MEM_BUFFERFLAGS_NONE,
 };
 
-
+/* ===================================================================
+ * Struct
+ * ==================================================================*/
 template<typename T>
 struct MemSharedArea {
 	alt_u32 maxNumElements_u32;
@@ -27,6 +45,9 @@ struct MemSharedArea {
 	enum Bufferflags flags_u32;
 };
 
+/* ===================================================================
+ * Extern references for actual shared memory areas.
+ * ==================================================================*/
 extern struct MemSharedArea<CarState> AreaCarState;
 extern CarState AreaCarStateBuffer[BUFFERSIZE_CARSTATE];
 

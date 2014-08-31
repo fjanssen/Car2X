@@ -1,16 +1,35 @@
-/*
- * CarState.h
+/*********************************************************************
  *
- *  Created on: Jun 19, 2014
- *      Author: wji
- */
+ * CarState
+ * 
+ * \brief 
+ *     The CarState struct contains all information pertaining to the
+ *     car (motor speeds, operating mode, sensor data, control
+ *     commands, etc). 
+ *
+ * \author Johannes <jwindelen@gmail.com>
+ *
+ * \details
+ *     The CarState is used to shuffle data between the control core 
+ *     and the communications core. Additionally, this file defines
+ *     some configuration parameters and values.
+ *
+ * TODO: should the configuration parameters/values not be in another
+ *     file?
+ *
+ *********************************************************************/
 
 #ifndef CARSTATE_H_
 #define CARSTATE_H_
 
-
+/* ===================================================================
+ * Includes
+ * ==================================================================*/
 #include "alt_types.h"
 
+/* ===================================================================
+ * Defines
+ * ==================================================================*/
 // Car Hardware configuration
 #define CAR_NUM_MOTORS (4)
 #define CAR_NUM_USS    (2)
@@ -27,7 +46,9 @@
 #define VCIPPart3 100
 #define VCIPPart4 110
 
-
+/* ===================================================================
+ * Enums
+ * ==================================================================*/
 enum OpMode {
 	OPMODE_PREOPERATIONAL,
 	OPMODE_IDLE,
@@ -36,6 +57,14 @@ enum OpMode {
 	OPMODE_EMERGENCYSTOP,
 };
 
+/* ===================================================================
+ * Struct definitions
+ * ==================================================================*/
+/* -------------------------------------------------------------------
+ * Velocity
+ * 
+ * \brief contains wheel velocities in mm/s
+ * ------------------------------------------------------------------*/
 struct Velocity
 {
 	alt_16 iFrontLeft;
@@ -44,11 +73,17 @@ struct Velocity
 	alt_16 iRearRight;
 };
 
+/* -------------------------------------------------------------------
+ * UsSensor_State
+ * ------------------------------------------------------------------*/
 struct UsSensor_State
 {
 	alt_u32 distance;
 };
 
+/* -------------------------------------------------------------------
+ * MotorECU_State
+ * ------------------------------------------------------------------*/
 struct MotorECU_State
 {
 	// General information
@@ -71,9 +106,10 @@ struct MotorECU_State
 	alt_16	iCurrentSpeed;
 };
 
-/*
- * This struct contains all information about one motor-ECU.
- */
+/* -------------------------------------------------------------------
+ * CarState
+ * ------------------------------------------------------------------*/
+// TODO: arrays for the IP addresses, no? This is a bit ugly.
 struct CarState {
 	alt_u32 counterCarControl;
 	alt_u32 counterComm;
