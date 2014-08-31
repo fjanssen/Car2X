@@ -4,10 +4,74 @@
 Paul -done
 
 \section{CarControl Core}
-Johannes / code kommentieren
+The car control core is responsible for processing all the data that the communications core receives from other components, and calculating the correct reactions (motor controller signals) to that data. The control core cyclically accesses the current $CarState$ from the shared memory and performs all calculations on the data. The main loop can be broken down into four parts.
+
+\begin{enumerate}
+\item Get current $CarState$ from the shared memory (blocking)
+\item Check the operating mode, $state.reqOpMode$. If a new one has been requested, the transition is performed and set in $state.currOpMode$.
+\item Get the requested velocities state.reqVel and transform them based on the current operation mode. Write the calculated velocities for each motor into $state.MotorECU\_State$.
+\item Write the changed CarState object back into the shared memory and release the mutex.
+\end{enumerate}
+
+\subsection{Operating modes}
+A state machine is used to restrict or alter the car's behaviour, based on the current *operating mode* that the car is in. Generally, an operating mode places restrictions on what actors can control the car at any given time, and the velocity at which the car may move. Some operating modes are only available internally, others can be accessed by the user. The available states are:
+
+\textbf{PreOperational} Initial mode, used internally during the startup phase. Velocity is restricted to 0 on all motors.
+
+\textbf{Idle} This operating mode is automatically transitioned to upon successful communication with all four motor control ECUs. Velocity is restricted to 0 on all motors.
+
+\textbf{ManualDrive} A $RemoteControlRequest$ C2X message will transition the car into this mode. Subsequently, the car may only be controlled from the IP address that sent the aforementioned message. The velocity is restricted to $CarState.h:OPMODE\_MANUDRIVE\_MAXSPEED$.
+
+\textbf{AutomaticDrive} A $AutoControlRequest$ C2X message will transition the car into this mode. Subsequently, the car may only be controlled from the IP address that sent the aforementioned message. The velocity is restricted to $CarState.h:OPMODE\_AUTODRIVE\_MAXSPEED$.
+
+\textbf{EmergencyStop} Triggered by an $EmergencyStop$ C2X message, this operation mode will immediately set all motor velocities to 0, effectively executing an emergency stop. To exit this operating mode, either a RemoteControlRequest or AutoControlRequest must be sent to transition to the respective operating mode.
+
+\subsection{Motor velocity calculation}
+The motor velocity calculations are relatively straightforward. Each operating mode has a maximum velocity that may be requested. Any velocities above this limit are capped. Equation \eqref{carcontrol:vel_calculation} shows the formula that is used.
+
+\begin{equation}\label{carcontrol:vel_calculation}
+v_{i} = 
+\begin{cases} 
+r_{i} & \text{if } r_{avg} \leq v_{limit} \\
+\frac{v_{limit}}{r_{avg}} * r_{i} & \text{if } r_{avg} \gt v_{limit} \\
+\end{cases}
+\end{equation}
+
+Since the velocities are transmitted as signed 16bit integer values, integer arithmetic is used to calculate the goal velocity, at a precision of $0.01mm/s$.
 
 \section{Shared memory Controller}
-Johannes / code kommentieren
+The shared memory controller module is responsible for ensuring the safe exchange of data between the communication and the car control cores. On the hardware level, the sharedmemory and mutex building blocks provide the necessary foundations that the \textbf{$MemController$} class leverages.
+
+ The shared memory contents are defined in the MemSharedArea.h/c files. Here, the containers are initialised and physically placed into the SharedMemory Hardware component.
+
+%% TODO: Write more about how this works?
+
+\begin{lstlisting}[stype=customc, caption='The MemSharedArea struct']\label{memctrl:code_memsharedarea}
+template<typename T>
+struct MemSharedArea {
+	alt_u32 maxNumElements_u32;
+	T * content_a;
+	alt_u32 index_u32;
+	enum Bufferflags flags_u32;
+};
+\end{lstlisting}
+
+A memory area consists of:
+- an index
+- an array of a certain type
+- a status flag (currently unused)
+
+The MemController class provides an interface to access these areas in a safe and ordered fashion. The shared memory area array member is treated as a ring buffer, to allow for a historical retrieval of a certain information stream. The basic API is:
+
+- get()
+- clear
+- push
+
+One memory controller is always responsible for one memory area. There is only one hardware mutex, so simultaneous access to different shared memory containers is impossible. 
+
+%% TODO: write more about the API
+%% TODO: a picture would be swell - take the one from the presentation
+%% TODO: talk about improvements
 
 \section{Motor Controller}
 Johannes / code kommentieren
