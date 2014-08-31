@@ -18,7 +18,7 @@
 #include "ErrHandler.h"
 #include <cstdlib>
 #include <string.h>
-#include "nios2.h";
+#include "nios2.h"
 
 /* ===================================================================
  * Local prototypes
@@ -66,9 +66,9 @@ int main() {
     // A better solution would be to initialise the shared memory in the
     // MemController Constructor, by adding an isInitialised flag to the
     // SharedMemory.
-	state = ctrl.getLastElement();
+	state = ctrl.get(true);
 	memset(&state,0,sizeof(state));
-	ctrl.pushElement(state);
+	ctrl.push(state);
 
     // The main loop.
 	while(true)
@@ -79,7 +79,7 @@ int main() {
 		for(i = 0; i < 500000; i++){;}
 
 		// get the lastest car state from the shared memory
-		state = ctrl.getLastElement(true);
+		state = ctrl.get(true);
 
 		// print some diagnostics information
 		int speed = state.motorEcus[0].iCurrentSpeed + 
@@ -100,7 +100,7 @@ int main() {
         // calculate and set the 4 motor speeds
 		setMotorSpeeds(&state);
 
-		ctrl.pushElement(state);
+		ctrl.push(state);
 	}
 
 	return -1;
@@ -134,10 +134,10 @@ void switchMode(CarState * state)
 	{
 		state->iMaxSpeed = OPMODE_AUTODRIVE_MAXSPEED;
         // set the controlling IP address to the image processor
-        state->ip1=VCIPPart1;
-        state->ip2=VCIPPart2;
-        state->ip3=VCIPPart3;
-        state->ip4=VCIPPart4;
+        state->ip1 = VCIPPart1;
+        state->ip2 = VCIPPart2;
+        state->ip3 = VCIPPart3;
+        state->ip4 = VCIPPart4;
 
 		break;
 	}
@@ -146,10 +146,10 @@ void switchMode(CarState * state)
 		state->iMaxSpeed = OPMODE_MANUDRIVE_MAXSPEED;
         // set the controlling IP address to that which requested
         // the manual drive
-        state->ip1=state.reqip1;
-		state->ip2=state.reqip2;
-		state->ip3=state.reqip3;
-		state->ip4=state.reqip4;
+        state->ip1 = state->reqip1;
+		state->ip2 = state->reqip2;
+		state->ip3 = state->reqip3;
+		state->ip4 = state->reqip4;
 		break;
 	}
 	default:

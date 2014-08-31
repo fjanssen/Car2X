@@ -185,7 +185,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 	iMessageCount = receivedPacket->getMessageCount();
 
 	for (i = 0; i < iMessageCount; i++) {
-		state = sharedMem.getLastElement(true);
+		state = sharedMem.get(true);
 
 		//handle each message separately
 		CCarMessage *currentMessage = receivedPacket->getNthMessage(i);
@@ -933,7 +933,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 
 		}
 
-		sharedMem.pushElement(state);
+		sharedMem.push(state);
 	}
 
 }
@@ -1189,7 +1189,7 @@ void SSSSimpleSocketServerTask() {
 		MemController<CarState> sharedMem;
 		CarState state;
 		sharedMem = MemController<CarState>();
-		state = sharedMem.getLastElement(false);
+		state = sharedMem.get();
 
 		//emergency
 		if (cERA.stateVersion > 0 && cERA.stateVersion <= state.counterCarControl) {
@@ -1457,7 +1457,7 @@ void SSSSimpleSocketServerTask() {
 			send(cCCA.fd, answer, answerLength, 0);
 			free(answer);
 
-			state = sharedMem.getLastElement(false);
+			state = sharedMem.get();
 			//if state update successful: send motor values to the nano boards
 			if (cCCA.v1 == state.motorEcus[0].iDesiredSpeed	&& cCCA.v2 == state.motorEcus[1].iDesiredSpeed	&& cCCA.v3 == state.motorEcus[2].iDesiredSpeed && cCCA.v4 == state.motorEcus[3].iDesiredSpeed) {
 			//build messages for all4 wheels:
@@ -1551,7 +1551,7 @@ void SSSSimpleSocketServerTask() {
 
 		LOG_DEBUG("Wheels: LF %d, LR %d, RF %d, RR %d",wheel_LF,wheel_LR, wheel_RF,wheel_RR);
 		for(int i = 0 ; i < 10000; i++) {;}
-		state = sharedMem.getLastElement(false);
+		state = sharedMem.get();
 		LOG_DEBUG("Modes(currrent, req): %d, %d",state.currMode,state.reqMode);
 		for(int i = 0 ; i < 10000; i++) {;}
 
@@ -1621,9 +1621,9 @@ void SSSSimpleSocketServerTask() {
 			delete tmpProtocol4;
 
 			//set state to IDLE
-			state = sharedMem.getLastElement(true);
+			state = sharedMem.get(true);
 			state.reqMode=OPMODE_IDLE;
-			sharedMem.pushElement(state);
+			sharedMem.push(state);
 
 			LOG_DEBUG("Initialization complete.Enter state IDLE");
 
