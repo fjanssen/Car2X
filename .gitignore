@@ -2,6 +2,17 @@
 ## Eclipse
 #################
 
+## Software generated files
+# _bsp/ # only commit when the hardware configuration is changed!
+Makefile
+.force_relink
+
+## Hardware generated files
+hardware/incremental_db/
+output_files/
+.qsys_edit/
+
+## Other stuff
 *.pydevproject
 #.project
 bin/
@@ -22,8 +33,6 @@ local.properties
 *.map
 *.flock
 
-## C2X generated BSP
-# *_bsp/
 
 
 # External tool builders

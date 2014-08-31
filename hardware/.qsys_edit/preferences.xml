@@ -5,24 +5,15 @@
   <columns>
    <connections preferredWidth="223" />
    <irq preferredWidth="47" />
-   <name preferredWidth="257" />
-   <export preferredWidth="159" />
   </columns>
  </systemtable>
  <clocktable>
   <columns>
-   <clockname preferredWidth="358" />
-   <clocksource preferredWidth="357" />
-   <frequency preferredWidth="355" />
+   <clockname preferredWidth="269" />
+   <clocksource preferredWidth="269" />
+   <frequency preferredWidth="250" />
   </columns>
  </clocktable>
- <library
-   expandedCategories="Library,Library/Bridges,Library/Interface Protocols,Library/Bridges/Memory-Mapped,Project,Library/Interface Protocols/Serial" />
- <window width="1382" height="744" x="-8" y="-8" />
- <generation
-   block_symbol_file="0"
-   simulation="NONE"
-   path="_PROJECT_NAME_/"
-   synthesis="1" />
- <hdlexample language="VERILOG" />
+ <library expandedCategories="Library,Project" />
+ <window width="1100" height="728" x="0" y="0" />
 </preferences>

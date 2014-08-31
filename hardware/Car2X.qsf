@@ -38,7 +38,7 @@
 
 set_global_assignment -name FAMILY "Cyclone IV E"
 set_global_assignment -name DEVICE EP4CE115F29C7
-set_global_assignment -name TOP_LEVEL_ENTITY Car2X
+set_global_assignment -name TOP_LEVEL_ENTITY Car2X.v
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 12.1
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "13:44:23  JUNE 02, 2014"
 set_global_assignment -name LAST_QUARTUS_VERSION 12.1
@@ -50,9 +50,6 @@ set_global_assignment -name NOMINAL_CORE_SUPPLY_VOLTAGE 1.2V
 set_global_assignment -name SEARCH_PATH "c:/tse_tutorial"
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
-set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
-set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
-set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_location_assignment PIN_Y2 -to CLOCK_50
 set_location_assignment PIN_AG14 -to CLOCK2_50
 set_location_assignment PIN_AG15 -to CLOCK3_50
@@ -578,8 +575,6 @@ set_location_assignment PIN_H14 -to EXT_IO[3]
 set_location_assignment PIN_F14 -to EXT_IO[4]
 set_location_assignment PIN_E10 -to EXT_IO[5]
 set_location_assignment PIN_D9 -to EXT_IO[6]
-set_global_assignment -name LL_ROOT_REGION ON -section_id "Root Region"
-set_global_assignment -name LL_MEMBER_STATE LOCKED -section_id "Root Region"
 set_global_assignment -name STRATIX_DEVICE_IO_STANDARD "2.5 V"
 set_global_assignment -name QIP_FILE tse_pll.qip
 set_global_assignment -name QIP_FILE tse_ddio_out.qip
@@ -589,4 +584,9 @@ set_global_assignment -name SDC_FILE Car2X.sdc
 set_global_assignment -name VERILOG_FILE Car2X.v
 set_global_assignment -name QSYS_FILE nios_system.qsys
 set_global_assignment -name QIP_FILE sdram_pll.qip
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name LL_ROOT_REGION ON -section_id "Root Region"
+set_global_assignment -name LL_MEMBER_STATE LOCKED -section_id "Root Region"
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
