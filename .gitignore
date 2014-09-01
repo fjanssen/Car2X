@@ -1,6 +1,12 @@
 #################
 ## Eclipse
 #################
+## latex
+*.aux
+*.bbl
+*.out
+*.toc
+*.synctex.gz
 
 ## Software generated files
 # _bsp/ # only commit when the hardware configuration is changed!
