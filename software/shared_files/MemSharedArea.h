@@ -37,6 +37,7 @@ enum Bufferflags {
 /* ===================================================================
  * Struct
  * ==================================================================*/
+// TODO: all but the index and flags should be const!
 template<typename T>
 struct MemSharedArea {
 	alt_u32 maxNumElements_u32;

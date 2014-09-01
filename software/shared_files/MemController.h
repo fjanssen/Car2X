@@ -99,14 +99,6 @@ public:
         m_mutexArea_p = altera_avalon_mutex_open("/dev/shared_memory_mutex");
 		m_memArea_p = memArea;
 
-		if(m_memArea_p->content_a == NULL)
-		{
-			LOG_DEBUG("Initialising shared memory...");
-			getSharedMemArea();
-			m_memArea_p->index_u32 = 0;
-			releaseSharedMemArea();
-		}
-
 		// make sure that all mutexes were acquired.
 		if(m_mutexArea_p == NULL)
 		{
@@ -352,4 +344,4 @@ private:
 
 };
 
-#endif /* MEMCONTROLLER_H_ */
+#endif /* MEMCONTROLLER_H_ */

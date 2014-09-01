@@ -13,6 +13,10 @@
 
 #define DEBUG 0
 
+// TODO: it would be good to add a module ID to the macros, that way it
+// would be possible to set the log severity level individually for each
+// module...
+
 // Logging Macros
 #if DEBUG
 // if the Debug flag is set, send out logging messages over stdout via printf.
@@ -27,6 +31,8 @@
 	do {LOG_ERROR(errcode, fmt, ##__VA_ARGS__); return errcode; } while(0)
 #else
 // otherwise, do nothing.
+// TODO: get a compiler "warning: left-hand operand of comma expression has no effect [-Wunused-value]"
+// are there any smarter ways disable the logger calls using macros?
 #define LOG_DEBUG		             (void)sizeof
 #define LOG_INFO		             (void)sizeof
 #define LOG_ERROR					 (void)sizeof
