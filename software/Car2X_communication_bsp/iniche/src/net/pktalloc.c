@@ -275,8 +275,9 @@ PACKET pk_alloc(unsigned len)
       else
          p = (PACKET)getq(&lilfreeq);
 
-      if (!p)
-         return NULL;
+      if (!p){
+    	 return NULL;
+      }
    }
 
    p->nb_prot = p->nb_buff + MaxLnh;   /* point past biggest mac header */

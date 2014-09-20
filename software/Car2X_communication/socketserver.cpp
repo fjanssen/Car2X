@@ -946,7 +946,7 @@ void sss_exec_command(CCarProtocol * receivedPacket, SSSConn* conn,
 int receive_bytes(SSSConn* conn) {
 	int rx_code = recv(conn->fd, (char *) conn->rx_wr_pos,
 			SSS_RX_BUF_SIZE - (conn->rx_wr_pos - conn->rx_buffer) -1, 0);
-	//LOG_DEBUG("rxcode = %i", rx_code);
+			//LOG_DEBUG("rxcode = %i conn->rx_wr_pos - conn->rx_buffer %i connection: %d", rx_code,conn->rx_wr_pos - conn->rx_buffer,conn->client_type);
 
 //	int rx_code = recv(conn->fd,(char*) conn->rx_wr_pos,1024, 0);
 
@@ -999,7 +999,7 @@ void sss_handle_receive_new(SSSConn* conn, currEmReqAnswer* cERA,
 	if (bytesInBuffer < 4)
 		return;
 	//LOG_DEBUG("header >= 4");
-
+	do{
 	while (bytesInBuffer >= 4) {
 
 		if (!(conn->rx_buffer[0] == 'C' && conn->rx_buffer[1] == 'A'
@@ -1042,11 +1042,14 @@ void sss_handle_receive_new(SSSConn* conn, currEmReqAnswer* cERA,
 			bytesInBuffer - iPayloadLength - CAR_HEADER_LENGTH);
 	conn->rx_wr_pos -= (iPayloadLength + CAR_HEADER_LENGTH);
 	memset(conn->rx_wr_pos, 0, iPayloadLength + CAR_HEADER_LENGTH);
+	bytesInBuffer-=CAR_HEADER_LENGTH+iPayloadLength;
 
 	//execute the command
 	sss_exec_command(parsedPacket, conn, cERA, cRCA, cCCA);
 	delete (parsedPacket);
 	LOG_DEBUG("Msg executed!");
+	}
+	while (bytesInBuffer >= 8);
 }
 
 void swapEndianess(alt_u8 *pArray, alt_u32 iLength) {
@@ -1513,9 +1516,6 @@ void SSSSimpleSocketServerTask() {
 			cCCA.v2 = 0;
 			cCCA.v3 = 0;
 			cCCA.v4 = 0;
-
-
-
 		}
 
 		/*
@@ -1526,6 +1526,7 @@ void SSSSimpleSocketServerTask() {
 		 * others that come in while the connection is open).
 		 */
 		if (FD_ISSET(fd_listen, &readfds)) {
+			LOG_DEBUG("FDISSET");
 			SSSConn * new_conn = new SSSConn;
 			sss_reset_connection(new_conn);
 			sss_handle_accept(fd_listen, new_conn);
@@ -1540,6 +1541,7 @@ void SSSSimpleSocketServerTask() {
 		 * to process it.
 		 */
 		else {
+			LOG_DEBUG("notFDISSET");
 			for (long unsigned int i = 0; i < conns.size(); i++) {
 				if ((conns[i]->fd != -1) && FD_ISSET(conns[i]->fd, &readfds)) {
 					//LOG_DEBUG("handle receive");

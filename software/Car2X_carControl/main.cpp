@@ -1,125 +1,88 @@
-/*********************************************************************
- *
- * Car Control Core
- * 
- * \brief The Car Control Core is the figurative center of the car.
- *        All the data from various parts and components are brought
- *        together here, and the final decision how to control the
- *        car motors is made.
- * 
- * \author Johannes <jwindelen@gmail.com>
- * 
- *********************************************************************/
+/*
+ * "Hello World" example.
+ */
 
-/* ===================================================================
- * Includes
- * ==================================================================*/
 #include "MemController.h"
 #include "ErrHandler.h"
 #include <cstdlib>
 #include <string.h>
-#include "nios2.h"
+#include "nios2.h";
 
-/* ===================================================================
- * Local prototypes
- * ==================================================================*/
-/* -------------------------------------------------------------------
- * \name  switchMode
- * \brief handles the operating mode transitions. The current and 
- *        requested states are found in the CarState function parameter
- * 
- * \param[out] state: the current car state. Modifies the currOpMode
- *                 member variable
- * ------------------------------------------------------------------*/
-static void switchMode(CarState * state);
+void switchState(CarState * state);
 
-/* -------------------------------------------------------------------
- * \name setMotorSpeeds
- * 
- * \brief calculates the motor speeds according to the requested 
- *        velocities and the limits imposed by the current operating 
- *        mode.
- * 
- * \param[out] state: the current car state. Modifies the MotorECU_State
- *                 member variable.
- * ------------------------------------------------------------------*/
-static void setMotorSpeeds(CarState * state);
+void setMotorSpeeds(CarState * state);
 
 
-/* ===================================================================
- * Implementation
- * ==================================================================*/
-/* -------------------------------------------------------------------
- * main
- * ------------------------------------------------------------------*/
-int main() {
-    // Get a memory controller to access the CarState in the shared memory
-    MemController<CarState> ctrl = MemController<CarState>();
-  
+int main()
+{
+	MemController<CarState> ctrl = MemController<CarState>();
+
 	CarState state;
 
-    // initialise state. Zero out the first element. Yes, we might lose
-    // some data in the unlikely event that the commCore starts up before
-    // the car Control one. But since the shared memory isn't initialised
-    // after a soft-reset, this avoids working with a corrupt state.
-
-    // A better solution would be to initialise the shared memory in the
-    // MemController Constructor, by adding an isInitialised flag to the
-    // SharedMemory.
-	state = ctrl.get(true);
+	//initial state:
+	state = ctrl.getLastElement();
 	memset(&state,0,sizeof(state));
-	ctrl.push(state);
 
-    // The main loop.
-	while(true)
+	ctrl.pushElement(state);
+
+
+	while(1)
 	{
-        // Add a delay so the control core doesn't hog the shared memory
-        // mutex
-        int i;
-		for(i = 0; i < 500000; i++){;}
+		for(int i=0;i<5000;i++){;}
+		int nios;
 
 		// get the lastest car state from the shared memory
-		state = ctrl.get(true);
+		state = ctrl.getLastElement(true);
 
 		// print some diagnostics information
-		int speed = state.motorEcus[0].iCurrentSpeed + 
-            state.motorEcus[1].iCurrentSpeed + 
-            state.motorEcus[2].iCurrentSpeed + 
-            state.motorEcus[3].iCurrentSpeed;
+		int speed = state.motorEcus[0].iCurrentSpeed + state.motorEcus[1].iCurrentSpeed + state.motorEcus[2].iCurrentSpeed + state.motorEcus[3].iCurrentSpeed;
+
 		LOG_DEBUG("\rSpeed: %+5d mm/s, OpMode: %#x ", speed, state.currMode);
+		//LOG_DEBUG("yippee!");
 
 		// perform state switch if requested.
 		if(state.reqMode != state.currMode)
 		{
-			switchMode(&state);
+			switchState(&state);
 		}
-
-        // keep track of which states we have processed in the control core
 		state.counterCarControl=state.counterComm;
 
-        // calculate and set the 4 motor speeds
 		setMotorSpeeds(&state);
 
-		ctrl.push(state);
+		if(state.currMode==OPMODE_MANUDRIVE){
+			state.ip1=state.reqip1;
+			state.ip2=state.reqip2;
+			state.ip3=state.reqip3;
+			state.ip4=state.reqip4;
+		}
+		else{
+			state.ip1=VCIPPart1;
+			state.ip2=VCIPPart2;
+			state.ip3=VCIPPart3;
+			state.ip4=VCIPPart4;
+		}
+		ctrl.pushElement(state);
+
+		// TODO: write a delay function w/ timer. Otherwise we might run into problems blocking the mutex from all the shared memory reads...
+		//delay(10);
+		for (int i = 0; i < 10000; i++) {;}
 	}
 
 	return -1;
 }
 
-/* -------------------------------------------------------------------
- * switchMode
- * ------------------------------------------------------------------*/
-void switchMode(CarState * state)
+
+void switchState(CarState * state)
 {
 	LOG_DEBUG("Switching operating mode: %d -> %d", state->currMode, state->reqMode);
 
 	switch(state->reqMode)
 	{
 	case OPMODE_PREOPERATIONAL:
-    {
-        state->iMaxSpeed = OPMODE_IDLE_MAXSPEED;
-        break;
-    }
+		{
+			state->iMaxSpeed = OPMODE_IDLE_MAXSPEED;
+			break;
+		}
 	case OPMODE_IDLE:
 	{
 		state->iMaxSpeed = OPMODE_IDLE_MAXSPEED;
@@ -133,23 +96,11 @@ void switchMode(CarState * state)
 	case OPMODE_AUTODRIVE:
 	{
 		state->iMaxSpeed = OPMODE_AUTODRIVE_MAXSPEED;
-        // set the controlling IP address to the image processor
-        state->ip1 = VCIPPart1;
-        state->ip2 = VCIPPart2;
-        state->ip3 = VCIPPart3;
-        state->ip4 = VCIPPart4;
-
 		break;
 	}
 	case OPMODE_MANUDRIVE:
 	{
 		state->iMaxSpeed = OPMODE_MANUDRIVE_MAXSPEED;
-        // set the controlling IP address to that which requested
-        // the manual drive
-        state->ip1 = state->reqip1;
-		state->ip2 = state->reqip2;
-		state->ip3 = state->reqip3;
-		state->ip4 = state->reqip4;
 		break;
 	}
 	default:
@@ -162,55 +113,39 @@ void switchMode(CarState * state)
 	state->currMode = state->reqMode;
 }
 
-/* -------------------------------------------------------------------
- * setMotorSpeeds
- * ------------------------------------------------------------------*/
+
 void setMotorSpeeds(CarState * state)
 {
-	int iCurrVel, iReqVel; // velocity in mm/s
+	int iCurrVel, iReqVel;
 	alt_u16 fVelFactor; // fixed comma integer, with resolution of 0.01
 
 	// Log current state:
 	iCurrVel = (state->motorEcus[0].iCurrentSpeed
-                + state->motorEcus[1].iCurrentSpeed
-                + state->motorEcus[2].iCurrentSpeed
-                + state->motorEcus[3].iCurrentSpeed) / 4;
+			+ state->motorEcus[1].iCurrentSpeed
+			+ state->motorEcus[2].iCurrentSpeed
+			+ state->motorEcus[3].iCurrentSpeed) / 4;
 
 	LOG_DEBUG("Current velocity: %+5d, LF: %+3hd, LR: %+3hd, RF: %+3hd, RR: %+3hd",
-              iCurrVel, state->motorEcus[0].iCurrentSpeed, state->motorEcus[1].iCurrentSpeed,
-              state->motorEcus[2].iCurrentSpeed, state->motorEcus[3].iCurrentSpeed);
-
+			iCurrVel, state->motorEcus[0].iCurrentSpeed, state->motorEcus[1].iCurrentSpeed,
+			state->motorEcus[2].iCurrentSpeed, state->motorEcus[3].iCurrentSpeed);
 	//LOG current PIController values
-	LOG_DEBUG("LF: %hd, %hd, %hd LR: %hd, %hd, %hd RF: %hd, %hd, %hd RR: %hd, %hd, %hd", 
-              state->motorEcus[0].iIType, 
-              state->motorEcus[0].iPType,
-              state->motorEcus[0].iMaxSpeed,
-              state->motorEcus[1].iIType,
-              state->motorEcus[1].iPType,
-              state->motorEcus[1].iMaxSpeed,
-              state->motorEcus[2].iIType,
-              state->motorEcus[2].iPType,
-              state->motorEcus[2].iMaxSpeed,
-              state->motorEcus[3].iIType,
-              state->motorEcus[3].iPType,
-              state->motorEcus[3].iMaxSpeed);
+	LOG_DEBUG("LF: %hd, %hd, %hd LR: %hd, %hd, %hd RF: %hd, %hd, %hd RR: %hd, %hd, %hd",state->motorEcus[0].iIType,state->motorEcus[0].iPType,state->motorEcus[0].iMaxSpeed,state->motorEcus[1].iIType,state->motorEcus[1].iPType,state->motorEcus[1].iMaxSpeed,state->motorEcus[2].iIType,state->motorEcus[2].iPType,state->motorEcus[2].iMaxSpeed,state->motorEcus[3].iIType,state->motorEcus[3].iPType,state->motorEcus[3].iMaxSpeed);
 
 	// Calculate individual wheel speeds
 	iReqVel = (state->reqVelocity.iFrontLeft
-               + state->reqVelocity.iFrontRight
-               + state->reqVelocity.iRearLeft
-               + state->reqVelocity.iRearRight) / 4;
+			+ state->reqVelocity.iFrontRight
+			+ state->reqVelocity.iRearLeft
+			+ state->reqVelocity.iRearRight) / 4;
 
 	LOG_DEBUG("Request velocity: %+5hd, LF: %+3hd, LR: %+3hd, RF: %+3hd, RR: %+3hd",
-              iReqVel, 
-              state->reqVelocity.iFrontLeft, state->reqVelocity.iRearLeft,
-              state->reqVelocity.iFrontRight, state->reqVelocity.iRearRight);
+			iReqVel, state->reqVelocity.iFrontLeft, state->reqVelocity.iRearLeft,
+			state->reqVelocity.iFrontRight, state->reqVelocity.iRearRight);
 
 	if(abs(iReqVel) > abs(state->iMaxSpeed))
 	{
 		fVelFactor = state->iMaxSpeed * 100 / iReqVel;
-		LOG_DEBUG("Request velocity too high. OpMode: %hd, MaxVel: %hd, VelFactor: %f",
-                  state->currMode, state->iMaxSpeed, fVelFactor);
+		LOG_DEBUG("Request velocity too high. OpMode: %d, MaxVel: %d, VelFactor: %f",
+			(int) state->currMode, (int) state->iMaxSpeed, fVelFactor);
 	}
 	else
 	{
@@ -223,7 +158,59 @@ void setMotorSpeeds(CarState * state)
 	state->motorEcus[2].iDesiredSpeed = (alt_16) (state->reqVelocity.iFrontRight   * fVelFactor / 100);
 	state->motorEcus[3].iDesiredSpeed = (alt_16) (state->reqVelocity.iRearRight  * fVelFactor / 100);
 
-    // TODO: ultrasonic sensor data. We do not currently have these
-    //       setup in hardware & have not setup the comm core to
-    //       process the messages
+	// TODO: disregarding ultrasound sensor for now... sort out the many inclusions of comm stuff in CUltrasoundSensorState
+
+	// Frontal distance:
+	//	ultrasoundHelp = (CUltrasoundSensorState*) state.motorStates[3].p_sensors[0];
+	//	if(ultrasoundHelp != 0 && ultrasoundHelp->isDistanceValid())
+	//	{
+	//		printf("Front: %5hu mm,  ", ultrasoundHelp->getDistance());
+	//
+	//		if(ultrasoundHelp->getDistance() < 300)
+	//{
+	//			iMaxAllowedSpeedFront = 0;
+	//			iLeftPercent = 100;
+	//			iRightPercent = -100;
+	//			iTotalSpeed = 150;
+	//}
+	//		else
+	//{
+	//			iMaxAllowedSpeedFront = (ultrasoundHelp->getDistance() * 5) / 10;
+	//			iTotalSpeed = 200;
+	//			iLeftPercent = 100;
+	//			iRightPercent = 100;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		printf("Front: no dist.,  ");
+	//		iMaxAllowedSpeedFront = state.iMaxSpeed;
+	//	}
+	//
+	//	// Backwards distance
+	//	ultrasoundHelp = (CUltrasoundSensorState*) state.motorStates[1].p_sensors[0];
+	//	if(ultrasoundHelp != 0 && ultrasoundHelp->isDistanceValid())
+	//	{
+	//		printf("Back: %5hu mm,  ", ultrasoundHelp->getDistance());
+	//
+	//		if(ultrasoundHelp->getDistance() < 300)
+	//{
+	//			iMaxAllowedSpeedBack = 0;
+	//			iLeftPercent = 100;
+	//			iRightPercent = -100;
+	//			iTotalSpeed = 150;
+	//}
+	//		else
+	//{
+	//			iMaxAllowedSpeedBack = (ultrasoundHelp->getDistance() * 5) / 10;
+	//			iTotalSpeed = 200;
+	//			iLeftPercent = 100;
+	//			iRightPercent = 100;
+	//			}
+	//	}
+	//	else
+	//	{
+	//		printf("Back: no dist.,  ");
+	//		iMaxAllowedSpeedBack = state.iMaxSpeed;
+	//	}
 }

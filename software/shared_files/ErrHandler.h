@@ -11,7 +11,7 @@
 #include "assert.h"
 #include "stdio.h"
 
-#define DEBUG 0
+#define DEBUG 1
 
 // TODO: it would be good to add a module ID to the macros, that way it
 // would be possible to set the log severity level individually for each
