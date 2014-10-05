@@ -4,7 +4,13 @@
 Johannes
 
 \section{Hardware structure}
-Flo
+The hardware is design to allow an easy exchange of components and extensions. A FPGA is used as main computation unit. All components used by the car are connected to this central unit. The communication between the car's components uses ethernet. This is also used for car2x communication through a wiport. Every wheel is controlled by a single nano FPGA, which uses an UART-to-ethernet converter to communicate with the main FPGA. A schematic structure can be seen in figure \ref{HWconc}.
+\begin{center}
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{figures/hardwareconcept.png}
+	\caption{Schematic hardware structure} \label{HWconc}
+\end{figure}
+\end{center}
 
 \section{Communication Flow}
 Paul - done
