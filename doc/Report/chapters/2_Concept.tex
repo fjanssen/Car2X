@@ -12,9 +12,6 @@ The hardware is design to allow an easy exchange of components and extensions. A
 \end{figure}
 \end{center}
 
-\section{Communication Flow}
-Paul - done
-
 \section{Car2X Protocol}
 The „CARP protocol"(developped by a previous lab-course group) was extended by a set of messages to let the NIOS2 processor system fit into the role of the communication central of the car. One NIOS2 core is handling the internal state of the car and the other one is in charge of all the communication between internal car parts and external communication partners like other cars or “car2x” stations. \newline
 The internal communication protocol is based on the work of Florian Hisch and has nearly not been modified. The only major change was a role switch in terms of server-client relationship. Unlike before, the central unit now is a server to which external clients can connect to.

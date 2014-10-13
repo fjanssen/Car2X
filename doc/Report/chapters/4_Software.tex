@@ -1,7 +1,78 @@
 \chapter{Software}
 
 \section{Communication Core}
-Paul -done
+
+\subsection{Basic Functionality}
+
+The main task of the communication core is to establish a TCP server on the DE2-115 FPGA board. This server should be able to accept multiple incoming
+client connections from the car such as the wheels nano boards, ultra sound sensors, and connections from the WiPort as for example the camera.
+Messages from those connections must be received, parsed and executed. This section will give a basic overview of how this functionality is implemented and 
+structured in our code.
+
+\begin{figure}[hb]
+\centering
+\includegraphics[width=1.0\textwidth]{comm_flow}
+\caption {Communication flow overview}
+\end{figure}
+
+\subsection{The main file}
+
+The main file starts up the threads of the core. As threads are not natively supported we are running the MicroC operation system. Also
+we are using it to run the Nichestack TCP/IP stack used for communication (via Telnet). 
+Threads are implemented using the MicroC OS. Threads started up are the following: 
+\begin{itemize}
+	\item Socket Server (implements our functionality of the control core, setting up the server)
+	\item Inet Main (OS setting up Nichstack TCP/IP stack)
+	\item Clock Tick (OS specific task)
+\end{itemize}
+
+\subsection{The socket server files}
+
+\subsubsection{Main loop of the socket server}
+On startup the socketserver task does some initialization and sets up a TCP server using the specific commands of the Nichestack TCP/IP stack.
+Then it enters its main loop where each cycle it performs the following actions:
+\begin{itemize}
+	\item Block for specified timeout: Check weather an incoming connection is detected or data on an already existing connection is ready to be read
+	\item In case of a new incoming connection we create a new connection struct, initialize it and append it to the list of existing connections
+	\item In case of incoming data on a connection we receive the data into the connections buffer and check if a whole message has been received (if this is the case, the message is directly parsed and executed)
+	\item Also for certain incoming messages it is checked if they have been processed successfully by the communication core and an answer message needs to be generated or data needs to be forwarded to the nano boards
+	\item Additionally every cycle it is checked if a connection has been closed and needs to be removed from the list of connections
+		\item The main loop also checks wether all four nano boards have registered themselves (see WelcomeMessage - note all further incoming data is ignored until the wheels have successfully registered)
+\end{itemize}
+
+
+\subsubsection{Receiving data on a connection}
+Firstly all incoming bytes on the connection are written in the connections buffer. Then step by step it is checked if a full car protocol message 
+is existing in the buffer (see definition of the message header). If a full message was received, we use the message parser of the CarProtocol class
+to turn the plain buffer into the specific CarProtocol object. This object is then sent to the method that executes all messages.
+
+\subsubsection{Execute a command}
+
+Executing a command means establish communication with the car control core which is running in parallel on the FPGA. So the first thing to invoke is a command 
+to access the shared memory and read the current car state (this command is blocking so the other core is denied access to the shared memory). After that
+all the car messages contained in the received car protocol are handled one by one, reading and manipulating the car state and write the results back to the shared memory (for more detailed information what is read / written by the different messages see the message definitions in this document). After the execution of the message an answer message will always be generated to inform the client weather the command has been performed successfully or not. In case the shared memory only has to be read the answer messages with the requested information can be generated right away. If the control core has to do some work before though, some delay is involved. Therefore a mechanism is implemented storing information about the messages that are currently being processed by the car control core. For further information on this see the next section.
+
+\subsubsection{Answering Messages}
+An answer message will also be generated if the incoming message requests the car control core to change the cars behavior according to the 
+car state stored in the shared memory. Answers for these kind of messages cannot be generated immediately after execution because it needs some time 
+for the car control core to process the new commands. Affected are the following message types:
+\begin{itemize}
+	\item Emergency Message
+	\item Remote Control Message
+	\item Car Control Message
+\end{itemize}
+In order to check wether a command has already been processed by the car control core, information about the latest incoming message for each of those 
+types is stored as well as two counters in the car state, one for the communication core and one for the car control core. The following mechanism checks weather a message has been processed by the car control core:
+\begin{itemize}
+	\item Every time a message of the above type is received, it increments the current counter of the communication core and stores this value
+	\item Every time the car control core adjusted itself to the new car state, it sets its counter to be the same as the counter of the communication core
+	\item If the stored counter of a received message is smaller or equal to the current communication core counter, this message has been processed
+\end{itemize}
+When it is known that a message has been processed by the control core, it needs to be checked if the message has been processed correctly and also if some data needs to be forwarded to the nano boards.
+So the requested values of the incoming message are compared with the values in the shared memory set by the car control core. If they match, an answer indicating success is generated, otherwise a fail is reported. It can also happen that a new message of a type is received before the old one has been processed. Then the old message is deleted and answered with a flag indicating the message has been overwritten with a newer version and therefore has not been executed. In case of certain message types (see corresponding section about the specific messages) some data such as wheel speeds need to be forwarded to the nano boards.
+
+
+
 
 
 \section{CarControl Core}

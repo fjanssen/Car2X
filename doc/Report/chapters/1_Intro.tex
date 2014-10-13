@@ -2,10 +2,14 @@
 
 
 \section{Motivation}
-Paul
+In modern road traffic, methods guaranteeing the safety of the driver and increasing traffic efficiency in general are an important issue of research. 
+A possible approach is to establish communication between cars (Car2Car) or between a car and a base station (Car2Infastructure), exchanging 
+information about the status of the car or traffic in general. Cars could for example signal each other sudden events such as emergency breaks and base stations could give information about congested roads. Car2Car and Car2Infrastructure are commonly generalized with the term Car2X. 
 
 \section{Problem description}
-Paul
+Our task was to implement a Car2X communication system on the metal car of last years group. 
+External devices such as other cars or base stations should be able to wireless connect to a server and communicate with it,
+requesting information about the state of the car or sending certain commands, such as the immediate performance of an emergency break. 
 
 \section{Approach}
-Paul
+The core of the system is implemented on an Altera FPGA board which is running two cores in parallel. One of them is responsible for communication, establishing a TCP server to which external devices can connect to through a wireless network set up by a WiPort. Necessary calculations are then performed on a second core. All messages follow our own Car2X protocol, which extends the CarProtocol introduced by the last years group. 

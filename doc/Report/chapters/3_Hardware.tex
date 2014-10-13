@@ -23,7 +23,27 @@ Also due to timing problems it seems not to be possible to use one block of sdra
 Another problem was the limited debugging. The debugging function of eclipse is not working at all and the default console also sometimes produces errors. To bypass this, disabling the eclipse default console output is a good idea and using the nios2-terminal instead. This also allows debug outputs from both cores simultaneously. Because of this limited debug possibilities, it was quite hard to find if the error came from hardware or software, or even from a broken board/malfunctioning hardware.
 
 \section{WiPort}
-Paul - done
+
+\subsection{Configure the WiPort}
+
+The first step to configure the WiPort is either to connect to either its predefined wireless network or directly plug 
+in a cable directly. Then access the IP 10.10.100.254 in a web browser (standard username: admin, password: admin).
+Here the WiPorts security settings, static IP, etc. can be configured.
+
+\subsection{Our projects WiPort configuration}
+In our setup the WiPort is given a static IP of 10.10.100.100 (this IP is used to access the WiPort from a wireless network) and 
+10.10.100.101 (this IP is used to access it via cable). In fact those IPs don't really matter in our project as they are never directly used in our code. 
+The WiPort is configured in client mode, so it is invisible in the network (as it is never addressed directly) and merely serves as a tool
+to establish communication between the server (the board) to the external clients. The port number used for communication is throughly set to 23. 
+
+
+
+
+\begin{figure}[hb]
+\centering
+\includegraphics[width=0.7\textwidth]{wiport_con}
+\caption {Integration of the WiPort}
+\end{figure}
 
 \section{Circuit diagrams}
 Johannes
